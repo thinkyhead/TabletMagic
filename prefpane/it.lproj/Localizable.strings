@@ -1,0 +1,109 @@
+/* Kill Sheet */
+"Kill TabletMagicDaemon?" = "Sicuri voler fermare TabletMagicDaemon?";
+"This will kill the TabletMagicDaemon process. Click the Enabled checkbox to start it up again." = "Questo ucciderà il processo di TabletMagicDaemon. Per attivarlo di nuovo, selezionare la casella Attivo.";
+"Kill It!" = "Uccidilo!";
+"Cancel" = "Annulla";
+
+/* Port and Tablet */
+"Automatic" = "Automatico";
+"Daemon Not Running" = "Gestore spento";
+"Starting Daemon..." = "Gestore sta partento...";
+"Looking for a tablet..." = "Sto cercando la tavoletta...";
+"SD Fallback" = "SD Fallback";
+"No Tablet Found" = "Nessuna tavoletta trovata";
+"Unknown" = "Sconosciuto";
+
+/* Mapping Pane */
+"Untitled Preset" = "Senza titolo";
+"Custom" = "Personalizzata";
+"Version %@" = "Versione %@";
+"max" = "max";
+"all" = "tutti";
+"< constrain <" = "< vincola <";
+"Are you sure you want to delete the preset \"%@\" ?" = "Sei sicuro di voler eliminare la impostazione \"%@\" ?";
+
+/* Testing Pane */
+"Datastream (%@ %@)" = "Dati della tavoletta (%@ %@)";
+"Binary" = "Binario";
+"ASCII" = "ASCII";
+
+/* TabletPC Sheets */
+"Enable TabletPC Digitizer?" = "Permetta Il Convertitore Di TabletPC?";
+"This will modify a core system component to enable your digitizer, if possible." = "Ciò modificherà un componente di sistema di nucleo per permettere il vostro tavoletta, se possibile.";
+"Modify and Reboot" = "Modifichi e Ricominci";
+"No Digitizer Found!" = "Nessun tavoletta è stato trovato!";
+"Sorry, but the enabler couldn't find a digitizer in the I/O Registry." = "Spiacente, ma il enabler non ha potuto trovare un tavoletta nella registrazione di I/O.";
+"Sorry, but the enabler failed to execute." = "Spiacente, ma il enabler non è riuscito ad eseguire.";
+"Okay" = "Okay";
+
+/* Commands Menu */
+"Do Self-Test" = "Fai Self-test";
+"Get Model & ROM Version" = "Ottieni Modello e Versione";
+"Get Maximum Coordinates" = "Ottieni Limiti delle coordinate";
+"Get Current Settings" = "Ottieni regolazioni correnti";
+"Get Setting M1" = "Ottieni regolazioni M1";
+"Get Setting M2" = "Ottieni regolazioni M2";
+"Start" = "Avvia";
+"Stop" = "Ferma";
+"Get Tablet Info" = "Ottieni informazioni";
+"Sample at 133pps" = "Campiona a 133p/s";
+"Sample at 80pps" = "Campiona a 80p/s";
+"Sample at 40pps" = "Campiona a 40p/s";
+"Reset to Bit Pad Two" = "Reset a Bit Pad Two";
+"Reset to MM1201" = "Reset a MM1201";
+"Reset to WACOM II-S" = "Reset a WACOM II-S";
+"Reset to WACOM IV" = "Reset a WACOM IV";
+"Reset to Defaults of Mode" = "Reset a Default del Modo";
+"Enable Tilt Mode" = "Attiva inclinazione";
+"Disable Tilt Mode" = "Disattiva inclinazione";
+"Suppressed Mode (IN2)" = "Modo Soppresso (IN2)";
+"Point Mode" = "Modo Puntatore";
+"Switch Stream Mode" = "Modo Continuo con interruttore";
+"Stream Mode" = "Modo Continuo";
+"Continuous Data Mode" = "Modo dati Continuo";
+"Trailing Data Mode" = "Modo Dati trascinati";
+"Normal Data Mode" = "Modo Dati Normali";
+"Origin UL" = "Origine AS";
+"Origin LL" = "Origine BS";
+"Scale 15240 x 15240" = "Scala 15240 x 15240";
+"Scale 32768 x 32768" = "Scala 32768 x 32768";
+"Enable Pressure Mode" = "Attiva Pressione";
+"Disable Pressure Mode" = "Disattiva Pressione";
+"ASCII Data Mode" = "Modo Dati ASCII";
+"Binary Data Mode" = "Modo Dati Binario";
+"Enable Relative Mode" = "Attiva Modo Relativo";
+"Disable Relative Mode" = "Disattiva Modo Relativo";
+"Set 1000p/i Resolution" = "Fissa risoluzione a 1000p/i";
+"Set 50p/mm Resolution" = "Fissa risoluzione a 50p/mm";
+"Enable All Menu Buttons" = "Attiva tutti i Pulsanti del Menu";
+"Disable Setup Button" = "Disattiva il Pulsante di Setup";
+"Disable Function Buttons" = "Disattiva i Pulsanti Funzioni";
+"Disable Pressure Buttons" = "Disattiva i Pulsanti di Pressione";
+"Pressure Buttons as Macros" = "Pulsanti di Pressioni Sono Macro";
+"BA Command" = "Comando BA";
+"LA Command" = "Comando LA";
+"CA Command" = "Comando CA";
+"OR Command" = "Comando OR";
+"RC Command" = "Comando RC";
+"RS Command" = "Comando RS";
+"SB Command" = "Comando SB";
+"YR Command" = "Comando YR";
+"AS Command" = "Comando AS";
+"DE Command" = "Comando DE";
+"IC Command" = "Comando IC";
+"PH Command" = "Comando PH";
+"SC Command" = "Comando SC";
+
+
+/* Tablet Events */
+"Pen Engaged" = "Penna Vicina";
+"Pen Disengaged" = "Penna Lontana";
+"Pen Down" = "Penna Giu'";
+"Pen Up" = "Penna Su";
+"Eraser Engaged" = "Eraser Vicino";
+"Eraser Disengaged" = "Eraser Lontano";
+"Eraser Down" = "Eraser Giu'";
+"Eraser Up" = "Eraser Su";
+"Button Click" = "Pulsante premuto";
+"Button Release" = "Pulsante rilasciato";
+

@@ -1,0 +1,109 @@
+/* Kill Sheet */
+"Kill TabletMagicDaemon?" = "Kill TabletMagicDaemon?";
+"This will kill the TabletMagicDaemon process. Click the Enabled checkbox to start it up again." = "This will kill the TabletMagicDaemon process. Click the Enabled checkbox to start it up again.";
+"Kill It!" = "Kill It!";
+"Cancel" = "Cancel";
+
+/* Port and Tablet */
+"Automatic" = "Automatic";
+"Daemon Not Running" = "Daemon Not Running";
+"Starting Daemon..." = "Starting Daemon...";
+"Looking for a tablet..." = "Looking for a tablet...";
+"SD Fallback" = "SD Fallback";
+"No Tablet Found" = "No Tablet Found";
+"Unknown" = "Unknown";
+
+/* Mapping Pane */
+"Untitled Preset" = "Untitled Preset";
+"Custom" = "Custom";
+"Version %@" = "Version %@";
+"max" = "max";
+"all" = "all";
+"< constrain <" = "< constrain <";
+"Are you sure you want to delete the preset \"%@\" ?" = "Are you sure you want to delete the preset \"%@\" ?";
+
+/* Testing Pane */
+"Datastream (%@ %@)" = "Datastream (%@ %@)";
+"Binary" = "Binary";
+"ASCII" = "ASCII";
+
+/* TabletPC Sheets */
+"Enable TabletPC Digitizer?" = "Enable TabletPC Digitizer?";
+"This will modify a core system component to enable your digitizer, if possible." = "This will modify a core system component to enable your digitizer, if possible.";
+"Modify and Reboot" = "Modify and Reboot";
+"No Digitizer Found!" = "No Digitizer Found!";
+"Sorry, but the enabler couldn't find a digitizer in the I/O Registry." = "Sorry, but the enabler couldn't find a digitizer in the I/O Registry.";
+"Sorry, but the enabler failed to execute." = "Sorry, but the enabler failed to execute.";
+"Okay" = "Okay";
+
+/* Commands Menu */
+"Do Self-Test" = "Do Self-Test";
+"Get Model & ROM Version" = "Get Model & ROM Version";
+"Get Maximum Coordinates" = "Get Maximum Coordinates";
+"Get Current Settings" = "Get Current Settings";
+"Get Setting M1" = "Get Setting M1";
+"Get Setting M2" = "Get Setting M2";
+"Start" = "Start";
+"Stop" = "Stop";
+"Get Tablet Info" = "Get Tablet Info";
+"Sample at 133pps" = "Sample at 133pps";
+"Sample at 80pps" = "Sample at 80pps";
+"Sample at 40pps" = "Sample at 40pps";
+"Reset to Bit Pad Two" = "Reset to Bit Pad Two";
+"Reset to MM1201" = "Reset to MM1201";
+"Reset to WACOM II-S" = "Reset to WACOM II-S";
+"Reset to WACOM IV" = "Reset to WACOM IV";
+"Reset to Defaults of Mode" = "Reset to Defaults of Mode";
+"Enable Tilt Mode" = "Enable Tilt Mode";
+"Disable Tilt Mode" = "Disable Tilt Mode";
+"Suppressed Mode (IN2)" = "Suppressed Mode (IN2)";
+"Point Mode" = "Point Mode";
+"Switch Stream Mode" = "Switch Stream Mode";
+"Stream Mode" = "Stream Mode";
+"Continuous Data Mode" = "Continuous Data Mode";
+"Trailing Data Mode" = "Trailing Data Mode";
+"Normal Data Mode" = "Normal Data Mode";
+"Origin UL" = "Origin UL";
+"Origin LL" = "Origin LL";
+"Scale 15240 x 15240" = "Scale 15240 x 15240";
+"Scale 32768 x 32768" = "Scale 32768 x 32768";
+"Enable Pressure Mode" = "Enable Pressure Mode";
+"Disable Pressure Mode" = "Disable Pressure Mode";
+"ASCII Data Mode" = "ASCII Data Mode";
+"Binary Data Mode" = "Binary Data Mode";
+"Enable Relative Mode" = "Enable Relative Mode";
+"Disable Relative Mode" = "Disable Relative Mode";
+"Set 1000p/i Resolution" = "Set 1000p/i Resolution";
+"Set 50p/mm Resolution" = "Set 50p/mm Resolution";
+"Enable All Menu Buttons" = "Enable All Menu Buttons";
+"Disable Setup Button" = "Disable Setup Button";
+"Disable Function Buttons" = "Disable Function Buttons";
+"Disable Pressure Buttons" = "Disable Pressure Buttons";
+"Pressure Buttons as Macros" = "Pressure Buttons as Macros";
+"BA Command" = "BA Command";
+"LA Command" = "LA Command";
+"CA Command" = "CA Command";
+"OR Command" = "OR Command";
+"RC Command" = "RC Command";
+"RS Command" = "RS Command";
+"SB Command" = "SB Command";
+"YR Command" = "YR Command";
+"AS Command" = "AS Command";
+"DE Command" = "DE Command";
+"IC Command" = "IC Command";
+"PH Command" = "PH Command";
+"SC Command" = "SC Command";
+
+
+/* Tablet Events */
+"Pen Engaged" = "Pen Engaged";
+"Pen Disengaged" = "Pen Disengaged";
+"Pen Down" = "Pen Down";
+"Pen Up" = "Pen Up";
+"Eraser Engaged" = "Eraser Engaged";
+"Eraser Disengaged" = "Eraser Disengaged";
+"Eraser Down" = "Eraser Down";
+"Eraser Up" = "Eraser Up";
+"Button Click" = "Button Click";
+"Button Release" = "Button Release";
+

@@ -1,0 +1,7 @@
+{
+    Description = "TabletMagic Daemon"; 
+    Messages = {start = "Starting TabletMagic"; stop = "Stopping TabletMagic"; }; 
+    Preference = Late; 
+    Provides = (TabletMagic); 
+    Requires = ("System Log"); 
+}

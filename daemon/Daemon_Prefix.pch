@@ -1,0 +1,15 @@
+//
+// Prefix header for TabletMagicDaemon
+//
+
+#include <Carbon/Carbon.h>
+#include <CoreFoundation/CoreFoundation.h>
+
+#include "Constants.h"
+
+
+#define FALLBACK_TO_SD		0
+#define	LOG_STREAM_TO_FILE	0
+
+#define	kSerialError		-1
+

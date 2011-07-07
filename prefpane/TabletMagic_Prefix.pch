@@ -1,0 +1,10 @@
+//
+// Prefix header for all source files of the 'TabletMagic' target in the 'TabletMagic' project.
+//
+
+#ifdef __OBJC__
+    #import <Foundation/Foundation.h>
+    #import <AppKit/AppKit.h>
+#endif
+
+#define BUILD_FOR_10_2		0

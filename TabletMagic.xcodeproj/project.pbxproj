@@ -1,0 +1,734 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		22403DD013A54C5D00BF3B88 /* Constants.h in Headers */ = {isa = PBXBuildFile; fileRef = 22403DCD13A54C5D00BF3B88 /* Constants.h */; };
+		22403DD113A54C5D00BF3B88 /* Wacom.h in Headers */ = {isa = PBXBuildFile; fileRef = 22403DCE13A54C5D00BF3B88 /* Wacom.h */; };
+		22403DD213A54C5D00BF3B88 /* wactablet.h in Headers */ = {isa = PBXBuildFile; fileRef = 22403DCF13A54C5D00BF3B88 /* wactablet.h */; };
+		22403DED13A54D5400BF3B88 /* SerialDaemon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22403DE713A54D5400BF3B88 /* SerialDaemon.cpp */; };
+		22403DEE13A54D5400BF3B88 /* TabletSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22403DE913A54D5400BF3B88 /* TabletSettings.cpp */; };
+		22403DEF13A54D5400BF3B88 /* TMSerialPort.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22403DEB13A54D5400BF3B88 /* TMSerialPort.cpp */; };
+		22403DFE13A54D8900BF3B88 /* TMAreaChooser.h in Headers */ = {isa = PBXBuildFile; fileRef = 22403DF013A54D8900BF3B88 /* TMAreaChooser.h */; };
+		22403DFF13A54D8900BF3B88 /* TMAreaChooser.m in Sources */ = {isa = PBXBuildFile; fileRef = 22403DF113A54D8900BF3B88 /* TMAreaChooser.m */; };
+		22403E0013A54D8900BF3B88 /* TMAreaChooserScreen.h in Headers */ = {isa = PBXBuildFile; fileRef = 22403DF213A54D8900BF3B88 /* TMAreaChooserScreen.h */; };
+		22403E0113A54D8900BF3B88 /* TMAreaChooserScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = 22403DF313A54D8900BF3B88 /* TMAreaChooserScreen.m */; };
+		22403E0213A54D8900BF3B88 /* TMAreaChooserTablet.h in Headers */ = {isa = PBXBuildFile; fileRef = 22403DF413A54D8900BF3B88 /* TMAreaChooserTablet.h */; };
+		22403E0313A54D8900BF3B88 /* TMAreaChooserTablet.m in Sources */ = {isa = PBXBuildFile; fileRef = 22403DF513A54D8900BF3B88 /* TMAreaChooserTablet.m */; };
+		22403E0413A54D8900BF3B88 /* TMController.h in Headers */ = {isa = PBXBuildFile; fileRef = 22403DF613A54D8900BF3B88 /* TMController.h */; };
+		22403E0513A54D8900BF3B88 /* TMController.m in Sources */ = {isa = PBXBuildFile; fileRef = 22403DF713A54D8900BF3B88 /* TMController.m */; };
+		22403E0613A54D8900BF3B88 /* TMPreset.h in Headers */ = {isa = PBXBuildFile; fileRef = 22403DF813A54D8900BF3B88 /* TMPreset.h */; };
+		22403E0713A54D8900BF3B88 /* TMPreset.m in Sources */ = {isa = PBXBuildFile; fileRef = 22403DF913A54D8900BF3B88 /* TMPreset.m */; };
+		22403E0813A54D8900BF3B88 /* TMPresetsController.h in Headers */ = {isa = PBXBuildFile; fileRef = 22403DFA13A54D8900BF3B88 /* TMPresetsController.h */; };
+		22403E0913A54D8900BF3B88 /* TMPresetsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 22403DFB13A54D8900BF3B88 /* TMPresetsController.m */; };
+		22403E0A13A54D8900BF3B88 /* TMScratchpad.h in Headers */ = {isa = PBXBuildFile; fileRef = 22403DFC13A54D8900BF3B88 /* TMScratchpad.h */; };
+		22403E0B13A54D8900BF3B88 /* TMScratchpad.m in Sources */ = {isa = PBXBuildFile; fileRef = 22403DFD13A54D8900BF3B88 /* TMScratchpad.m */; };
+		22403E1C13A54DC600BF3B88 /* Digitizers.c in Sources */ = {isa = PBXBuildFile; fileRef = 22403E1913A54DC600BF3B88 /* Digitizers.c */; };
+		22403E2213A54E1900BF3B88 /* TabletMagicDaemon in Resources */ = {isa = PBXBuildFile; fileRef = 22403DDD13A54D2C00BF3B88 /* TabletMagicDaemon */; };
+		22403E2313A54E1900BF3B88 /* LaunchHelper in Resources */ = {isa = PBXBuildFile; fileRef = 22403E1013A54DB900BF3B88 /* LaunchHelper */; };
+		22403E2C13A54FFF00BF3B88 /* button.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 22403E2613A54FFF00BF3B88 /* button.jpg */; };
+		22403E2D13A54FFF00BF3B88 /* PrefPaneTitle.png in Resources */ = {isa = PBXBuildFile; fileRef = 22403E2713A54FFF00BF3B88 /* PrefPaneTitle.png */; };
+		22403E2E13A54FFF00BF3B88 /* TabletMagicPref.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 22403E2813A54FFF00BF3B88 /* TabletMagicPref.tiff */; };
+		22403E2F13A54FFF00BF3B88 /* TabletMagicStarter in Resources */ = {isa = PBXBuildFile; fileRef = 22403E2913A54FFF00BF3B88 /* TabletMagicStarter */; };
+		22403E3013A54FFF00BF3B88 /* trigger-off.png in Resources */ = {isa = PBXBuildFile; fileRef = 22403E2A13A54FFF00BF3B88 /* trigger-off.png */; };
+		22403E3113A54FFF00BF3B88 /* trigger-on.png in Resources */ = {isa = PBXBuildFile; fileRef = 22403E2B13A54FFF00BF3B88 /* trigger-on.png */; };
+		22403E3A13A5565200BF3B88 /* Digitizers.c in Sources */ = {isa = PBXBuildFile; fileRef = 22403E1913A54DC600BF3B88 /* Digitizers.c */; };
+		22403E3C13A556CA00BF3B88 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22403E3B13A556CA00BF3B88 /* CoreFoundation.framework */; };
+		22403E3E13A5570300BF3B88 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22403E3D13A5570300BF3B88 /* IOKit.framework */; };
+		22403E3F13A5570300BF3B88 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22403E3D13A5570300BF3B88 /* IOKit.framework */; };
+		22403E4113A5572000BF3B88 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22403E4013A5572000BF3B88 /* ApplicationServices.framework */; };
+		22403E6A13A55AE900BF3B88 /* LaunchHelper.c in Sources */ = {isa = PBXBuildFile; fileRef = 22403E1B13A54DC600BF3B88 /* LaunchHelper.c */; };
+		22403E6B13A55FC300BF3B88 /* Digitizers.c in Sources */ = {isa = PBXBuildFile; fileRef = 22403E1913A54DC600BF3B88 /* Digitizers.c */; };
+		22403E6E13A5603D00BF3B88 /* TabletMagicPref.h in Headers */ = {isa = PBXBuildFile; fileRef = 22403E6C13A5603D00BF3B88 /* TabletMagicPref.h */; };
+		22403E6F13A5603D00BF3B88 /* TabletMagicPref.m in Sources */ = {isa = PBXBuildFile; fileRef = 22403E6D13A5603D00BF3B88 /* TabletMagicPref.m */; };
+		22403E7113A5631700BF3B88 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22403E7013A5631700BF3B88 /* Security.framework */; };
+		22403E7313A5634D00BF3B88 /* GetPID.c in Sources */ = {isa = PBXBuildFile; fileRef = 22403E7213A5634D00BF3B88 /* GetPID.c */; };
+		22EA96D813A840AF007CD052 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 22EA96D013A840AF007CD052 /* InfoPlist.strings */; };
+		22EA96D913A840AF007CD052 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 22EA96D213A840AF007CD052 /* Localizable.strings */; };
+		22EA96DA13A840AF007CD052 /* TabletMagicPref.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22EA96D413A840AF007CD052 /* TabletMagicPref.xib */; };
+		22EA96DB13A840AF007CD052 /* TabletMagicSearchGroups.searchTerms in Resources */ = {isa = PBXBuildFile; fileRef = 22EA96D613A840AF007CD052 /* TabletMagicSearchGroups.searchTerms */; };
+		8D202CEA0486D31800D8A456 /* TabletMagic_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 32DBCFA20370C41700C91783 /* TabletMagic_Prefix.pch */; };
+		8D202CF30486D31800D8A456 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */; };
+		8D202CF40486D31800D8A456 /* PreferencePanes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F506C035013D953901CA16C8 /* PreferencePanes.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		22403E1E13A54DE300BF3B88 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 089C1669FE841209C02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 22403DDC13A54D2C00BF3B88;
+			remoteInfo = TabletMagicDaemon;
+		};
+		22403E2013A54DE500BF3B88 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 089C1669FE841209C02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 22403E0F13A54DB900BF3B88;
+			remoteInfo = LaunchHelper;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		22403DDB13A54D2C00BF3B88 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		22403E0E13A54DB900BF3B88 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		089C1672FE841209C02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		089C167FFE841241C02AAC07 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
+		1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		22403DCD13A54C5D00BF3B88 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+		22403DCE13A54C5D00BF3B88 /* Wacom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Wacom.h; sourceTree = "<group>"; };
+		22403DCF13A54C5D00BF3B88 /* wactablet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wactablet.h; sourceTree = "<group>"; };
+		22403DDD13A54D2C00BF3B88 /* TabletMagicDaemon */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = TabletMagicDaemon; sourceTree = BUILT_PRODUCTS_DIR; };
+		22403DE613A54D5400BF3B88 /* Daemon_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Daemon_Prefix.pch; sourceTree = "<group>"; };
+		22403DE713A54D5400BF3B88 /* SerialDaemon.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SerialDaemon.cpp; sourceTree = "<group>"; };
+		22403DE813A54D5400BF3B88 /* SerialDaemon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SerialDaemon.h; sourceTree = "<group>"; };
+		22403DE913A54D5400BF3B88 /* TabletSettings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TabletSettings.cpp; sourceTree = "<group>"; };
+		22403DEA13A54D5400BF3B88 /* TabletSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabletSettings.h; sourceTree = "<group>"; };
+		22403DEB13A54D5400BF3B88 /* TMSerialPort.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TMSerialPort.cpp; sourceTree = "<group>"; };
+		22403DEC13A54D5400BF3B88 /* TMSerialPort.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TMSerialPort.h; sourceTree = "<group>"; };
+		22403DF013A54D8900BF3B88 /* TMAreaChooser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TMAreaChooser.h; sourceTree = "<group>"; };
+		22403DF113A54D8900BF3B88 /* TMAreaChooser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TMAreaChooser.m; sourceTree = "<group>"; };
+		22403DF213A54D8900BF3B88 /* TMAreaChooserScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TMAreaChooserScreen.h; sourceTree = "<group>"; };
+		22403DF313A54D8900BF3B88 /* TMAreaChooserScreen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TMAreaChooserScreen.m; sourceTree = "<group>"; };
+		22403DF413A54D8900BF3B88 /* TMAreaChooserTablet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TMAreaChooserTablet.h; sourceTree = "<group>"; };
+		22403DF513A54D8900BF3B88 /* TMAreaChooserTablet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TMAreaChooserTablet.m; sourceTree = "<group>"; };
+		22403DF613A54D8900BF3B88 /* TMController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TMController.h; sourceTree = "<group>"; };
+		22403DF713A54D8900BF3B88 /* TMController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TMController.m; sourceTree = "<group>"; };
+		22403DF813A54D8900BF3B88 /* TMPreset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TMPreset.h; sourceTree = "<group>"; };
+		22403DF913A54D8900BF3B88 /* TMPreset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TMPreset.m; sourceTree = "<group>"; };
+		22403DFA13A54D8900BF3B88 /* TMPresetsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TMPresetsController.h; sourceTree = "<group>"; };
+		22403DFB13A54D8900BF3B88 /* TMPresetsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TMPresetsController.m; sourceTree = "<group>"; };
+		22403DFC13A54D8900BF3B88 /* TMScratchpad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TMScratchpad.h; sourceTree = "<group>"; };
+		22403DFD13A54D8900BF3B88 /* TMScratchpad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TMScratchpad.m; sourceTree = "<group>"; };
+		22403E1013A54DB900BF3B88 /* LaunchHelper */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = LaunchHelper; sourceTree = BUILT_PRODUCTS_DIR; };
+		22403E1913A54DC600BF3B88 /* Digitizers.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Digitizers.c; sourceTree = "<group>"; };
+		22403E1A13A54DC600BF3B88 /* Digitizers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Digitizers.h; sourceTree = "<group>"; };
+		22403E1B13A54DC600BF3B88 /* LaunchHelper.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = LaunchHelper.c; sourceTree = "<group>"; };
+		22403E2613A54FFF00BF3B88 /* button.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = button.jpg; path = Resources/button.jpg; sourceTree = "<group>"; };
+		22403E2713A54FFF00BF3B88 /* PrefPaneTitle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PrefPaneTitle.png; path = Resources/PrefPaneTitle.png; sourceTree = "<group>"; };
+		22403E2813A54FFF00BF3B88 /* TabletMagicPref.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = TabletMagicPref.tiff; path = Resources/TabletMagicPref.tiff; sourceTree = "<group>"; };
+		22403E2913A54FFF00BF3B88 /* TabletMagicStarter */ = {isa = PBXFileReference; lastKnownFileType = folder; name = TabletMagicStarter; path = Resources/TabletMagicStarter; sourceTree = "<group>"; };
+		22403E2A13A54FFF00BF3B88 /* trigger-off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "trigger-off.png"; path = "Resources/trigger-off.png"; sourceTree = "<group>"; };
+		22403E2B13A54FFF00BF3B88 /* trigger-on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "trigger-on.png"; path = "Resources/trigger-on.png"; sourceTree = "<group>"; };
+		22403E3B13A556CA00BF3B88 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = ../../../../../../../System/Library/Frameworks/CoreFoundation.framework; sourceTree = "<group>"; };
+		22403E3D13A5570300BF3B88 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = ../../../../../../../System/Library/Frameworks/IOKit.framework; sourceTree = "<group>"; };
+		22403E4013A5572000BF3B88 /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = ../../../../../../../System/Library/Frameworks/ApplicationServices.framework; sourceTree = "<group>"; };
+		22403E6C13A5603D00BF3B88 /* TabletMagicPref.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabletMagicPref.h; sourceTree = "<group>"; };
+		22403E6D13A5603D00BF3B88 /* TabletMagicPref.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabletMagicPref.m; sourceTree = "<group>"; };
+		22403E7013A5631700BF3B88 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = ../../../../../../../System/Library/Frameworks/Security.framework; sourceTree = "<group>"; };
+		22403E7213A5634D00BF3B88 /* GetPID.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = GetPID.c; path = include/GetPID.c; sourceTree = "<group>"; };
+		22EA96D113A840AF007CD052 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		22EA96D313A840AF007CD052 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
+		22EA96D513A840AF007CD052 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/TabletMagicPref.xib; sourceTree = "<group>"; };
+		22EA96D713A840AF007CD052 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = English; path = English.lproj/TabletMagicSearchGroups.searchTerms; sourceTree = "<group>"; };
+		22EA96DC13A8412E007CD052 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		22EA96DD13A8412E007CD052 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		22EA96DE13A8412E007CD052 /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = fr; path = fr.lproj/TabletMagicPref.xib; sourceTree = "<group>"; };
+		22EA96DF13A8412E007CD052 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = fr; path = fr.lproj/TabletMagicSearchGroups.searchTerms; sourceTree = "<group>"; };
+		22EA96F313A84137007CD052 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		22EA96F413A84137007CD052 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
+		22EA96F513A84137007CD052 /* it */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = it; path = it.lproj/TabletMagicPref.xib; sourceTree = "<group>"; };
+		22EA96F613A84137007CD052 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = it; path = it.lproj/TabletMagicSearchGroups.searchTerms; sourceTree = "<group>"; };
+		32DBCFA20370C41700C91783 /* TabletMagic_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabletMagic_Prefix.pch; sourceTree = "<group>"; };
+		8D202CF70486D31800D8A456 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8D202CF80486D31800D8A456 /* TabletMagic.prefPane */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TabletMagic.prefPane; sourceTree = BUILT_PRODUCTS_DIR; };
+		F506C035013D953901CA16C8 /* PreferencePanes.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PreferencePanes.framework; path = /System/Library/Frameworks/PreferencePanes.framework; sourceTree = "<absolute>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		22403DDA13A54D2C00BF3B88 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				22403E3C13A556CA00BF3B88 /* CoreFoundation.framework in Frameworks */,
+				22403E3F13A5570300BF3B88 /* IOKit.framework in Frameworks */,
+				22403E4113A5572000BF3B88 /* ApplicationServices.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		22403E0D13A54DB900BF3B88 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8D202CF20486D31800D8A456 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D202CF30486D31800D8A456 /* Cocoa.framework in Frameworks */,
+				8D202CF40486D31800D8A456 /* PreferencePanes.framework in Frameworks */,
+				22403E3E13A5570300BF3B88 /* IOKit.framework in Frameworks */,
+				22403E7113A5631700BF3B88 /* Security.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		089C166AFE841209C02AAC07 /* TabletMagic */ = {
+			isa = PBXGroup;
+			children = (
+				22403DDF13A54D2C00BF3B88 /* daemon */,
+				22403DCB13A54BF600BF3B88 /* prefpane */,
+				22403E1213A54DB900BF3B88 /* helper */,
+				22403DC913A54BC800BF3B88 /* common */,
+				089C1671FE841209C02AAC07 /* Frameworks and Libraries */,
+				19C28FB8FE9D52D311CA2CBB /* Products */,
+			);
+			name = TabletMagic;
+			sourceTree = "<group>";
+		};
+		089C1671FE841209C02AAC07 /* Frameworks and Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7ACFEA557BF11CA2CBB /* Linked Frameworks */,
+				1058C7AEFEA557BF11CA2CBB /* Other Frameworks */,
+			);
+			name = "Frameworks and Libraries";
+			sourceTree = "<group>";
+		};
+		089C167CFE841241C02AAC07 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				22EA96D013A840AF007CD052 /* InfoPlist.strings */,
+				22EA96D213A840AF007CD052 /* Localizable.strings */,
+				22EA96D413A840AF007CD052 /* TabletMagicPref.xib */,
+				22EA96D613A840AF007CD052 /* TabletMagicSearchGroups.searchTerms */,
+				8D202CF70486D31800D8A456 /* Info.plist */,
+				22403E2813A54FFF00BF3B88 /* TabletMagicPref.tiff */,
+				22403E2613A54FFF00BF3B88 /* button.jpg */,
+				22403E2713A54FFF00BF3B88 /* PrefPaneTitle.png */,
+				22403E2A13A54FFF00BF3B88 /* trigger-off.png */,
+				22403E2B13A54FFF00BF3B88 /* trigger-on.png */,
+				22403E2913A54FFF00BF3B88 /* TabletMagicStarter */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		1058C7ACFEA557BF11CA2CBB /* Linked Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */,
+				F506C035013D953901CA16C8 /* PreferencePanes.framework */,
+			);
+			name = "Linked Frameworks";
+			sourceTree = "<group>";
+		};
+		1058C7AEFEA557BF11CA2CBB /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				22403E7013A5631700BF3B88 /* Security.framework */,
+				22403E4013A5572000BF3B88 /* ApplicationServices.framework */,
+				22403E3D13A5570300BF3B88 /* IOKit.framework */,
+				22403E3B13A556CA00BF3B88 /* CoreFoundation.framework */,
+				089C1672FE841209C02AAC07 /* Foundation.framework */,
+				089C167FFE841241C02AAC07 /* AppKit.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		19C28FB8FE9D52D311CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8D202CF80486D31800D8A456 /* TabletMagic.prefPane */,
+				22403DDD13A54D2C00BF3B88 /* TabletMagicDaemon */,
+				22403E1013A54DB900BF3B88 /* LaunchHelper */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		22403DC913A54BC800BF3B88 /* common */ = {
+			isa = PBXGroup;
+			children = (
+				22403DCD13A54C5D00BF3B88 /* Constants.h */,
+				22403DCE13A54C5D00BF3B88 /* Wacom.h */,
+				22403DCF13A54C5D00BF3B88 /* wactablet.h */,
+			);
+			path = common;
+			sourceTree = "<group>";
+		};
+		22403DCB13A54BF600BF3B88 /* prefpane */ = {
+			isa = PBXGroup;
+			children = (
+				32DBCFA20370C41700C91783 /* TabletMagic_Prefix.pch */,
+				22403E7213A5634D00BF3B88 /* GetPID.c */,
+				22403E6C13A5603D00BF3B88 /* TabletMagicPref.h */,
+				22403E6D13A5603D00BF3B88 /* TabletMagicPref.m */,
+				22403DF013A54D8900BF3B88 /* TMAreaChooser.h */,
+				22403DF113A54D8900BF3B88 /* TMAreaChooser.m */,
+				22403DF213A54D8900BF3B88 /* TMAreaChooserScreen.h */,
+				22403DF313A54D8900BF3B88 /* TMAreaChooserScreen.m */,
+				22403DF413A54D8900BF3B88 /* TMAreaChooserTablet.h */,
+				22403DF513A54D8900BF3B88 /* TMAreaChooserTablet.m */,
+				22403DF613A54D8900BF3B88 /* TMController.h */,
+				22403DF713A54D8900BF3B88 /* TMController.m */,
+				22403DF813A54D8900BF3B88 /* TMPreset.h */,
+				22403DF913A54D8900BF3B88 /* TMPreset.m */,
+				22403DFA13A54D8900BF3B88 /* TMPresetsController.h */,
+				22403DFB13A54D8900BF3B88 /* TMPresetsController.m */,
+				22403DFC13A54D8900BF3B88 /* TMScratchpad.h */,
+				22403DFD13A54D8900BF3B88 /* TMScratchpad.m */,
+				089C167CFE841241C02AAC07 /* Resources */,
+			);
+			path = prefpane;
+			sourceTree = "<group>";
+		};
+		22403DDF13A54D2C00BF3B88 /* daemon */ = {
+			isa = PBXGroup;
+			children = (
+				22403DE613A54D5400BF3B88 /* Daemon_Prefix.pch */,
+				22403DE713A54D5400BF3B88 /* SerialDaemon.cpp */,
+				22403DE813A54D5400BF3B88 /* SerialDaemon.h */,
+				22403DE913A54D5400BF3B88 /* TabletSettings.cpp */,
+				22403DEA13A54D5400BF3B88 /* TabletSettings.h */,
+				22403DEB13A54D5400BF3B88 /* TMSerialPort.cpp */,
+				22403DEC13A54D5400BF3B88 /* TMSerialPort.h */,
+			);
+			path = daemon;
+			sourceTree = "<group>";
+		};
+		22403E1213A54DB900BF3B88 /* helper */ = {
+			isa = PBXGroup;
+			children = (
+				22403E1913A54DC600BF3B88 /* Digitizers.c */,
+				22403E1A13A54DC600BF3B88 /* Digitizers.h */,
+				22403E1B13A54DC600BF3B88 /* LaunchHelper.c */,
+			);
+			path = helper;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		8D202CE90486D31800D8A456 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D202CEA0486D31800D8A456 /* TabletMagic_Prefix.pch in Headers */,
+				22403DD013A54C5D00BF3B88 /* Constants.h in Headers */,
+				22403DD113A54C5D00BF3B88 /* Wacom.h in Headers */,
+				22403DD213A54C5D00BF3B88 /* wactablet.h in Headers */,
+				22403DFE13A54D8900BF3B88 /* TMAreaChooser.h in Headers */,
+				22403E0013A54D8900BF3B88 /* TMAreaChooserScreen.h in Headers */,
+				22403E0213A54D8900BF3B88 /* TMAreaChooserTablet.h in Headers */,
+				22403E0413A54D8900BF3B88 /* TMController.h in Headers */,
+				22403E0613A54D8900BF3B88 /* TMPreset.h in Headers */,
+				22403E0813A54D8900BF3B88 /* TMPresetsController.h in Headers */,
+				22403E0A13A54D8900BF3B88 /* TMScratchpad.h in Headers */,
+				22403E6E13A5603D00BF3B88 /* TabletMagicPref.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		22403DDC13A54D2C00BF3B88 /* TabletMagicDaemon */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 22403DE313A54D2C00BF3B88 /* Build configuration list for PBXNativeTarget "TabletMagicDaemon" */;
+			buildPhases = (
+				22403DD913A54D2C00BF3B88 /* Sources */,
+				22403DDA13A54D2C00BF3B88 /* Frameworks */,
+				22403DDB13A54D2C00BF3B88 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TabletMagicDaemon;
+			productName = TabletMagicDaemon;
+			productReference = 22403DDD13A54D2C00BF3B88 /* TabletMagicDaemon */;
+			productType = "com.apple.product-type.tool";
+		};
+		22403E0F13A54DB900BF3B88 /* LaunchHelper */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 22403E1613A54DB900BF3B88 /* Build configuration list for PBXNativeTarget "LaunchHelper" */;
+			buildPhases = (
+				22403E0C13A54DB900BF3B88 /* Sources */,
+				22403E0D13A54DB900BF3B88 /* Frameworks */,
+				22403E0E13A54DB900BF3B88 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = LaunchHelper;
+			productName = LaunchHelper;
+			productReference = 22403E1013A54DB900BF3B88 /* LaunchHelper */;
+			productType = "com.apple.product-type.tool";
+		};
+		8D202CE80486D31800D8A456 /* Preference Pane */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1DBD214808BA80EA00186707 /* Build configuration list for PBXNativeTarget "Preference Pane" */;
+			buildPhases = (
+				8D202CE90486D31800D8A456 /* Headers */,
+				8D202CEC0486D31800D8A456 /* Resources */,
+				8D202CF00486D31800D8A456 /* Sources */,
+				8D202CF20486D31800D8A456 /* Frameworks */,
+				8D202CF50486D31800D8A456 /* Rez */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				22403E1F13A54DE300BF3B88 /* PBXTargetDependency */,
+				22403E2113A54DE500BF3B88 /* PBXTargetDependency */,
+			);
+			name = "Preference Pane";
+			productInstallPath = "$(HOME)/Library/PreferencePanes";
+			productName = TabletMagic;
+			productReference = 8D202CF80486D31800D8A456 /* TabletMagic.prefPane */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		089C1669FE841209C02AAC07 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 1DBD214C08BA80EA00186707 /* Build configuration list for PBXProject "TabletMagic" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 1;
+			knownRegions = (
+				en,
+				English,
+				French,
+				Italian,
+				fr,
+				it,
+			);
+			mainGroup = 089C166AFE841209C02AAC07 /* TabletMagic */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8D202CE80486D31800D8A456 /* Preference Pane */,
+				22403DDC13A54D2C00BF3B88 /* TabletMagicDaemon */,
+				22403E0F13A54DB900BF3B88 /* LaunchHelper */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8D202CEC0486D31800D8A456 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				22403E2213A54E1900BF3B88 /* TabletMagicDaemon in Resources */,
+				22403E2313A54E1900BF3B88 /* LaunchHelper in Resources */,
+				22403E2C13A54FFF00BF3B88 /* button.jpg in Resources */,
+				22403E2D13A54FFF00BF3B88 /* PrefPaneTitle.png in Resources */,
+				22403E2E13A54FFF00BF3B88 /* TabletMagicPref.tiff in Resources */,
+				22403E2F13A54FFF00BF3B88 /* TabletMagicStarter in Resources */,
+				22403E3013A54FFF00BF3B88 /* trigger-off.png in Resources */,
+				22403E3113A54FFF00BF3B88 /* trigger-on.png in Resources */,
+				22EA96D813A840AF007CD052 /* InfoPlist.strings in Resources */,
+				22EA96D913A840AF007CD052 /* Localizable.strings in Resources */,
+				22EA96DA13A840AF007CD052 /* TabletMagicPref.xib in Resources */,
+				22EA96DB13A840AF007CD052 /* TabletMagicSearchGroups.searchTerms in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXRezBuildPhase section */
+		8D202CF50486D31800D8A456 /* Rez */ = {
+			isa = PBXRezBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXRezBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		22403DD913A54D2C00BF3B88 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				22403E3A13A5565200BF3B88 /* Digitizers.c in Sources */,
+				22403DED13A54D5400BF3B88 /* SerialDaemon.cpp in Sources */,
+				22403DEE13A54D5400BF3B88 /* TabletSettings.cpp in Sources */,
+				22403DEF13A54D5400BF3B88 /* TMSerialPort.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		22403E0C13A54DB900BF3B88 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				22403E1C13A54DC600BF3B88 /* Digitizers.c in Sources */,
+				22403E6A13A55AE900BF3B88 /* LaunchHelper.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8D202CF00486D31800D8A456 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				22403E6B13A55FC300BF3B88 /* Digitizers.c in Sources */,
+				22403E7313A5634D00BF3B88 /* GetPID.c in Sources */,
+				22403DFF13A54D8900BF3B88 /* TMAreaChooser.m in Sources */,
+				22403E0113A54D8900BF3B88 /* TMAreaChooserScreen.m in Sources */,
+				22403E0313A54D8900BF3B88 /* TMAreaChooserTablet.m in Sources */,
+				22403E0513A54D8900BF3B88 /* TMController.m in Sources */,
+				22403E0713A54D8900BF3B88 /* TMPreset.m in Sources */,
+				22403E0913A54D8900BF3B88 /* TMPresetsController.m in Sources */,
+				22403E0B13A54D8900BF3B88 /* TMScratchpad.m in Sources */,
+				22403E6F13A5603D00BF3B88 /* TabletMagicPref.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		22403E1F13A54DE300BF3B88 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 22403DDC13A54D2C00BF3B88 /* TabletMagicDaemon */;
+			targetProxy = 22403E1E13A54DE300BF3B88 /* PBXContainerItemProxy */;
+		};
+		22403E2113A54DE500BF3B88 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 22403E0F13A54DB900BF3B88 /* LaunchHelper */;
+			targetProxy = 22403E2013A54DE500BF3B88 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		22EA96D013A840AF007CD052 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				22EA96D113A840AF007CD052 /* English */,
+				22EA96DC13A8412E007CD052 /* fr */,
+				22EA96F313A84137007CD052 /* it */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		22EA96D213A840AF007CD052 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				22EA96D313A840AF007CD052 /* English */,
+				22EA96DD13A8412E007CD052 /* fr */,
+				22EA96F413A84137007CD052 /* it */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		22EA96D413A840AF007CD052 /* TabletMagicPref.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				22EA96D513A840AF007CD052 /* English */,
+				22EA96DE13A8412E007CD052 /* fr */,
+				22EA96F513A84137007CD052 /* it */,
+			);
+			name = TabletMagicPref.xib;
+			sourceTree = "<group>";
+		};
+		22EA96D613A840AF007CD052 /* TabletMagicSearchGroups.searchTerms */ = {
+			isa = PBXVariantGroup;
+			children = (
+				22EA96D713A840AF007CD052 /* English */,
+				22EA96DF13A8412E007CD052 /* fr */,
+				22EA96F613A84137007CD052 /* it */,
+			);
+			name = TabletMagicSearchGroups.searchTerms;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		1DBD214908BA80EA00186707 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				DEPLOYMENT_LOCATION = YES;
+				DSTROOT = /;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = prefpane/TabletMagic_Prefix.pch;
+				INFOPLIST_FILE = prefpane/Info.plist;
+				INSTALL_PATH = "$(USER_LIBRARY_DIR)/PreferencePanes";
+				PRODUCT_NAME = TabletMagic;
+				WRAPPER_EXTENSION = prefPane;
+				ZERO_LINK = YES;
+			};
+			name = Debug;
+		};
+		1DBD214A08BA80EA00186707 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = prefpane/TabletMagic_Prefix.pch;
+				INFOPLIST_FILE = prefpane/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/PreferencePanes";
+				PRODUCT_NAME = TabletMagic;
+				WRAPPER_EXTENSION = prefPane;
+			};
+			name = Release;
+		};
+		1DBD214D08BA80EA00186707 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_GC = supported;
+				GCC_PREPROCESSOR_DEFINITIONS = CONFIG_$CONFIGURATION;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PREBINDING = NO;
+				VALID_ARCHS = "i386 ppc ppc64 ppc7400 ppc970 x86_64";
+			};
+			name = Debug;
+		};
+		1DBD214E08BA80EA00186707 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					i386,
+					x86_64,
+					ppc,
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_GC = supported;
+				GCC_PREPROCESSOR_DEFINITIONS = CONFIG_$CONFIGURATION;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
+				PREBINDING = NO;
+				VALID_ARCHS = "i386 ppc ppc64 ppc7400 ppc970 x86_64";
+			};
+			name = Release;
+		};
+		22403DE413A54D2C00BF3B88 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = daemon/Daemon_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		22403DE513A54D2C00BF3B88 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = daemon/Daemon_Prefix.pch;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		22403E1713A54DB900BF3B88 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		22403E1813A54DB900BF3B88 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1DBD214808BA80EA00186707 /* Build configuration list for PBXNativeTarget "Preference Pane" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DBD214908BA80EA00186707 /* Debug */,
+				1DBD214A08BA80EA00186707 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1DBD214C08BA80EA00186707 /* Build configuration list for PBXProject "TabletMagic" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DBD214D08BA80EA00186707 /* Debug */,
+				1DBD214E08BA80EA00186707 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		22403DE313A54D2C00BF3B88 /* Build configuration list for PBXNativeTarget "TabletMagicDaemon" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				22403DE413A54D2C00BF3B88 /* Debug */,
+				22403DE513A54D2C00BF3B88 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		22403E1613A54DB900BF3B88 /* Build configuration list for PBXNativeTarget "LaunchHelper" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				22403E1713A54DB900BF3B88 /* Debug */,
+				22403E1813A54DB900BF3B88 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 089C1669FE841209C02AAC07 /* Project object */;
+}

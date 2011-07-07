@@ -1,0 +1,7 @@
+/* Localized versions of Info.plist keys */
+
+CFBundleName = "TabletMagic";
+CFBundleShortVersionString = "2.0b18";
+CFBundleGetInfoString = "TabletMagic Versione 2.0b18, Copyright (c) 2011 Thinkyhead Software";
+NSHumanReadableCopyright = "Copyright (c) 2011 Thinkyhead Software";
+

@@ -1,0 +1,29 @@
+#!/bin/sh
+
+##
+# TabletMagic
+##
+
+. /etc/rc.common
+
+StartService () {
+	TMPATH=/Library/PreferencePanes/TabletMagic.prefPane/Contents/Resources/TabletMagicDaemon
+
+	ConsoleMessage "Starting TabletMagic"
+	if [ -x $TMPATH ]; then
+		$TMPATH %s
+	fi
+}
+
+StopService () {
+	ConsoleMessage "Stopping TabletMagic"
+	killall TabletMagicDaemon
+}
+
+RestartService () {
+	StopService
+	sleep 1
+	StartService
+}
+
+RunService "$1"

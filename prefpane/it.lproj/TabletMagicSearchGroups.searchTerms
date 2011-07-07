@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>tabletmagicMain</key>
+	<dict>
+		<key>localizableStrings</key>
+		<array>
+			<dict>
+				<key>index</key>
+				<string>wacom, tavolette, penna, digitalizzatore, seriale, ink</string>
+				<key>title</key>
+				<string>TabletMagic</string>
+			</dict>
+		</array>
+	</dict>
+	<key>tabletmagicSetupTab</key>
+	<dict>
+		<key>localizableStrings</key>
+		<array>
+			<dict>
+				<key>index</key>
+				<string>wacom, tavolette, setup, serial, origin, pressure, tilt, drawing</string>
+				<key>title</key>
+				<string>Impostazioni di TabletMagic</string>
+			</dict>
+		</array>
+	</dict>
+	<key>tabletmagicMappingTab</key>
+	<dict>
+		<key>localizableStrings</key>
+		<array>
+			<dict>
+				<key>index</key>
+				<string>mappatura, geometry, schermo, pulsante</string>
+				<key>title</key>
+				<string>Mappatura del TabletMagic</string>
+			</dict>
+		</array>
+	</dict>
+	<key>tabletmagicTestingTab</key>
+	<dict>
+		<key>localizableStrings</key>
+		<array>
+			<dict>
+				<key>index</key>
+				<string>test, try, monitor, log, logging, commandi</string>
+				<key>title</key>
+				<string>Test del TabletMagic</string>
+			</dict>
+		</array>
+	</dict>
+	<key>tabletmagicExtrasTab</key>
+	<dict>
+		<key>localizableStrings</key>
+		<array>
+			<dict>
+				<key>index</key>
+				<string>ink, daemon, tabletmagicdaemon</string>
+				<key>title</key>
+				<string>Supplementi di TabletMagic</string>
+			</dict>
+		</array>
+	</dict>
+	<key>tabletmagicDonateTab</key>
+	<dict>
+		<key>localizableStrings</key>
+		<array>
+			<dict>
+				<key>index</key>
+				<string>doni, sourceforge, oss, gpl</string>
+				<key>title</key>
+				<string>TabletMagic Donation</string>
+			</dict>
+		</array>
+	</dict>
+</dict>
+</plist>
