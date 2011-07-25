@@ -788,21 +788,22 @@ exit:
 	}
 }
 
-//
-// sendRequestToDaemon
-//
-// Send a request to the daemon and process the reply
-//
-// CFMessagePortSendRequest may time-out while waiting for the
-//	daemon to respond to a message. When this happens, the
-//	returned result can get swallowed and lost.
-//
-// This wouldn't matter a whole lot, but the pref pane uses a
-//	polling system to get around the limitation of CFMessagePort
-//	that it can't do two-way messaging across bootstrap domains.
-//
-// The polling system will soon be replaced by UNIX domain sockets.
-//
+/*
+	sendRequestToDaemon
+
+	Send a request to the daemon and process the reply
+
+	CFMessagePortSendRequest may time-out while waiting for the
+		daemon to respond to a message. When this happens, the
+		returned result can get swallowed and lost.
+
+	This wouldn't matter a whole lot, but the pref pane uses a
+		polling system to get around the limitation of CFMessagePort
+		that it can't do two-way messaging across bootstrap domains.
+
+	The polling system could be replaced by UNIX domain sockets,
+	but so far no luck with the implementation.
+*/
 - (CFDataRef)sendRequestToDaemon:(char*)message {
 	CFDataRef returnData = nil;
 	CFMessagePortRef port = [self getRemoteMessagePort];
