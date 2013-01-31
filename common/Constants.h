@@ -2,27 +2,18 @@
 	TabletMagicDaemon
 	Thinkyhead Software
 
-	Constants.h ($Id: Constants.h,v 1.16 2009/08/05 20:38:37 slurslee Exp $)
+	Constants.h
 */
 
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
-#define TABLETMAGIC_VERSION "2.0b18"
+#define TABLETMAGIC_VERSION "2.0b19"
 
 #define	ASYNCHRONOUS_MESSAGING	0
 #define FORCE_TABLETPC			0
 
 #define KNOWN_DIGIS {"WAC","FUJ","FPI"}
-
-#if BUILD_FOR_10_2
-	#define popupSelectTag(pop, tag)	[ (pop) selectItemAtIndex: [ (pop) indexOfItemWithTag:(tag) ] ]
-	#define setFillColor(col)			[ (col) set ]
-#else
-	#define popupSelectTag(pop, tag)	[ (pop) selectItemWithTag:(tag) ]
-	#define setFillColor(col)			[ (col) setFill ]
-#endif
-
 
 enum {
 	kStylusTip			= 0,
@@ -150,7 +141,40 @@ enum {
 
 
 #pragma mark -
-#pragma mark Main Preference Keys
+//
+// CalComp Tablet Command Strings
+//
+#define CAL_					"\x1B%"
+#define CAL_StartTablet			CAL_ "IR\r"
+#define CAL_StopTablet			CAL_ "H\r"
+#define CAL_TabletID			CAL_ "__p\r"
+#define CAL_Version             CAL_ "__V\r"
+#define CAL_TabletSize			CAL_ "VS\r"
+#define CAL_OriginUL			CAL_ "JUL\r"
+#define CAL_OriginLL			CAL_ "JLL\r"
+#define CAL_PressureModeOn		CAL_ "VA1\r"
+#define CAL_PressureModeOff		CAL_ "VA0\r"
+#define CAL_TilttoPressureOn	CAL_ "VA3\r"
+#define CAL_TilttoPressureOff	CAL_ "VA2\r"
+#define CAL_ASCIIMode			CAL_ "^17\r"
+#define CAL_BinaryMode			CAL_ "^21\r"
+#define CAL_22Mode              CAL_ "^22\r"
+#define CAL_Rez1000ppi			CAL_ "JR1000,0\r"
+#define CAL_Rez1270ppi			CAL_ "JR1270,0\r"
+#define CAL_Rez2540ppi			CAL_ "JR2540,0\r"
+#define CAL_Rez50ppmm			CAL_ "JM50,0\r"
+#define CAL_ReadSetting			CAL_ "^17\r"
+#define CAL_Reset               CAL_ "VR\r"
+#define CAL_StreamMode			CAL_ "IR\r"
+#define CAL_Rez1000ppi			CAL_ "JR1000,0\r"
+#define CAL_DataRate1			CAL_ "W1\r"
+#define CAL_DataRate50			CAL_ "W50\r"
+#define CAL_DataRate125			CAL_ "W125\r"
+#define CAL_LFEnable			CAL_ "L1\r"
+#define CAL_LFDisable			CAL_ "L0\r"
+
+
+#pragma mark - Main Preference Keys
 
 #define keyTabletEnabled	@"tabletEnabled"
 #define keySerialPort		@"serialPort"
@@ -178,8 +202,7 @@ enum {
 #define keySerialCTS		@"serialCTS"
 #define keySerialDSR		@"serialDSR"
 
-#pragma mark -
-#pragma mark Preset Preference Keys
+#pragma mark - Preset Preference Keys
 
 // Presets and their properties
 #define keyPresetList		@"presetList"
@@ -222,6 +245,7 @@ enum {
 #define kTabletModelPenPartner		"CT"
 #define kTabletModelSDSeries		"SD"
 #define kTabletModelTabletPC		"ISD"
+#define kTabletModelCalComp         "Cal"
 
 // Included for completeness
 #define kTabletModelPLSeries		"PL"
@@ -243,6 +267,7 @@ enum SeriesIndex {
 	kModelSDSeries		,
 	kModelTabletPC		,
 	kModelFujitsuP		,
+    kModelCalComp		,
 
 	// Included for completeness
 	kModelPLSeries		,
@@ -348,8 +373,8 @@ enum {
 //
 
 	// Wacom V
-#pragma mark -
-#pragma mark Wacom V
+#pragma mark - Wacom V
+
 #define V_Mask1_ToolHi			0x7F
 #define V_Mask2_ToolLo			0x7C
 
@@ -398,8 +423,8 @@ enum {
 #define V_Mask8_WheelDown		0x01
 
 	// Wacom IV
-#pragma mark -
-#pragma mark Wacom IV
+#pragma mark - Wacom IV
+
 #define IV_Mask0_Engagement		0x60
 #define IV_DisengagedOrMenu		0x20
 
@@ -427,8 +452,8 @@ enum {
 #define IV_Mask6_PressureHi		0x40
 
 	// Wacom II-S
-#pragma mark -
-#pragma mark Wacom II-S
+#pragma mark - Wacom II-S
+
 #define IIs_Mask0_Proximity		0x40
 #define IIs_Mask0_Pressure		0x10
 #define IIs_Mask0_Engaged		0x60
@@ -449,17 +474,47 @@ enum {
 #define IIs_Mask6_PressureHi	0x40
 #define IIs_Mask6_ButtonFlag	0x20
 
+	// CalComp
+#pragma mark - CalComp
+#define CAL_Mask0_Proximity		0x40
+#define CAL_Mask0_Buttons		0x7C
+#define CAL_Mask0_Pressure		0x10
+#define CAL_Mask0_Engaged		0x60
+#define CAL_Mask0_CursorOrPen   0x40
+#define CAL_Mask0_Stylus        0x04
+#define CAL_Mask0_Pen1          0x08
+#define CAL_Mask0_Pen2          0x10
+#define CAL_Mask0_Button1       0x04
+#define CAL_Mask0_Button2       0x08
+#define CAL_Mask0_Eraser		0x10
+#define CAL_Disengaged			0x20
+
+#define CAL_Mask0_X				0x03
+#define CAL_Mask1_X				0x7F
+#define CAL_Mask2_X				0x7F
+#define CAL_Mask3_X				0x18
+
+#define CAL_Mask3_Y				0x07
+#define CAL_Mask4_Y				0x7F
+#define CAL_Mask5_Y				0x7F
+
+#define CAL_Mask6_EraserOrTip	0x01
+#define CAL_Mask6_Button1		0x02
+#define CAL_Mask6_Button2		0x04
+#define CAL_Mask6_EraserOr2		0x08
+#define CAL_Mask6_Pressure      0xFF
+#define CAL_Mask6_ButtonFlag	0x20
 
 	// Wacom SD420L
-#pragma mark -
-#pragma mark SD Series
+#pragma mark - SD Series
+
 #define SD_Mask0_Pressure		0x10
 #define SD_Mask6_PressureLo		0x3F
 #define SD_Mask6_PressureHi		0x40
 
 	// TabletPC
-#pragma mark -
-#pragma mark TabletPC
+#pragma mark - TabletPC
+
 #define TPC_Mask0_QueryData		0x40
 
 #define TPC_Mask0_Proximity		0x20
@@ -481,8 +536,7 @@ enum {
 #define TPC_Mask3_Y				0x7F
 
 	// TabletPC Query Data
-#pragma mark -
-#pragma mark TabletPC Query Data
+#pragma mark - TabletPC Query Data
 
 #define TPC_QUERY_REPLY_SIZE	11
 

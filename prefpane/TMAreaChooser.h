@@ -2,7 +2,7 @@
 	TabletMagicPrefPane
 	Thinkyhead Software
 
-	TMAreaChooser.h ($Id: TMAreaChooser.h,v 1.12 2009/02/09 06:00:04 slurslee Exp $)
+	TMAreaChooser.h
 */
 
 enum {

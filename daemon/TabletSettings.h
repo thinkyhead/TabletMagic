@@ -2,7 +2,7 @@
 	TabletMagicDaemon
 	Thinkyhead Software
 
-	TabletSettings.h ($Id: TabletSettings.h,v 1.13 2009/02/09 07:23:41 slurslee Exp $)
+	TabletSettings.h
 
 	This program is a component of TabletMagic. See the
 	accompanying documentation for more details about the
@@ -77,6 +77,7 @@ public:
 	~TabletSettings();
 
 	bool	Import(const char *state);
+	void	InitForCalComp();
 	void	InitForTabletPC(Boolean use38400=false);
 	void	InitForSD();
 	void	InitForPL();

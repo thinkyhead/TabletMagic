@@ -2,7 +2,7 @@
 	TabletMagicDaemon
 	Thinkyhead Software
 
-	TMSerialPort.cpp ($Id: TMSerialPort.cpp,v 1.13 2009/02/09 06:01:03 slurslee Exp $)
+	TMSerialPort.cpp
 
 	This program is a component of TabletMagic. See the
 	accompanying documentation for more details about the
@@ -567,7 +567,7 @@ kern_return_t TMSerialPort::GetNextPortPath() {
 	clearstr(deviceFilePath);
 
 	// Keep iterating until successful
-	while (portService = IOIteratorNext(serialPortIterator)) {
+	while ((portService = IOIteratorNext(serialPortIterator))) {
 		CFTypeRef	deviceFilePathAsCFString;
 
 		// Get the callout device's path (/dev/cu.xxxxx).

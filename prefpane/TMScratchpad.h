@@ -2,7 +2,7 @@
 	TabletMagicPrefPane
 	Thinkyhead Software
 
-	TMScratchpad.h ($Id: TMScratchpad.h,v 1.12 2009/02/09 06:00:04 slurslee Exp $)
+	TMScratchpad.h
 */
 
 @interface TMScratchpad : NSView {
@@ -20,5 +20,8 @@
 
 - (void)handleProximity:(NSNotification *)proxNotice;
 - (void)drawBlobAtPoint:(NSPoint)point withPressure:(float)pressure erasing:(BOOL)is_eraser;
+
+- (void)_tabletProximity:(NSEvent *)theEvent;
+- (void)_tabletPoint:(NSEvent *)theEvent;
 
 @end

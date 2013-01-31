@@ -2,7 +2,7 @@
 	TabletMagicPrefPane
 	Thinkyhead Software
 
-	TabletMagicPrefPanePref.m ($Id: TabletMagicPref.m,v 1.14 2009/02/09 06:00:04 slurslee Exp $)
+	TabletMagicPrefPanePref.m
 */
 
 #import "TabletMagicPref.h"

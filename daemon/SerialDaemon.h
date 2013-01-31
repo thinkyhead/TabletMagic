@@ -2,7 +2,7 @@
 	TabletMagicDaemon
 	Thinkyhead Software
 
-	SerialDaemon.h ($Id: SerialDaemon.h,v 1.19 2009/08/05 20:59:07 slurslee Exp $)
+	SerialDaemon.h
 
 	This program is a component of TabletMagic. See the
 	accompanying documentation for more details about the
@@ -205,6 +205,9 @@ public:
 	char*			RequestTabletIDModal()			{ SendRequestToTablet(WAC_TabletID); return modalbuffer; }
 	char*			RequestMaxCoordinatesModal()	{ SendRequestToTablet(WAC_TabletSize); return modalbuffer; }
 
+	char*			RequestCalCompIDModal()			{ SendRequestToTablet(CAL_TabletID); return modalbuffer; }
+    char*			RequestCalCompMaxCoordinatesModal(){ SendRequestToTablet(CAL_TabletSize); return modalbuffer; }
+	
 	void			RunEventLoop();
 	static void		TabletTimerCallback( CFRunLoopTimerRef timer, void *info );
 	static void		EventTimerCallback( CFRunLoopTimerRef timer, void *info );
@@ -215,8 +218,9 @@ public:
 	void			ProcessSerialStream();
 	void			ProcessPacket(char *pkt, int size);
 	void			ProcessCommandReply(char *response);
-	void			ProcessTabletPCCommandReply(char *packet);
-
+	void			ProcessTabletPCCommandReply(char *response);
+    void			ProcessCalCompCommandReply(char *response);
+    
 	void			ProcessWacomIIS_ASCII(char *pkt, int size);
 	void			ProcessWacomIIS_Binary(char *pkt, int size);
 	void			ProcessWacomIV_Base(char *pkt, int size);
@@ -230,6 +234,7 @@ public:
 
 	void			PostChangeEvents();
 	void			PostNXEvent(int eventType, SInt16 eventSubType, UInt8 otherButton=0);
+	void			PostCGEvent(int eventType, SInt16 eventSubType, UInt8 otherButton=0);
 
 	void			ApplySettings(int i);
 

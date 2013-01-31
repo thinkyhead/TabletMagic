@@ -2,7 +2,7 @@
 	TabletMagicPrefPane
 	Thinkyhead Software
 
-	TMController.m ($Id: TMController.m,v 1.30 2009/08/05 20:40:31 slurslee Exp $)
+	TMController.m
 */
 
 #import "TMController.h"
@@ -264,7 +264,7 @@ TMCommand tabletCommands[] = {
 		[ popupBaud selectItemAtIndex:[ [ prefs objectForKey:keySerialBaudRate ] intValue ] ];
 		[ popupDataBits selectItemAtIndex:[ [ prefs objectForKey:keySerialDataBits ] intValue ] ];
 		[ popupStopBits selectItemAtIndex:[ [ prefs objectForKey:keySerialStopBits] intValue ] ];
-		popupSelectTag(popupParity, [[prefs objectForKey:keySerialParity] intValue]);
+		[ popupParity selectItemWithTag:[ [ prefs objectForKey:keySerialParity] intValue ] ];
 		[ checkCTS setState:[[prefs objectForKey:keySerialCTS] boolValue] ? NSOnState : NSOffState ];
 		[ checkDSR setState:[[prefs objectForKey:keySerialDSR] boolValue] ? NSOnState : NSOffState ];
 	}
@@ -573,8 +573,8 @@ exit:
 
 			if (set != oldSet || fmt != oldFmt) {
 				[ self setStreamHeadingForSet:set andFormat:fmt ];
-				popupSelectTag(popupCommandSet, set);
-				popupSelectTag(popupOutputFormat, fmt);
+				[popupCommandSet selectItemWithTag:set];
+				[popupOutputFormat selectItemWithTag:fmt];
 				oldSet = set; oldFmt = fmt;
 			}
 
@@ -900,10 +900,11 @@ exit:
 		else {
 			int i, count = [argsArray count];
 			char **args = calloc(count+1, sizeof(char*));
-			static char argstring[100];
-			strcpy(argstring, "[ TabletMagicDaemon ");
+			static char argstring[200];
+			strcpy(argstring, "[ TabletMagicDaemon");
 			for (i=0; i<count; i++) {
 				args[i] = [ self getCStringFromString:[argsArray objectAtIndex:i] ];
+				strcat(argstring, " ");
 				strcat(argstring, args[i]);
 			}
 			strcat(argstring, "]\r\n");
@@ -1061,11 +1062,11 @@ exit:
 	unsigned increment, interval, rezx, rezy;
 
 	if (5 == sscanf(setup, "%8X,%3u,%2u,%4u,%4u", &bits, &increment, &interval, &rezx, &rezy )) {
-		popupSelectTag(popupCommandSet, twobitv(30));
+		[ popupCommandSet	selectItemWithTag: twobitv(30) ];
 
 		[ popupBaud			selectItemAtIndex:twobitv(28) ];
 		
-		popupSelectTag(popupParity, twobitv(26));
+		[ popupParity		selectItemWithTag:twobitv(26) ];
 
 		[ popupDataBits		selectItemAtIndex:onebitv(25) ];
 		[ popupStopBits		selectItemAtIndex:onebitv(24) ];
@@ -1157,7 +1158,7 @@ exit:
 		}
 	}
 
-	popupSelectTag(popupCommands, oldselection);
+	[ popupCommands selectItemWithTag: oldselection ];
 }
 
 /*
@@ -1966,7 +1967,7 @@ exit:
 }
 
 - (IBAction)visit:(id)sender {
-	char *url_visit = "http://sourceforge.net/projects/tabletmagic/";
+	char *url_visit = "https://github.com/thinkyhead/tabletmagic";
 	CFURLRef url = CFURLCreateWithBytes( kCFAllocatorDefault, (const UInt8 *) url_visit, strlen(url_visit), kCFStringEncodingASCII, nil);
 	(void)LSOpenCFURLRef(url, nil);
 	CFRelease(url);

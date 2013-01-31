@@ -2,7 +2,7 @@
 	TabletMagicPrefPane
 	Thinkyhead Software
 
-	TMAreaChooser.m ($Id: TMAreaChooser.m,v 1.12 2009/02/09 06:00:04 slurslee Exp $)
+	TMAreaChooser.m
 */
 
 #import "TMAreaChooser.h"
@@ -257,7 +257,7 @@
 - (void)drawRect:(NSRect)rect {
 	[ NSColor setIgnoresAlpha:NO ];
 
-	setFillColor([NSColor controlBackgroundColor]);
+	[[NSColor controlBackgroundColor] setFill];
 	NSRectFill(rect);
 
 	NSPoint lt = { left, top };
@@ -273,13 +273,13 @@
 	NSRect	brRect = { { r - HandleSize - 1, rect.size.height - b - HandleSize }, { HSize2, HSize2 } };
 
 	if (dragType == DRAG_WHOLE)
-		setFillColor([NSColor colorWithCalibratedRed:0.92 green:0.92 blue:0.98 alpha:1.0]);
+		[[NSColor colorWithCalibratedRed:0.92 green:0.92 blue:0.98 alpha:1.0] setFill];
 	else
-		setFillColor([NSColor colorWithCalibratedRed:0.96 green:0.96 blue:0.99 alpha:1.0]);
+		[[NSColor colorWithCalibratedRed:0.96 green:0.96 blue:0.99 alpha:1.0] setFill];
 
 	NSRectFill(innerRect);
 
-	setFillColor([NSColor colorWithCalibratedRed:0.8 green:0.8 blue:0.90 alpha:1.0]);
+	[[NSColor colorWithCalibratedRed:0.8 green:0.8 blue:0.90 alpha:1.0] setFill];
 	NSFrameRect(innerRect);
 
 	[ self drawHandlePart:tlRect asActive:dragType == DRAG_TOPLEFT || dragType == DRAG_WHOLE ];
@@ -289,7 +289,7 @@
 
 	[ self drawSubsections:rect ];
 
-	setFillColor([NSColor blackColor]);
+	[[NSColor blackColor] setFill];
 	NSFrameRectWithWidth(rect, 1.0f);
 }
 
@@ -500,12 +500,12 @@
 				: [NSColor colorWithCalibratedRed:0.8 green:1.0 blue:0.8 alpha:1.0];
 	}
 
-	setFillColor(fillColor);
+	[ fillColor setFill ];
 
 	NSBezierPath *bez = [ NSBezierPath bezierPathWithOvalInRect:rect ];
 	[ bez fill ];
 
-	setFillColor([NSColor colorWithCalibratedRed:0.4 green:0.7 blue:0.8 alpha:1.0]);
+	[[NSColor colorWithCalibratedRed:0.4 green:0.7 blue:0.8 alpha:1.0] setStroke];
 	[ bez stroke ];
 }
 

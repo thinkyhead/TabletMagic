@@ -1,8 +1,7 @@
 /*
 	TabletMagicDaemon
-	(c) 2011 Thinkyhead Software
 
-	SerialDaemon.cpp ($Id: SerialDaemon.cpp,v 1.24 2009/08/05 20:58:08 slurslee Exp $)
+	SerialDaemon.cpp
 
 	This program is a component of TabletMagic. See the
 	accompanying documentation for more details about the
@@ -26,6 +25,7 @@
 		- Tested with several tablets and adapters
 		- Fully implemented II-S (ASCII and Binary), Wacom IV, Wacom V, and TabletPC
 		- Adapted for use with PenPartner (CT) tablets
+		- Adapted for Calcomp tablets
 
 	In Progress:
 		- Handle screen resolution changes in the preference pane
@@ -82,6 +82,7 @@ extern "C" {
 #define PRESSURE_SCALE  65535.0
 #define TILT_SCALE		32767.0
 #define LOG_FILE		"/Users/Shared/tabletmagic.log"
+#define POST_EVENT		PostCGEvent
 
 enum {
 	kToolNone		= 0,
@@ -170,6 +171,7 @@ SeriesDescription series_list[] = {
 		{ kTabletModelSDSeries,		"SD Series",		kModelSDSeries		},
 		{ kTabletModelTabletPC,		"TabletPC",			kModelTabletPC		},
 		{ kTabletModelTabletPC,		"Fujitsu P Series",	kModelFujitsuP		},
+        { kTabletModelCalComp,		"CalComp",			kModelCalComp		},
 
 		// These are redundant and should never match:
 		{ kTabletModelPLSeries,		"PL Series",		kModelPLSeries		},
@@ -408,7 +410,7 @@ int main(int argc, char *argv[]) {
 		#if LOG_STREAM_TO_FILE
 			fprintf(output, " (logging version)");
 		#endif
-		fprintf(output, "\n(c) 2001-2011 Thinkyhead Software <www.thinkyhead.com>\n\n");
+		fprintf(output, "\n(c) 2013 Thinkyhead Software <www.thinkyhead.com>\n\n");
 
 
 		//
@@ -693,8 +695,7 @@ void signal_handler(int sig) {
 };
 
 
-#pragma mark -
-#pragma mark WacomTablet
+#pragma mark - WacomTablet
 
 //===================================================================
 //  WacomTablet
@@ -907,7 +908,7 @@ void WacomTablet::InitializeForPort(char *port_name) {
 	clearstr(model_number);						// No tablet identified yet
 	clearstr(rom_version);						// No ROM identified yet
 	clearstr(buffer);							// Mark the buffer empty
-	base_version = 1.3f;							// Assume at least this much
+	base_version = 1.3f;						// Assume at least this much
 	series_index = kModelUnknown;				// Not sure which tablet yet
 	can_parse_ud_setup = true;
 
@@ -1034,7 +1035,7 @@ bool WacomTablet::InitializeTablet(int try_tablet_model) {
 
 				// Send a "*" command to the tablet
 				int reply_len = SendRequestToTablet(TPC_TabletID);
-				fprintf(output, "[RCVD] %s\n", HexString(modalbuffer, reply_len));
+				if (!quiet_mode) fprintf(output, "[RCVD] %s\n", HexString(modalbuffer, reply_len));
 				ProcessTabletPCCommandReply(modalbuffer);
 
 				// If the tablet doesn't respond with a valid set of bytes, fail
@@ -1075,59 +1076,61 @@ bool WacomTablet::InitializeTablet(int try_tablet_model) {
 
 		ProcessCommandReply(tablet_id);
 
-		if (tablet_id != NULL)
+		if (tablet_id != NULL) {
 			free(tablet_id);
+			tablet_id = NULL;
+		}
 
 		//
 		// SD, Penpartner, and Intuos tablets don't respond to settings requests
 		//
 		bool answers_settings = false;
 		switch (series_index) {
-		case kModelCintiq:
-			if (!quiet_mode) fprintf(output, "[INIT] PL-Series or Cintiq Detected\n");
-			settings[0].InitForPL();
-			break;
+			case kModelCintiq:
+				if (!quiet_mode) fprintf(output, "[INIT] PL-Series or Cintiq Detected\n");
+				settings[0].InitForPL();
+				break;
 
-		case kModelSDSeries:
-			if (!quiet_mode) fprintf(output, "[INIT] SD-Series Detected\n");
-			// Set SD tablets to the best possible state: II-S Binary, Pressure, INC=0, Normal Data Mode
-			SendCommandToTablet(WAC_BinaryMode WAC_PressureModeOn WAC_SuppressIN2 WAC_IncrementOff WAC_DataNormal);
-			settings[0].InitForSD();
-			break;
+			case kModelSDSeries:
+				if (!quiet_mode) fprintf(output, "[INIT] SD-Series Detected\n");
+				// Set SD tablets to the best possible state: II-S Binary, Pressure, INC=0, Normal Data Mode
+				SendCommandToTablet(WAC_BinaryMode WAC_PressureModeOn WAC_SuppressIN2 WAC_IncrementOff WAC_DataNormal);
+				settings[0].InitForSD();
+				break;
 
-		case kModelTabletPC:
-			if (!quiet_mode) fprintf(output, "[INIT] TabletPC Detected\n");
-			settings[0].InitForTabletPC(args.baud38400);
-			break;
+			case kModelTabletPC:
+				if (!quiet_mode) fprintf(output, "[INIT] TabletPC Detected\n");
+				settings[0].InitForTabletPC(args.baud38400);
+				break;
 
-		case kModelPenPartner:
-			if (!quiet_mode) fprintf(output, "[INIT] CT-PenPartner Detected\n");
-			settings[0].InitForPenPartner();
-			break;
+			case kModelPenPartner:
+				if (!quiet_mode) fprintf(output, "[INIT] CT-PenPartner Detected\n");
+				settings[0].InitForPenPartner();
+				break;
 
-		case kModelIntuos:
-		case kModelIntuos2:
-			if (!quiet_mode) fprintf(output, "[INIT] Intuos Detected\n");
-			settings[0].InitForIntuos();
-			break;
+			case kModelIntuos:
+			case kModelIntuos2:
+				if (!quiet_mode) fprintf(output, "[INIT] Intuos Detected\n");
+				settings[0].InitForIntuos();
+				break;
 
-		default:	// Otherwise...
-			// If an initialization string was passed send it to the tablet
-			// and clear it so next time no init will occur
-			if (args.init != NULL) {
-				char setstr[32];
-				sprintf(setstr, "%s%s\r", (args.init[0]=='~' ? "" : "~*"), args.init);
-				SendCommandToTablet(setstr);
-				ShortSleep();
-				free(args.init);
-				args.init = NULL;
-			}
+			default:
+				// If an initialization string was passed send it to the tablet
+				// and clear it so next time no init will occur
+				if (args.init != NULL) {
+					char setstr[32];
+					sprintf(setstr, "%s%s\r", (args.init[0]=='~' ? "" : "~*"), args.init);
+					SendCommandToTablet(setstr);
+					ShortSleep();
+					free(args.init);
+					args.init = NULL;
+				}
 
-			// Request the initial tablet settings
-			// If the tablet fails to respond, consider the tablet inactive
-			answers_settings = true;
-			if (!GetUDSettingsOrFail() && args.command)
-				SetProcessing(false);
+				// Request the initial tablet settings
+				// If the tablet fails to respond, consider the tablet inactive
+				answers_settings = true;
+				if (!GetUDSettingsOrFail() && args.command)
+					SetProcessing(false);
 		}
 
 		// Print settings for tablets that don't announce them
@@ -1156,8 +1159,16 @@ bool WacomTablet::InitializeTablet(int try_tablet_model) {
 			if (series_index != kModelTabletPC)
 				SendCommandToTablet(WAC_StartTablet);
 		}
-		else
-			SendCommandToTablet(series_index == kModelTabletPC ? TPC_Sample133pps : WAC_StartTablet);
+		else {
+			switch (series_index) {
+				case kModelTabletPC:
+					SendCommandToTablet(TPC_Sample133pps);
+					break;
+				default:
+					SendCommandToTablet(WAC_StartTablet);
+					break;
+			}
+		}
 
 		result = true;
 
@@ -1301,9 +1312,9 @@ void WacomTablet::SendUDSetupString(char *setup, int bank, bool insist) {
 			if (insist) {
 				GetUDSettingsOrFail(bank);
 			}
-	//		else {
-	//			RequestUDSettings(bank);
-	//		}
+//			else {
+//				RequestUDSettings(bank);
+//			}
 
 
 			SendCommandToTablet(WAC_StartTablet);
@@ -1410,7 +1421,6 @@ bool WacomTablet::SendScaleToTablet(int h, int v) {
 		result = SendCommandToTablet(command);
 		free(command);
 	}
-
 	return result;
 }
 
@@ -1750,7 +1760,7 @@ void WacomTablet::ProcessCommandReply(char *response) {
 				}
 			}
 
-			can_parse_ud_setup = (series_index != kModelSDSeries && series_index != kModelTabletPC);
+			can_parse_ud_setup = (series_index != kModelSDSeries && series_index != kModelTabletPC && series_index != kModelCalComp);
 
 			// All SD tablets assume ROM 1.2, the earliest supported
 			if (series_index == kModelSDSeries)
@@ -1821,8 +1831,8 @@ void WacomTablet::ProcessTabletPCCommandReply(char *packet) {
 
 //	int pressure_max = ((packet[6] & TPC_Query6_PressureHi) << 7) | (packet[5] & TPC_Query5_PressureLo);
 
-	long	h = ((packet[1] & TPC_Query1_MaxX) << 9) | ((packet[2] & TPC_Query2_MaxX) << 2) | ((packet[6] & TPC_Query6_MaxX) >> 5),
-			v = ((packet[3] & TPC_Query3_MaxY) << 9) | ((packet[4] & TPC_Query4_MaxY) << 2) | ((packet[6] & TPC_Query6_MaxY) >> 3);
+	long	h = ((UInt16)(packet[1] & TPC_Query1_MaxX) << 9) | ((UInt16)(packet[2] & TPC_Query2_MaxX) << 2) | ((UInt16)(packet[6] & TPC_Query6_MaxX) >> 5),
+			v = ((UInt16)(packet[3] & TPC_Query3_MaxY) << 9) | ((UInt16)(packet[4] & TPC_Query4_MaxY) << 2) | ((UInt16)(packet[6] & TPC_Query6_MaxY) >> 3);
 
 	//
 	// The following imitates ProcessCommandReply() though some actions are extraneous
@@ -1835,9 +1845,7 @@ void WacomTablet::ProcessTabletPCCommandReply(char *packet) {
 	while (firmware_min >= 1) { firmware_min /= 10.0f; }
 	base_version = firmware_maj + firmware_min;
 
-	if (!quiet_mode) {
-		fprintf(output, "[INFO] ISD-V4 Firmware %.2f (TabletPC)\n", base_version);
-	}
+	if (!quiet_mode) fprintf(output, "[INFO] ISD-V4 Firmware %.2f (TabletPC)\n", base_version);
 
 	// When not a test command, use the reply parameters
 	if (!send_stream) {
@@ -1845,6 +1853,54 @@ void WacomTablet::ProcessTabletPCCommandReply(char *packet) {
 		settings[0].yscale = (SInt32)v;
 		InitTabletBounds(0, 0, (SInt32)h-1, (SInt32)v-1);
 	}
+}
+
+//
+// ProcessCalCompCommandReply(response)
+//
+void WacomTablet::ProcessCalCompCommandReply(char *response) {
+	char replyString[100];
+	strncpy(replyString, response, 100);
+    
+	if (send_stream) {
+		stream_size = 1;
+		stream_pause = 2;
+		memcpy(stream_packet, replyString, strlen(replyString) + 1);
+	}
+    
+	UInt32 i;
+    
+	if (!quiet_mode)
+		fprintf(output, "[PROC] \"%s\"\n", LogString(replyString));
+    if ( strncmp(&replyString[0], "CalComp",7 )) {
+        series_index = kModelCalComp;
+    }
+    
+    //only testing for one ROM version at moment but doesn't matter
+    else if ( strncmp(&replyString[0], "70205A 04/03/95 19472-1",23 )) {
+        int matching_index = 0;
+        for (i=0; i<(sizeof(series_list)/sizeof(SeriesDescription)); i++) {
+            if ( 0 == strncmp(rom_version, series_list[i].code, strlen(series_list[i].code)) ) {
+                matching_index = i;
+                series_index = series_list[matching_index].index;
+                break;
+            }
+        }
+
+        strcpy(rom_version , "70205A");
+        base_version = 19472-1;
+        if (!quiet_mode)
+            fprintf(output, "[INFO] %s V%.2f (%s)\n", rom_version, base_version, series_list[matching_index].name);
+    }
+    //this is a size response - not working at moment
+    //i think we can add the condition replyString[3]==','
+    else {
+        fprintf(output,"%s\n",response);
+        settings[0].xscale = (int) replyString[2] + ((int)replyString[1] << 7) + (((int)replyString[0]&0x03)<<14);
+        settings[0].yscale = (int)replyString[5] + ((int)replyString[4] << 7);
+        fprintf(output, "[INFO] got size from CalComp\n");
+    }
+
 }
 
 //
@@ -1928,7 +1984,7 @@ void WacomTablet::ProcessPacket(char *packet, int pack_size) {
 		stylus.button[kStylusTip] = 0;
 
 	}
-	/**/
+	*/
 
 	if (!(stylus.button_mask & (kBitStylusTip|kBitStylusEraser)))
 		stylus.pressure = 0;
@@ -2014,7 +2070,8 @@ void WacomTablet::PostChangeEvents() {
 		//
 		CGFloat	hratio = screenBounds.size.width / twide,
 				vratio = screenBounds.size.height / thigh,
-				minratio = ((hratio < vratio) ? hratio : vratio) * 2.0f;
+				minratio = ((hratio < vratio) ? hratio : vratio) * 2.0f,
+				mouse_mult = mouse_scaling * minratio;
 
 		/*
 		fprintf(stderr,
@@ -2025,24 +2082,21 @@ void WacomTablet::PostChangeEvents() {
 				stylus.oldPos.x, stylus.oldPos.y,
 				stylus.scrPos.x, stylus.scrPos.y,
 				stylus.motion.x, stylus.motion.y);
-		/**/
+		*/
 
 		// Apply the tablet:screen ratio to the amount of motion
 		// (because it's usually a sane value)
 		//
 		// TODO: Replace with actual mouse acceleration.
 		//
-		nx = stylus.oldPos.x - screenBounds.origin.x + stylus.motion.x * mouse_scaling * minratio;
-		ny = stylus.oldPos.y - screenBounds.origin.y + stylus.motion.y * mouse_scaling * minratio;
+		nx = stylus.oldPos.x - screenBounds.origin.x + stylus.motion.x * mouse_mult;
+		ny = stylus.oldPos.y - screenBounds.origin.y + stylus.motion.y * mouse_mult;
 
 		// In mouse mode limit motion to the designated screen bounds
 		if (nx < 0) nx = 0;
 		if (nx >= swide) nx = swide - 1;
 		if (ny < 0) ny = 0;
 		if (ny >= shigh) ny = shigh - 1;
-
-		stylus.scrPos.x = (SInt16)nx + screenBounds.origin.x;
-		stylus.scrPos.y = (SInt16)ny + screenBounds.origin.y;
 	}
 	else {
 		// Get the ratio of the screen to the tablet
@@ -2058,10 +2112,10 @@ void WacomTablet::PostChangeEvents() {
 		// Map the Stylus Point to the active Screen Area
 		nx = (sx1 + (x - tx1) * hratio);
 		ny = (sy1 + (y - ty1) * vratio);
-
-		stylus.scrPos.x = (SInt16)(nx + screenBounds.origin.x);
-		stylus.scrPos.y = (SInt16)(ny + screenBounds.origin.y);
 	}
+
+	stylus.scrPos.x = (SInt16)nx + screenBounds.origin.x;
+	stylus.scrPos.y = (SInt16)ny + screenBounds.origin.y;
 
 	//
 	// Map Stylus buttons to system buttons
@@ -2088,27 +2142,27 @@ void WacomTablet::PostChangeEvents() {
 	// Has the stylus moved in or out of range?
 	if (oldStylus.off_tablet != stylus.off_tablet) {
 		if ((stylus.proximity.enterProximity = !stylus.off_tablet))
-			stylus.proximity.pointerType = (stylus.eraser_flag && (button_mapping[kStylusEraser] == kSystemEraser)) ? EEraser : EPen;
-		PostNXEvent(buttonEvent, NX_SUBTYPE_TABLET_PROXIMITY);
+			stylus.proximity.pointerType = (stylus.eraser_flag && (button_mapping[kStylusEraser] == kSystemEraser)) ? NX_TABLET_POINTER_ERASER : NX_TABLET_POINTER_PEN;
+		POST_EVENT(buttonEvent, NX_SUBTYPE_TABLET_PROXIMITY);
 //		fprintf(stderr, "Stylus has %s proximity\n", stylus.off_tablet ? "exited" : "entered");
 	}
 
 	// Is a Double-Click warranted?
 	if (buttonState[kSystemDoubleClick] && !oldButtonState[kSystemDoubleClick]) {
 		if (oldButtonState[kSystemButton1]) {
-			PostNXEvent(NX_LMOUSEUP, NX_SUBTYPE_TABLET_POINT);
+			POST_EVENT(NX_LMOUSEUP, NX_SUBTYPE_TABLET_POINT);
 			ShortSleep();
 		}
 
-		PostNXEvent(NX_LMOUSEDOWN, NX_SUBTYPE_TABLET_POINT);
+		POST_EVENT(NX_LMOUSEDOWN, NX_SUBTYPE_TABLET_POINT);
 		ShortSleep();
-		PostNXEvent(NX_LMOUSEUP, NX_SUBTYPE_TABLET_POINT);
+		POST_EVENT(NX_LMOUSEUP, NX_SUBTYPE_TABLET_POINT);
 		ShortSleep();
-		PostNXEvent(NX_LMOUSEDOWN, NX_SUBTYPE_TABLET_POINT);
+		POST_EVENT(NX_LMOUSEDOWN, NX_SUBTYPE_TABLET_POINT);
 
 		if (!oldButtonState[kSystemButton1]) {
 			ShortSleep();
-			PostNXEvent(NX_LMOUSEUP, NX_SUBTYPE_TABLET_POINT);
+			POST_EVENT(NX_LMOUSEUP, NX_SUBTYPE_TABLET_POINT);
 		}
 
 		postedPosition = true;
@@ -2117,17 +2171,17 @@ void WacomTablet::PostChangeEvents() {
 	// Is a Single-Click warranted?
 	if (buttonState[kSystemSingleClick] && !oldButtonState[kSystemSingleClick]) {
 		if (oldButtonState[kSystemButton1]) {
-			PostNXEvent(NX_LMOUSEUP, NX_SUBTYPE_TABLET_POINT);
+			POST_EVENT(NX_LMOUSEUP, NX_SUBTYPE_TABLET_POINT);
 			ShortSleep();
 		}
 
-		PostNXEvent(NX_LMOUSEDOWN, NX_SUBTYPE_TABLET_POINT);
+		POST_EVENT(NX_LMOUSEDOWN, NX_SUBTYPE_TABLET_POINT);
 		ShortSleep();
-		PostNXEvent(NX_LMOUSEUP, NX_SUBTYPE_TABLET_POINT);
+		POST_EVENT(NX_LMOUSEUP, NX_SUBTYPE_TABLET_POINT);
 
 		if (!oldButtonState[kSystemButton1]) {
 			ShortSleep();
-			PostNXEvent(NX_LMOUSEUP, NX_SUBTYPE_TABLET_POINT);
+			POST_EVENT(NX_LMOUSEUP, NX_SUBTYPE_TABLET_POINT);
 		}
 
 		postedPosition = true;
@@ -2138,7 +2192,7 @@ void WacomTablet::PostChangeEvents() {
 		dragState = !dragState;
 
 		if (!dragState || !buttonState[kSystemButton1]) {
-			PostNXEvent((dragState ? NX_LMOUSEDOWN : NX_LMOUSEUP), NX_SUBTYPE_TABLET_POINT);
+			POST_EVENT((dragState ? NX_LMOUSEDOWN : NX_LMOUSEUP), NX_SUBTYPE_TABLET_POINT);
 			postedPosition = true;
 //			fprintf(stderr, "Drag %sed\n", dragState ? "Start" : "End");
 		}
@@ -2152,38 +2206,38 @@ void WacomTablet::PostChangeEvents() {
 		}
 
 		if (!dragState) {
-			PostNXEvent((buttonState[kSystemButton1] ? NX_LMOUSEDOWN : NX_LMOUSEUP), NX_SUBTYPE_TABLET_POINT);
+			POST_EVENT((buttonState[kSystemButton1] ? NX_LMOUSEDOWN : NX_LMOUSEUP), NX_SUBTYPE_TABLET_POINT);
 			postedPosition = true;
 		}
 	}
 
 	// Has Button 2 changed?
 	if (oldButtonState[kSystemButton2] != buttonState[kSystemButton2]) {
-		PostNXEvent((buttonState[kSystemButton2] ? NX_RMOUSEDOWN : NX_RMOUSEUP), NX_SUBTYPE_TABLET_POINT);
+		POST_EVENT((buttonState[kSystemButton2] ? NX_RMOUSEDOWN : NX_RMOUSEUP), NX_SUBTYPE_TABLET_POINT);
 		postedPosition = true;
 	}
 
 	// Has the Eraser changed?
 	if (oldButtonState[kSystemEraser] != buttonState[kSystemEraser]) {
-		PostNXEvent((buttonState[kSystemEraser] ? NX_LMOUSEDOWN : NX_LMOUSEUP), NX_SUBTYPE_TABLET_POINT);
+		POST_EVENT((buttonState[kSystemEraser] ? NX_LMOUSEDOWN : NX_LMOUSEUP), NX_SUBTYPE_TABLET_POINT);
 		postedPosition = true;
 	}
 
 	// Has Button 3 changed?
 	if (oldButtonState[kSystemButton3] != buttonState[kSystemButton3])
-		PostNXEvent((buttonState[kSystemButton3] ? NX_OMOUSEDOWN : NX_OMOUSEUP), NX_SUBTYPE_DEFAULT, kOtherButton3);
+		POST_EVENT((buttonState[kSystemButton3] ? NX_OMOUSEDOWN : NX_OMOUSEUP), NX_SUBTYPE_DEFAULT, kOtherButton3);
 
 	// Has Button 4 changed?
 	if (oldButtonState[kSystemButton4] != buttonState[kSystemButton4])
-		PostNXEvent((buttonState[kSystemButton4] ? NX_OMOUSEDOWN : NX_OMOUSEUP), NX_SUBTYPE_DEFAULT, kOtherButton4);
+		POST_EVENT((buttonState[kSystemButton4] ? NX_OMOUSEDOWN : NX_OMOUSEUP), NX_SUBTYPE_DEFAULT, kOtherButton4);
 
 	// Has Button 5 changed?
 	if (oldButtonState[kSystemButton5] != buttonState[kSystemButton5])
-		PostNXEvent((buttonState[kSystemButton5] ? NX_OMOUSEDOWN : NX_OMOUSEUP), NX_SUBTYPE_DEFAULT, kOtherButton5);
+		POST_EVENT((buttonState[kSystemButton5] ? NX_OMOUSEDOWN : NX_OMOUSEUP), NX_SUBTYPE_DEFAULT, kOtherButton5);
 
 	// Has the stylus changed position?
 	if (!postedPosition && (oldStylus.point.x != stylus.point.x || oldStylus.point.y != stylus.point.y))
-		PostNXEvent(buttonEvent, NX_SUBTYPE_TABLET_POINT);
+		POST_EVENT(buttonEvent, NX_SUBTYPE_TABLET_POINT);
 
 	// Finally, remember the current state for next time
 	bcopy(&stylus, &oldStylus, sizeof(stylus));
@@ -2193,21 +2247,21 @@ void WacomTablet::PostChangeEvents() {
 //
 //	PostNXEvent
 //
-//  Derived from sample code provided by Apple DTS.
-//
 void WacomTablet::PostNXEvent(int eventType, SInt16 eventSubType, UInt8 otherButton) {
 	if (!tablet_on)
 		return;
-
-	static NXEventData eventData;
 
 #if LOG_STREAM_TO_FILE
 	if (logfile) fprintf(logfile, " | PostNXEvent(%d, %d, %02X)", eventType, eventSubType, otherButton);
 #endif
 
+	static NXEventData eventData;
+
 	switch (eventType) {
 		case NX_OMOUSEUP:
 		case NX_OMOUSEDOWN:
+			// TODO: the CG version sets subtype, so I'm adding it here too
+			eventData.mouse.subType = eventSubType;
 			eventData.mouse.click = 0;
 			eventData.mouse.buttonNumber = otherButton;
 
@@ -2224,20 +2278,19 @@ void WacomTablet::PostNXEvent(int eventType, SInt16 eventSubType, UInt8 otherBut
 //			if (!no_tablet_events) {
 //				fprintf(output, "[POST] Button Event %d\n", eventType);
 
+#if LOG_STREAM_TO_FILE
+				if (logfile) fprintf(logfile, " | UP/DOWN | pressure=%u", stylus.pressure);
+#endif
 				eventData.mouse.subType = eventSubType;
 				eventData.mouse.subx = 0;
 				eventData.mouse.suby = 0;
 				eventData.mouse.pressure = stylus.pressure;
 
-#if LOG_STREAM_TO_FILE
-			if (logfile) fprintf(logfile, " | UP/DOWN | pressure=%u", stylus.pressure);
-#endif
-
-//				/* SInt16 */	eventData.mouse.eventNum = 1;		/* unique identifier for this button */
-				/* SInt32 */	eventData.mouse.click = 0;			/* click state of this event */
-//				/* UInt8 */		eventData.mouse.buttonNumber = 1;	/* button generating other button event (0-31) */
-				/* UInt8 */		eventData.mouse.reserved2 = 0;
-				/* SInt32 */	eventData.mouse.reserved3 = 0;
+/* SInt16 */	// eventData.mouse.eventNum = 1;		/* unique identifier for this button */
+/* SInt32 */	eventData.mouse.click = 0;				/* click state of this event */
+/* UInt8 */		// eventData.mouse.buttonNumber = 1;	/* button generating other button event (0-31) */
+/* UInt8 */		eventData.mouse.reserved2 = 0;
+/* SInt32 */	eventData.mouse.reserved3 = 0;
 
 				switch (eventSubType) {
 					case NX_SUBTYPE_TABLET_POINT:
@@ -2353,14 +2406,181 @@ void WacomTablet::PostNXEvent(int eventType, SInt16 eventSubType, UInt8 otherBut
 }
 
 
-#pragma mark -
-#pragma mark Tablet Protocol Interpreters
+//
+//	PostCGEvent
+//
+void WacomTablet::PostCGEvent(int eventType, SInt16 eventSubType, UInt8 otherButton) {
+	if (!tablet_on)
+		return;
+
+#if LOG_STREAM_TO_FILE
+	if (logfile) fprintf(logfile, " | PostCGEvent(%d, %d, %02X)", eventType, eventSubType, otherButton);
+#endif
+    
+    CGEventRef move1 = CGEventCreateMouseEvent(
+                                               NULL, eventType,
+                                               CGPointMake(stylus.scrPos.x, stylus.scrPos.y),
+                                               otherButton	// Ignored unless eventType = kCGEventOtherMouseDown/Dragged/Up
+															// [A.Bohm] uses kCGMouseButtonLeft
+                                               );
+    // maybe set these in the same way as NX
+    switch (eventSubType) {
+        case NX_SUBTYPE_TABLET_POINT:
+            CGEventSetIntegerValueField(move1, kCGMouseEventSubtype, kCGEventMouseSubtypeTabletPoint);
+            break;
+        case NX_SUBTYPE_TABLET_PROXIMITY:
+            CGEventSetIntegerValueField(move1, kCGMouseEventSubtype, kCGEventMouseSubtypeTabletProximity);
+            break;
+    }
+    
+	switch (eventType) {
+			
+		case kCGEventOtherMouseDown:
+		case kCGEventOtherMouseUp:
+//			CGEventSetIntegerValueField(move1, kCGMouseEventSubtype, kCGEventMouseSubtypeTabletPoint);
+			CGEventSetIntegerValueField(move1, kCGMouseEventClickState, 0);
+			CGEventSetIntegerValueField(move1, kCGMouseEventButtonNumber, otherButton);
+            
+#if LOG_STREAM_TO_FILE
+			if (logfile) fprintf(logfile, " (other button)");
+#endif
+			break;
+			
+		case kCGEventLeftMouseDown:
+		case kCGEventLeftMouseUp:
+		case kCGEventRightMouseDown:
+		case kCGEventRightMouseUp:
+			//			if (!no_tablet_events) {
+			//				fprintf(output, "[POST] Button Event %d\n", eventType);
+			
+//          CGEventSetIntegerValueField(move1, kCGMouseEventSubtype, eventSubType);
+			// Note: No subx/suby to set for CG
+            CGEventSetDoubleValueField(move1, kCGMouseEventPressure, stylus.pressure / PRESSURE_SCALE);
+			CGEventSetIntegerValueField(move1, kCGMouseEventNumber, 1); // unique identifier for this button
+			CGEventSetIntegerValueField(move1, kCGMouseEventClickState, 0); // click state of this event
+
+			// [A.Bohm] sets this to 1 (kCGMouseButtonRight)
+			CGEventSetIntegerValueField(move1, kCGMouseEventButtonNumber, otherButton); // button generating other button event (0-31)
+            
+#if LOG_STREAM_TO_FILE
+			if (logfile) fprintf(logfile, " | UP/DOWN | pressure=%u", stylus.pressure);
+#endif
+
+            break;
+            
+		case kCGEventMouseMoved:
+		case kCGEventLeftMouseDragged:
+		case kCGEventRightMouseDragged:
+			
+			// Relative motion is needed for the mouseMove event
+			if (stylus.oldPos.x == SHRT_MIN) {
+                CGEventSetIntegerValueField(move1, kCGMouseEventDeltaX, 0);
+                CGEventSetIntegerValueField(move1, kCGMouseEventDeltaY, 0);
+			}
+			else {
+                CGEventSetIntegerValueField(move1, kCGMouseEventDeltaX, stylus.scrPos.x - stylus.oldPos.x);
+                CGEventSetIntegerValueField(move1, kCGMouseEventDeltaY, stylus.scrPos.y - stylus.oldPos.y);
+			}
+            
+			stylus.oldPos = stylus.scrPos;
+            
+#if LOG_STREAM_TO_FILE
+			if (logfile) fprintf(logfile, " | delta=(%d,%d)", (SInt32)(stylus.scrPos.x - stylus.oldPos.x), (SInt32)(stylus.scrPos.y - stylus.oldPos.y));
+#endif
+            
+            break;
+    }
+    
+    CGEventSetDoubleValueField(move1, kCGMouseEventPressure, stylus.pressure / PRESSURE_SCALE);
+    CGEventSetDoubleValueField(move1, kCGTabletEventPointPressure, stylus.pressure / PRESSURE_SCALE);
+    
+	switch (eventType) {
+			
+		case kCGEventLeftMouseDown:
+		case kCGEventLeftMouseUp:
+		case kCGEventRightMouseDown:
+		case kCGEventRightMouseUp:
+            
+		case kCGEventMouseMoved:
+		case kCGEventLeftMouseDragged:
+		case kCGEventRightMouseDragged:
+            
+            switch (eventSubType) {
+                case NX_SUBTYPE_TABLET_POINT:
+//					CGEventSetIntegerValueField(move1, kCGMouseEventSubtype, kCGEventMouseSubtypeTabletPoint);
+                    CGEventSetIntegerValueField(move1, kCGTabletEventPointX, stylus.point.x);
+                    CGEventSetIntegerValueField(move1, kCGTabletEventPointY, stylus.point.y);
+                    CGEventSetIntegerValueField(move1, kCGTabletEventPointButtons, 0x0000);
+                    CGEventSetDoubleValueField(move1, kCGTabletEventPointPressure, stylus.pressure / PRESSURE_SCALE);
+                    CGEventSetDoubleValueField(move1, kCGTabletEventTiltX, stylus.tilt.x);
+                    CGEventSetDoubleValueField(move1, kCGTabletEventTiltY, stylus.tilt.y);
+                    CGEventSetIntegerValueField(move1, kCGTabletEventDeviceID, stylus.proximity.deviceID);
+                    CGEventSetIntegerValueField(move1, kCGTabletEventPointZ, 0);
+                    CGEventSetDoubleValueField(move1, kCGTabletEventRotation, 0);
+                    CGEventSetDoubleValueField(move1, kCGTabletEventTangentialPressure, 0);
+                    
+                    
+#if LOG_STREAM_TO_FILE
+                    if (logfile) fprintf(logfile, " | MOVE | pressure=%u | point=(%d,%d) | tilt=(%d,%d)", stylus.pressure, stylus.point.x, stylus.point.y, stylus.tilt.x, stylus.tilt.y);
+#endif
+                    
+                    break;
+                    
+                case NX_SUBTYPE_TABLET_PROXIMITY:
+//					CGEventSetIntegerValueField(move1, kCGMouseEventSubtype, kCGEventMouseSubtypeTabletProximity);
+                    
+                    CGEventSetIntegerValueField(move1, kCGTabletProximityEventVendorID, stylus.proximity.vendorID);
+                    CGEventSetIntegerValueField(move1, kCGTabletProximityEventTabletID, stylus.proximity.tabletID);
+                    CGEventSetIntegerValueField(move1, kCGTabletProximityEventDeviceID, stylus.proximity.deviceID);
+                    CGEventSetIntegerValueField(move1, kCGTabletProximityEventSystemTabletID, stylus.proximity.systemTabletID);
+                    CGEventSetIntegerValueField(move1, kCGTabletProximityEventVendorPointerType, stylus.proximity.vendorPointerType);
+                    CGEventSetIntegerValueField(move1, kCGTabletProximityEventVendorPointerSerialNumber, stylus.proximity.pointerSerialNumber);
+                    CGEventSetIntegerValueField(move1, kCGTabletProximityEventVendorUniqueID, stylus.proximity.uniqueID);
+                    CGEventSetIntegerValueField(move1, kCGTabletProximityEventCapabilityMask, stylus.proximity.capabilityMask);
+                    CGEventSetIntegerValueField(move1, kCGTabletProximityEventPointerType, stylus.proximity.pointerType);
+                    CGEventSetIntegerValueField(move1, kCGTabletProximityEventEnterProximity, stylus.proximity.enterProximity);
+
+//                    fprintf(stdout, "Proximity Generated with Pointer Type %d\n", stylus.proximity.pointerType);
+
+#if LOG_STREAM_TO_FILE
+                    if (logfile) fprintf(logfile, " | PROXIMITY");
+#endif
+                    break;
+            }
+            
+            break;
+    }
+    
+	// Generate the tablet event to the system event driver
+    CGEventPost(kCGHIDEventTap, move1);
+    
+#if LOG_STREAM_TO_FILE
+    if (logfile) fprintf(logfile, " | xy=(%.2f,%.2f)", stylus.scrPos.x, stylus.scrPos.y);
+#endif
+	
+    //	if (!no_tablet_events) {
+    //
+    // Some apps only expect proximity events to arrive as pure tablet events (Desktastic, for one).
+    // Generate a pure tablet form of all proximity events as well.
+    //
+    if (eventSubType == NX_SUBTYPE_TABLET_PROXIMITY) {
+		//			fprintf(output, "[POST] Proximity Event %d Subtype %d\n", NX_TABLETPROXIMITY, NX_SUBTYPE_TABLET_PROXIMITY);
+        CGEventSetType(move1, kCGEventTabletProximity);
+        CGEventPost(kCGHIDEventTap, move1);
+    }
+    //	}
+	
+    CFRelease(move1);
+}
+
+
+#pragma mark - Tablet Protocol Interpreters
 //
 // ProcessWacomIIS_Binary(packet, size)
 //
 void WacomTablet::ProcessWacomIIS_Binary(char *packet, int pack_size) {
-	short   h, v;
-	UInt16	bm = 0;   // math depends on these being 16-bit
+	UInt32	h, v;
+	UInt16	bm = 0;
 	bool	ot = false;
 
 	if (pack_size != 7) return;
@@ -2382,12 +2602,12 @@ void WacomTablet::ProcessWacomIIS_Binary(char *packet, int pack_size) {
 	//
 	// Get X/Y Coordinates (or motion)
 	//
-	h =		((short)	(packet[0] & IIs_Mask0_X) << 14)
-		|	((short)	(packet[1] & IIs_Mask1_X) << 7)
+	h =		((UInt32)	(packet[0] & IIs_Mask0_X) << 14)
+		|	((UInt32)	(packet[1] & IIs_Mask1_X) << 7)
 		|				(packet[2] & IIs_Mask2_X);
 
-	v =		((short)	(packet[3] & IIs_Mask3_Y) << 14)
-		|	((short)	(packet[4] & IIs_Mask4_Y) << 7)
+	v =		((UInt32)	(packet[3] & IIs_Mask3_Y) << 14)
+		|	((UInt32)	(packet[4] & IIs_Mask4_Y) << 7)
 		|				(packet[5] & IIs_Mask5_Y);
 
 	//
@@ -2412,7 +2632,6 @@ void WacomTablet::ProcessWacomIIS_Binary(char *packet, int pack_size) {
 	}
 	else if (settings[0].origin == kOriginLL)
 		v = settings[0].yscale - v;
-
 
 	//
 	// Store new coordinates
@@ -2510,6 +2729,7 @@ void WacomTablet::ProcessWacomIIS_Binary(char *packet, int pack_size) {
 	// WACOM II-S Buttons
 	//
 	else if (packet[6] & IIs_Mask6_ButtonFlag) {
+
 		if (packet[6] & IIs_Mask6_Button1)
 			bm |= kBitStylusButton1;
 
@@ -2528,8 +2748,8 @@ void WacomTablet::ProcessWacomIIS_Binary(char *packet, int pack_size) {
 			else
 				bm |= kBitStylusButton2;
 
-		} else {
-
+		}
+		else {
 			if (packet[6] & IIs_Mask6_EraserOrTip)
 				bm |= kBitStylusTip;
 		}
@@ -3152,7 +3372,7 @@ void WacomTablet::ProcessWacomV(char *packet, int pack_size) {
 		stylus.wheel = wheel;
 
 		#if LOG_STREAM_TO_FILE
-		fprintf(logfile, " W=%d B=%04X", stylus.wheel, bm);
+		if (logfile) fprintf(logfile, " W=%d B=%04X", stylus.wheel, bm);
 		#endif
 	}
 
@@ -3442,8 +3662,7 @@ void WacomTablet::ProcessFujitsuPSeries(char *packet) {
 }
 
 
-#pragma mark -
-#pragma mark Screen and Tablet Mapping
+#pragma mark - Screen and Tablet Mapping
 //
 // SetScreenMapping
 //
@@ -3514,8 +3733,7 @@ void WacomTablet::UpdateTabletScale(SInt32 h, SInt32 v, bool tellprefs) {
 		SendMessageScale();
 }
 
-#pragma mark -
-#pragma mark Resolution Change
+#pragma mark - Resolution Change
 
 void WacomTablet::ScreenChanged() {
 	fprintf(output, "The resolution changed!\n");
@@ -3542,8 +3760,7 @@ void WacomTablet::ResolutionChangeCallback( CFNotificationCenterRef center, void
 	((WacomTablet*)observer)->ScreenChanged();
 }
 
-#pragma mark -
-#pragma mark Major system event handling
+#pragma mark - Major system event handling
 
 #include <IOKit/pwr_mgt/IOPMLib.h>
 #include <IOKit/IOMessage.h>
@@ -3597,8 +3814,7 @@ void WacomTablet::PowerCallBack(void *x, io_service_t y, natural_t messageType, 
 }
 
 
-#pragma mark -
-#pragma mark Pref Pane Messaging
+#pragma mark - Pref Pane Messaging
 
 #include <CoreFoundation/CoreFoundation.h>
 
@@ -3664,7 +3880,7 @@ CFDataRef WacomTablet::HandleMessage(CFMessagePortRef loc, SInt32 msgid, CFDataR
 				(void)usleep(100000);	// 0.1 seconds
 				if (can_parse_ud_setup) GetUDSettingsOrFail(0);
 				break;
-			}
+				}
 
 			case PREF_START:
 				SetProcessing(true);
@@ -3673,17 +3889,17 @@ CFDataRef WacomTablet::HandleMessage(CFMessagePortRef loc, SInt32 msgid, CFDataR
 				SetProcessing(false);
 				break;
 
-			#if !ASYNCHRONOUS_MESSAGING
-				case PREF_NEXT_MESSAGE:
-					strcpy(message_reply, PopMessageQueue());
-					break;
-				case PREF_PREFS_HELLO:
-					EnableMessageQueue();
-					break;
-				case PREF_PREFS_BYE:
-					DisableMessageQueue();
-					break;
-			#endif
+#if !ASYNCHRONOUS_MESSAGING
+			case PREF_NEXT_MESSAGE:
+				strcpy(message_reply, PopMessageQueue());
+				break;
+			case PREF_PREFS_HELLO:
+				EnableMessageQueue();
+				break;
+			case PREF_PREFS_BYE:
+				DisableMessageQueue();
+				break;
+#endif
 
 			case PREF_GET_INFO:
 				strcpy(message_reply, GetMessageInfo());
@@ -3703,101 +3919,100 @@ CFDataRef WacomTablet::HandleMessage(CFMessagePortRef loc, SInt32 msgid, CFDataR
 				(void)sscanf(msgptr, "%d", &bank);
 				RequestUDSettings(bank);
 				break;
-			}
-
-		case PREF_GET_SERIALPORT:
-			strcpy(message_reply, GetMessageSerialPort());
-			break;
-
-		//
-		// Raw data streaming, for the preference pane
-		//
-		case PREF_STREAM:
-			strcpy(message_reply, GetMessageStream());
-			break;
-		case PREF_DATASTREAM_START:
-			SetStreamLogging(true);
-			break;
-		case PREF_DATASTREAM_STOP:
-			SetStreamLogging(false);
-			break;
-
-		case PREF_SEND_COMMAND:
-			SendCommandToTablet(msgptr);
-			break;
-		case PREF_SEND_REQUEST:
-			(void)SendRequestToTablet(msgptr);
-			break;
-
-		case PREF_SET_SETUP:
-			SendUDSetupString(msgptr);
-			break;
-
-		case PREF_SET_MEMORY: {
-			int bank = 0;
-			char setup[50];
-			(void)sscanf(msgptr, "%d %s", &bank, setup);
-			SendUDSetupString(setup, bank);
-			break;
-			}
-
-		case PREF_SET_SCALE: {
-			int scalex, scaley;
-			if (2 == sscanf(msgptr, "%d %d", &scalex, &scaley)) {
-				switch(series_index) {
-					case kModelCintiq:
-					case kModelArtZ:
-					case kModelArtPad:
-					case kModelSDSeries:
-						SendScaleToTablet(scalex, scaley);
-					default:
-						break;
 				}
 
-				UpdateTabletScale(scalex, scaley);
-			}
-			break;
-			}
+			case PREF_GET_SERIALPORT:
+				strcpy(message_reply, GetMessageSerialPort());
+				break;
 
-		case PREF_GET_GEOMETRY:
-			strcpy(message_reply, GetMessageGeometry());
-			break;
+			//
+			// Raw data streaming, for the preference pane
+			//
+			case PREF_STREAM:
+				strcpy(message_reply, GetMessageStream());
+				break;
+			case PREF_DATASTREAM_START:
+				SetStreamLogging(true);
+				break;
+			case PREF_DATASTREAM_STOP:
+				SetStreamLogging(false);
+				break;
 
-		case PREF_SET_GEOMETRY: {
-			unsigned	tl, tt, tr, tb, sl, st, sr, sb, b0, b1, b2, be;
-			int			mm;
-			float		ms;
-			sscanf(msgptr, "%d %d %d %d : %d %d %d %d : %d %d %d %d : %d %f",
-				&tl, &tt, &tr, &tb,  &sl, &st, &sr, &sb,  &b0, &b1, &b2, &be,  &mm, &ms);
+			case PREF_SEND_COMMAND:
+				SendCommandToTablet(msgptr);
+				break;
+			case PREF_SEND_REQUEST:
+				(void)SendRequestToTablet(msgptr);
+				break;
 
-			SetMouseMode(mm != 0);
-			InitTabletBounds(tl, tt, tr, tb);
-			SetScreenMapping(sl, st, sr, sb);
-			button_mapping[kStylusTip] = b0;
-			button_mapping[kStylusButton1] = b1;
-			button_mapping[kStylusButton2] = b2;
-			button_mapping[kStylusEraser] = be;
-			break;
-			}
+			case PREF_SET_SETUP:
+				SendUDSetupString(msgptr);
+				break;
 
-		case PREF_SET_MOUSE_MODE_AND_SCALING: {
-			int mm;
-			float ms;
-			sscanf(msgptr, "%d %f", &mm, &ms);
-			SetMouseMode(mm != 0);
-			SetMouseScaling(ms);
-			break;
-			}
+			case PREF_SET_MEMORY: {
+				int bank = 0;
+				char setup[50];
+				(void)sscanf(msgptr, "%d %s", &bank, setup);
+				SendUDSetupString(setup, bank);
+				break;
+				}
+
+			case PREF_SET_SCALE: {
+				int scalex, scaley;
+				if (2 == sscanf(msgptr, "%d %d", &scalex, &scaley)) {
+					switch(series_index) {
+						case kModelCintiq:
+						case kModelArtZ:
+						case kModelArtPad:
+						case kModelSDSeries:
+							SendScaleToTablet(scalex, scaley);
+						default:
+							break;
+					}
+
+					UpdateTabletScale(scalex, scaley);
+				}
+				break;
+				}
+
+			case PREF_GET_GEOMETRY:
+				strcpy(message_reply, GetMessageGeometry());
+				break;
+
+			case PREF_SET_GEOMETRY: {
+				unsigned	tl, tt, tr, tb, sl, st, sr, sb, b0, b1, b2, be;
+				int			mm;
+				float		ms;
+				sscanf(msgptr, "%d %d %d %d : %d %d %d %d : %d %d %d %d : %d %f",
+					&tl, &tt, &tr, &tb,  &sl, &st, &sr, &sb,  &b0, &b1, &b2, &be,  &mm, &ms);
+
+				SetMouseMode(mm != 0);
+				InitTabletBounds(tl, tt, tr, tb);
+				SetScreenMapping(sl, st, sr, sb);
+				button_mapping[kStylusTip] = b0;
+				button_mapping[kStylusButton1] = b1;
+				button_mapping[kStylusButton2] = b2;
+				button_mapping[kStylusEraser] = be;
+				break;
+				}
+
+			case PREF_SET_MOUSE_MODE_AND_SCALING: {
+				int mm;
+				float ms;
+				sscanf(msgptr, "%d %f", &mm, &ms);
+				SetMouseMode(mm != 0);
+				SetMouseScaling(ms);
+				break;
+				}
 		
+			case PREF_PANIC:
+				ResetStylus();
+				break;
 
-		case PREF_PANIC:
-			ResetStylus();
-			break;
-
-		case PREF_TABLETPC:
-			args.forcepc = (*msgptr == '1');
-			InitializeForPort(args.port);
-			break;
+			case PREF_TABLETPC:
+				args.forcepc = (*msgptr == '1');
+				InitializeForPort(args.port);
+				break;
 
 		}
 	}
@@ -4020,8 +4235,7 @@ char* WacomTablet::GetMessageSerialPort() {
 }
 
 
-#pragma mark -
-#pragma mark Utility Functions
+#pragma mark - Utility Functions
 //
 // LogString(str)
 // Escape a string for logging purposes

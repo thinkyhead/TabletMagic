@@ -2,7 +2,7 @@
 	TabletMagic
 	Thinkyhead Software
 
-	LaunchHelper.c ($Id: LaunchHelper.c,v 1.12 2009/09/01 15:40:16 slurslee Exp $)
+	LaunchHelper.c
 
 	This helper executable is used by the Preference Pane to:
 		(no arguments)		Just SUID the LaunchHelper binary

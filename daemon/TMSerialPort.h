@@ -2,7 +2,7 @@
 	TabletMagicDaemon
 	Thinkyhead Software
 
-	TMSerialPort.h ($Id: TMSerialPort.h,v 1.13 2009/02/09 06:01:03 slurslee Exp $)
+	TMSerialPort.h
 
 	This program is a component of TabletMagic. See the
 	accompanying documentation for more details about the

@@ -2,7 +2,7 @@
 	TabletMagicPrefPane
 	Thinkyhead Software
 
-	TMPreset.m ($Id: TMPreset.m,v 1.12 2009/02/09 06:00:28 slurslee Exp $)
+	TMPreset.m
 */
 
 #import "TMPreset.h"
@@ -162,7 +162,7 @@
 }
 
 - (NSDictionary*)dictionary {
-	static NSDictionary *dict = NULL;
+	static NSDictionary *dict = nil;
 
 	if (dict) [ dict release ];
 

@@ -2,7 +2,7 @@
 	TabletMagicPrefPane
 	Thinkyhead Software
 
-	TMPreset.h ($Id: TMPreset.h,v 1.12 2009/02/09 06:00:28 slurslee Exp $)
+	TMPreset.h
 */
 
 @interface TMPreset : NSObject {

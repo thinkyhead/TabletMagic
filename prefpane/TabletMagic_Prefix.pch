@@ -7,4 +7,3 @@
     #import <AppKit/AppKit.h>
 #endif
 
-#define BUILD_FOR_10_2		0

@@ -2,7 +2,7 @@
 	TabletMagicPrefPane
 	Thinkyhead Software
 
-	TMPresetsController.m ($Id: TMPresetsController.m,v 1.12 2009/02/09 06:00:53 slurslee Exp $)
+	TMPresetsController.m
 
 	- If presets exist load them into a local array
 
@@ -215,10 +215,10 @@
 	[ chooserScreen setFromPresetWidth:[p screenWidth] height:[p screenHeight] left:[p screenLeft] top:[p screenTop] right:[p screenRight] bottom:[p screenBottom] ];
 	[ chooserTablet setFromPresetWidth:[p tabletRangeX] height:[p tabletRangeY] left:[p tabletLeft] top:[p tabletTop] right:[p tabletRight] bottom:[p tabletBottom] ];
 
-	popupSelectTag(popupStylusTip, [p buttonTip]);
-	popupSelectTag(popupSwitch1, [p buttonSwitch1]);
-	popupSelectTag(popupSwitch2, [p buttonSwitch2]);
-	popupSelectTag(popupEraser, [p buttonEraser]);
+	[ popupStylusTip selectItemWithTag:[p buttonTip] ];
+	[ popupSwitch1 selectItemWithTag:[p buttonSwitch1] ];
+	[ popupSwitch2 selectItemWithTag:[p buttonSwitch2] ];
+	[ popupEraser selectItemWithTag:[p buttonEraser] ];
 }
 
 - (void)geometryReceived:(char*)geom {

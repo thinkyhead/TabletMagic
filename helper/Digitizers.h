@@ -1,8 +1,7 @@
 /*
 	TabletMagic
-	(c) 2011 Thinkyhead Software
 
-	Digitizers.h ($Id: Digitizers.h,v 1.1 2009/02/09 05:47:41 slurslee Exp $)
+	Digitizers.h
 
 	Utility functions to help retrieve a digitizer string from the IO Registry
 */

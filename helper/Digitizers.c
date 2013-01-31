@@ -2,7 +2,7 @@
 	TabletMagic
 	Thinkyhead Software
 
-	Digitizers.c ($Id: Digitizers.c,v 1.2 2009/06/16 18:38:43 slurslee Exp $)
+	Digitizers.c
 
 	Utility functions to help retrieve a digitizer string from the IO Registry
 */

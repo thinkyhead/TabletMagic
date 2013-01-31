@@ -2,7 +2,7 @@
 	TabletMagicPrefPane
 	Thinkyhead Software
 
-	TMScratchpad.m ($Id: TMScratchpad.m,v 1.12 2009/02/09 06:00:04 slurslee Exp $)
+	TMScratchpad.m
 */
 
 #import "TMScratchpad.h"
@@ -14,7 +14,22 @@
 	if ((self = [super initWithFrame:frameRect]) != nil) {
 		// Add initialization code here
 		smoothing = YES;
-//		[self sendActionOn:NSTabletPointMask];
+
+		// Requires 10.6 or later...
+		[NSEvent addLocalMonitorForEventsMatchingMask: NSTabletProximityMask
+											   handler: ^(NSEvent* theEvent) {
+												   [self _tabletProximity: theEvent];
+												   return theEvent;
+											   }
+		 ];
+
+		[NSEvent addGlobalMonitorForEventsMatchingMask: NSTabletProximityMask
+											  handler: ^(NSEvent* theEvent) {
+												  [self _tabletProximity: theEvent];
+											  }
+		 ];
+		
+
 	}
 	return self;
 }
@@ -47,7 +62,7 @@
 // the pen TIP or ERASER is being used. This information is not provided in
 // the embedded tablet event.
 //
-// Also, on the Intous line of tablets, each transducer has a unique ID,
+// Also, on the Intuos line of tablets, each transducer has a unique ID,
 // even when different transducers are of the same type. We get that
 // information here so we can keep track of the Color assigned to each
 // transducer.
@@ -63,7 +78,7 @@
 
 	if (enterProximity != 0) { //Enter Proximity
 		[[proxDict objectForKey:kPointerType] getValue:&pointerType];
-		erasing = (pointerType == EEraser);
+		erasing = (pointerType == NX_TABLET_POINTER_ERASER);
 
 		[[proxDict objectForKey:kDeviceID] getValue:&deviceID];
 
@@ -86,26 +101,23 @@
 }
 
 - (void)drawRect:(NSRect)rect {
-	setFillColor([eraserColor color]);
+	[[eraserColor color] setFill];
 	NSRectFill(rect);
 
-	setFillColor([NSColor blackColor]);
+	[[NSColor blackColor] setFill];
 	NSFrameRectWithWidth(rect, 1.0f);
 }
 
 BOOL tablet_eraser = NO;
 
+- (void)_tabletProximity:(NSEvent *)theEvent {
+	NSPointingDeviceType device_type = [theEvent pointingDeviceType];
+	tablet_eraser = device_type == NSEraserPointingDevice;
+}
+
 - (void)mouseDown:(NSEvent *)theEvent {
-	if (
-		#if BUILD_FOR_10_2
-			![theEvent respondsToSelector:@selector(subtype)] ||
-		#endif
-		[theEvent subtype] == NSTabletPointEventSubtype ) {
+	if ([theEvent subtype] == NSTabletPointEventSubtype) {
 
-		// TODO: Use proximity events to establish the tool type - example code available
-		// why not this? [theEvent pointingDeviceType]==NSEraserPointingDevice
-
-		tablet_eraser = 0 != (0x200 & [ [ [theEvent vendorDefined] objectAtIndex:1 ] intValue ]);
 		startPoint = [ self convertPoint:[theEvent locationInWindow] fromView:nil ];
 		startPressure = [theEvent pressure];
 
@@ -114,12 +126,7 @@ BOOL tablet_eraser = NO;
 }
 
 - (void)mouseDragged:(NSEvent *)theEvent {
-	if (
-#if BUILD_FOR_10_2
-		![theEvent respondsToSelector:@selector(subtype)] ||
-#endif
-		[theEvent subtype] == NSTabletPointEventSubtype
-	) {
+	if ([theEvent subtype] == NSTabletPointEventSubtype) {
 
 		NSPoint newPoint = [ self convertPoint:[theEvent locationInWindow] fromView:nil ];
 		float newPressure = [theEvent pressure];
@@ -158,19 +165,11 @@ BOOL tablet_eraser = NO;
 	tablet_eraser = NO;
 }
 
-- (void)tabletProximity:(NSEvent *)theEvent {
-	NSLog(@"The tabletProximity Event = %@", theEvent);
-}
-
-- (void)tabletPoint:(NSEvent *)theEvent {
-	NSLog(@"The tabletPoint Event = %@", theEvent);
-}
-
 - (void)drawBlobAtPoint:(NSPoint)point withPressure:(float)pressure erasing:(BOOL)is_eraser {
 	[ self lockFocus ];
 	[ NSBezierPath clipRect:NSInsetRect([self bounds], 1.0, 1.0) ];
 
-	setFillColor([(is_eraser ? eraserColor : penColor) color]);
+	[[(is_eraser ? eraserColor : penColor) color] setFill];
 	float r = pressure * [(is_eraser ? eraserFlow : penFlow) floatValue ];
 	NSBezierPath *bez = [ NSBezierPath bezierPathWithOvalInRect:NSMakeRect(point.x-r, point.y-r, r*2.0f, r*2.0f) ];
 	[ bez fill ];

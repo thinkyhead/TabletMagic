@@ -2,7 +2,7 @@
 	TabletMagicPrefPane
 	Thinkyhead Software
 
-	TMPresetsController.h ($Id: TMPresetsController.h,v 1.12 2009/02/09 06:00:53 slurslee Exp $)
+	TMPresetsController.h
 
 	This controller connects the Preset model to
 	the Mapping view and the main TMController.

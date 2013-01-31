@@ -1,8 +1,7 @@
 /*
 	TabletMagicDaemon
-	Thinkyhead Software
 
-	TabletSettings.cpp ($Id: TabletSettings.cpp,v 1.15 2009/06/16 18:28:02 slurslee Exp $)
+	TabletSettings.cpp
 
 	This program is a component of TabletMagic. See the
 	accompanying documentation for more details about the
@@ -89,8 +88,8 @@ TabletSettings::TabletSettings() {
 	cursor_data		= kCursorData1234;
 	remote_mode		= kRemoteModeDisabled;
 
-	increment		= 2;	// 10ms
-	interval		= 2;	// Space between events
+	increment		= 2;		// 10ms
+	interval		= 2;		// Space between events
 	xrez			= 1270;		// Dot density
 	yrez			= 1270;
 	xscale			= k12inches1270ppi;	// Max / Scale X
@@ -173,46 +172,6 @@ void TabletSettings::InitForPenPartner() {
 }
 
 //
-// InitForTabletPC
-// Apply pseudo-settings for the TabletPC digitizer
-//
-void TabletSettings::InitForTabletPC(Boolean use38400) {
-	command_set		= kCommandSetTabletPC;		// Synthetic Override
-	packet_size		= 9;						// Confirmed
-
-	baud_rate		= use38400 ? kBaudRate38400 : kBaudRate19200;	// Confirmed serial settings for TabletPC
-	data_bits		= kDataBits8;
-	parity			= kParityNone;
-	stop_bits		= kStopBits1;
-	cts				= kCTSDisabled;
-	dsr				= kDSRDisabled;
-
-	transfer_mode	= kTransferModeSuppressed;	// Unknown
-	output_format   = kOutputFormatBinary;		// Confirmed for TabletPC
-	coordsys		= kCoordSysAbsolute;		// Of course it is
-	transfer_rate	= kTransferRate200pps;		// Doesn't Matter
-	resolution		= kResolution1270lpi;		// Doesn't Matter
-	origin			= kOriginUL;				// Most likely
-	oor_data		= kOORDisabled;				// Doesn't Matter
-	terminator		= kTerminatorCRLF;			// Doesn't Matter
-	pnp				= kPNPEnabled;				// Doesn't Matter
-	sensitivity		= kSensitivityFirm;			// Doesn't Matter
-	read_height		= kReadHeight8mm;			// Doesn't Matter
-	mdm				= kMDMDisabled;				// Stylus Only
-	tilt			= kTiltEnabled;				// Unlikely on TabletPC
-	mm_comm			= kMMCommandSet1201;		// Doesn't Matter
-	orientation		= kOrientationLandscape;	// Confirmed
-	cursor_data		= kCursorData1234;			// Doesn't Matter
-	remote_mode		= kRemoteModeDisabled;		// Doesn't Matter
-
-	increment		= 2;						// Doesn't matter
-	interval		= 2;						// Doesn't matter
-	xrez = yrez		= 1270;						// Doesn't matter, so just insert a sane value
-	xscale			= 24570;					// These approximate values from tester Carpao
-	yscale			= 18430;					// Other suggested values: 21136x15900 (wacdump), 24780x18630 (hack)
-}
-
-//
 // InitForIntuos
 // Apply pseudo-settings for the Intuos
 //
@@ -252,6 +211,91 @@ void TabletSettings::InitForIntuos() {
 	xrez = yrez		= 2540;						// Override
 	xscale = yscale	= 30480;					// Override (assumes a 12x12 tablet)
 }
+
+//
+// InitForTabletPC
+// Apply pseudo-settings for the TabletPC digitizer
+//
+void TabletSettings::InitForTabletPC(Boolean use38400) {
+	command_set		= kCommandSetTabletPC;		// Synthetic Override
+	packet_size		= 9;						// Confirmed
+
+	baud_rate		= use38400 ? kBaudRate38400 : kBaudRate19200;	// Confirmed serial settings for TabletPC
+	data_bits		= kDataBits8;
+	parity			= kParityNone;
+	stop_bits		= kStopBits1;
+	cts				= kCTSDisabled;
+	dsr				= kDSRDisabled;
+
+	transfer_mode	= kTransferModeSuppressed;	// Unknown
+	output_format   = kOutputFormatBinary;		// Confirmed for TabletPC
+	coordsys		= kCoordSysAbsolute;		// Of course it is
+	transfer_rate	= kTransferRate200pps;		// Doesn't Matter
+	resolution		= kResolution1270lpi;		// Doesn't Matter
+	origin			= kOriginUL;				// Most likely
+	oor_data		= kOORDisabled;				// Doesn't Matter
+	terminator		= kTerminatorCRLF;			// Doesn't Matter
+	pnp				= kPNPEnabled;				// Doesn't Matter
+	sensitivity		= kSensitivityFirm;			// Doesn't Matter
+	read_height		= kReadHeight8mm;			// Doesn't Matter
+	mdm				= kMDMDisabled;				// Stylus Only
+	tilt			= kTiltEnabled;				// Unlikely on TabletPC
+	mm_comm			= kMMCommandSet1201;		// Doesn't Matter
+	orientation		= kOrientationLandscape;	// Confirmed
+	cursor_data		= kCursorData1234;			// Doesn't Matter
+	remote_mode		= kRemoteModeDisabled;		// Doesn't Matter
+
+	increment		= 2;						// Doesn't matter
+	interval		= 2;						// Doesn't matter
+	xrez = yrez		= 1270;						// Doesn't matter, so just insert a sane value
+	xscale			= 24570;					// These approximate values from tester Carpao
+	yscale			= 18430;					// Other suggested values: 21136x15900 (wacdump), 24780x18630 (hack)
+}
+
+
+//
+// InitForCalComp
+// Apply pseudo-settings for CalComp tablets
+//
+void TabletSettings::InitForCalComp() {
+	//Import("~RA203C800,000,00,1000,1000");
+	command_set		= kCommandSetWacomIIS;		// Synthetic Override
+	packet_size		= 7;
+    
+	baud_rate		= kBaudRate9600;			// Override (Intuos supports 19200, Intuos2 38400)
+	data_bits		= kDataBits8;
+	parity			= kParityNone;
+	stop_bits		= kStopBits1;
+	cts				= kCTSDisabled;
+	dsr				= kDSRDisabled;
+    
+	transfer_mode	= kTransferModeSuppressed;
+	output_format   = kOutputFormatBinary;
+	coordsys		= kCoordSysAbsolute;
+	transfer_rate	= kTransferRate200pps;		// Synthetic Override
+	resolution		= kResolution1000lpi;		// Synthetic Override
+	origin			= kOriginUL;
+	oor_data		= kOORDisabled;
+	terminator		= kTerminatorCR;
+	pnp				= kPNPEnabled;
+	sensitivity		= kSensitivityFirm;
+	read_height		= kReadHeight8mm;
+	mdm				= kMDMDisabled;				
+	tilt			= kTiltDisabled;
+	mm_comm			= kMMCommandSet1201;
+	orientation		= kOrientationLandscape;
+    
+	cursor_data		= kCursorData1234;
+	remote_mode		= kRemoteModeDisabled;
+ 
+	increment		= 1;						
+	interval		= 1;
+	xrez = yrez		= 1000;						// Override
+	xscale          = 36000;
+    yscale          = 24000;					// Override (assumes a 36x124 tablet)
+
+}
+
 
 //
 // SettingsString
@@ -356,11 +400,11 @@ char* TabletSettings::Description() {
 	straddf("coord sys ....... %s\n", coordsys ? "REL" : "ABS");
 
 	// transfer rate (pps)
-	const char *rates[] = {"50","67", "100","MAX","200"};
+	const char *rates[] = { "50", "67", "100", "MAX", "200" };
 	straddf("transfer rate ... %s\n", rates[transfer_rate]);
 
 	// resolution (lpi)
-	const int	rezs[] = { 500, 508, 1000, 1270 };
+	const int	rezs[] = { 500, 508, 1000, 1270, 2540 };
 	straddf("resolution ...... %d lpi\n", rezs[resolution]);
 
 	// Origin

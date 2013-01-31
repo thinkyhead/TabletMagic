@@ -2,7 +2,7 @@
 	TabletMagicPrefPane
 	Thinkyhead Software
 
-	TMController.h ($Id: TMController.h,v 1.19 2009/02/09 06:00:20 slurslee Exp $)
+	TMController.h
 */
 
 @class TMScratchpad, TMPresetsController;

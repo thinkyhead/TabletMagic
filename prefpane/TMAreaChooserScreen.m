@@ -2,7 +2,7 @@
 	TabletMagicPrefPane
 	Thinkyhead Software
 
-	TMAreaChooserScreen.m ($Id: TMAreaChooserScreen.m,v 1.12 2009/02/09 06:00:04 slurslee Exp $)
+	TMAreaChooserScreen.m
 */
 
 #import "TMAreaChooserScreen.h"
@@ -40,7 +40,7 @@
 			l = floorf(lt.x+0.5f), t = floorf(lt.y+0.5f), r = floorf(rb.x+0.5f), b = floorf(rb.y+0.5f);
 
 			NSRect	inRect = { { l, rect.size.height - b }, { r - l, b - t } };
-			setFillColor([NSColor colorWithCalibratedRed:0.75 green:0.75 blue:1.0 alpha:1.0]);
+			[[NSColor colorWithCalibratedRed:0.75 green:0.75 blue:1.0 alpha:1.0] setFill];
 			NSFrameRectWithWidth(inRect, 1.0);
 		}
 	}
