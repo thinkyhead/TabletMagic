@@ -2438,7 +2438,7 @@ void WacomTablet::PostCGEvent(int eventType, SInt16 eventSubType, UInt8 otherBut
 		case kCGEventOtherMouseDown:
 		case kCGEventOtherMouseUp:
 //			CGEventSetIntegerValueField(move1, kCGMouseEventSubtype, kCGEventMouseSubtypeTabletPoint);
-			CGEventSetIntegerValueField(move1, kCGMouseEventClickState, 0);
+			CGEventSetIntegerValueField(move1, kCGMouseEventClickState, 1);
 			CGEventSetIntegerValueField(move1, kCGMouseEventButtonNumber, otherButton);
             
 #if LOG_STREAM_TO_FILE
@@ -2457,7 +2457,7 @@ void WacomTablet::PostCGEvent(int eventType, SInt16 eventSubType, UInt8 otherBut
 			// Note: No subx/suby to set for CG
             CGEventSetDoubleValueField(move1, kCGMouseEventPressure, stylus.pressure / PRESSURE_SCALE);
 			CGEventSetIntegerValueField(move1, kCGMouseEventNumber, 1); // unique identifier for this button
-			CGEventSetIntegerValueField(move1, kCGMouseEventClickState, 0); // click state of this event
+			CGEventSetIntegerValueField(move1, kCGMouseEventClickState, 1); // click count = 1 for single-click
 
 			// [A.Bohm] sets this to 1 (kCGMouseButtonRight)
 			CGEventSetIntegerValueField(move1, kCGMouseEventButtonNumber, otherButton); // button generating other button event (0-31)
