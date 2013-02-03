@@ -106,7 +106,6 @@ typedef struct {
 class WacomTablet {
 
 private:
-	bool	no_tablet_events;			//!< True if the OSX system doesn't support tablet events
 	bool	tablet_on;					//!< If true, events are generated from tablet data
 	bool	doing_modal;				//!< True when awaiting a modal command reply
 	int		bank_last_requested;		//!< For ArtZ tablets, the settings bank last queried

@@ -716,10 +716,6 @@ void signal_handler(int sig) {
 //
 
 WacomTablet::WacomTablet(init_arguments inArgs) {
-	SInt32 vers;
-	Gestalt(gestaltSystemVersion, &vers);
-	no_tablet_events = (vers < 0x1030);
-
 	local_message_port = NULL;
 
 	#if ASYNCHRONOUS_MESSAGING
@@ -2275,16 +2271,15 @@ void WacomTablet::PostNXEvent(int eventType, SInt16 eventSubType, UInt8 otherBut
 		case NX_RMOUSEUP:
 		case NX_RMOUSEDOWN:
 
-//			if (!no_tablet_events) {
-//				fprintf(output, "[POST] Button Event %d\n", eventType);
+//			fprintf(output, "[POST] Button Event %d\n", eventType);
 
 #if LOG_STREAM_TO_FILE
-				if (logfile) fprintf(logfile, " | UP/DOWN | pressure=%u", stylus.pressure);
+			if (logfile) fprintf(logfile, " | UP/DOWN | pressure=%u", stylus.pressure);
 #endif
-				eventData.mouse.subType = eventSubType;
-				eventData.mouse.subx = 0;
-				eventData.mouse.suby = 0;
-				eventData.mouse.pressure = stylus.pressure;
+			eventData.mouse.subType = eventSubType;
+			eventData.mouse.subx = 0;
+			eventData.mouse.suby = 0;
+			eventData.mouse.pressure = stylus.pressure;
 
 /* SInt16 */	// eventData.mouse.eventNum = 1;		/* unique identifier for this button */
 /* SInt32 */	eventData.mouse.click = 0;				/* click state of this event */
@@ -2292,79 +2287,76 @@ void WacomTablet::PostNXEvent(int eventType, SInt16 eventSubType, UInt8 otherBut
 /* UInt8 */		eventData.mouse.reserved2 = 0;
 /* SInt32 */	eventData.mouse.reserved3 = 0;
 
-				switch (eventSubType) {
-					case NX_SUBTYPE_TABLET_POINT:
-						eventData.mouse.tablet.point.x = stylus.point.x;
-						eventData.mouse.tablet.point.y = stylus.point.y;
-						eventData.mouse.tablet.point.buttons = 0x0000;
-						eventData.mouse.tablet.point.tilt.x = stylus.tilt.x;
-						eventData.mouse.tablet.point.tilt.y = stylus.tilt.y;
-						eventData.mouse.tablet.point.deviceID = stylus.proximity.deviceID;
+			switch (eventSubType) {
+				case NX_SUBTYPE_TABLET_POINT:
+					eventData.mouse.tablet.point.x = stylus.point.x;
+					eventData.mouse.tablet.point.y = stylus.point.y;
+					eventData.mouse.tablet.point.buttons = 0x0000;
+					eventData.mouse.tablet.point.tilt.x = stylus.tilt.x;
+					eventData.mouse.tablet.point.tilt.y = stylus.tilt.y;
+					eventData.mouse.tablet.point.deviceID = stylus.proximity.deviceID;
 
 #if LOG_STREAM_TO_FILE
-						if (logfile) fprintf(logfile, " | point=(%d,%d) | tilt=(%d,%d)", stylus.point.x, stylus.point.y, stylus.tilt.x, stylus.tilt.y);
+					if (logfile) fprintf(logfile, " | point=(%d,%d) | tilt=(%d,%d)", stylus.point.x, stylus.point.y, stylus.tilt.x, stylus.tilt.y);
 #endif
 
-						/* SInt32 */ eventData.mouse.tablet.point.z = 0;					/* absolute z coordinate in tablet space at full tablet resolution */
-						/* UInt16 */ eventData.mouse.tablet.point.pressure = stylus.pressure;				/* scaled pressure value; MAX=(2^16)-1, MIN=0 */
-						/* UInt16 */ eventData.mouse.tablet.point.rotation = 0;				/* Fixed-point representation of device rotation in a 10.6 format */
-						/* SInt16 */ eventData.mouse.tablet.point.tangentialPressure = 0;	/* tangential pressure on the device; same range as tilt */
-//						/* SInt16 */ eventData.mouse.tablet.point.vendor1 = 0;				/* vendor-defined signed 16-bit integer */
-//						/* SInt16 */ eventData.mouse.tablet.point.vendor2 = 0;				/* vendor-defined signed 16-bit integer */
-//						/* SInt16 */ eventData.mouse.tablet.point.vendor3 = 0;				/* vendor-defined signed 16-bit integer */
-						break;
+					/* SInt32 */ eventData.mouse.tablet.point.z = 0;					/* absolute z coordinate in tablet space at full tablet resolution */
+					/* UInt16 */ eventData.mouse.tablet.point.pressure = stylus.pressure;				/* scaled pressure value; MAX=(2^16)-1, MIN=0 */
+					/* UInt16 */ eventData.mouse.tablet.point.rotation = 0;				/* Fixed-point representation of device rotation in a 10.6 format */
+					/* SInt16 */ eventData.mouse.tablet.point.tangentialPressure = 0;	/* tangential pressure on the device; same range as tilt */
+//					/* SInt16 */ eventData.mouse.tablet.point.vendor1 = 0;				/* vendor-defined signed 16-bit integer */
+//					/* SInt16 */ eventData.mouse.tablet.point.vendor2 = 0;				/* vendor-defined signed 16-bit integer */
+//					/* SInt16 */ eventData.mouse.tablet.point.vendor3 = 0;				/* vendor-defined signed 16-bit integer */
+					break;
 
-					case NX_SUBTYPE_TABLET_PROXIMITY:
-						bcopy(&stylus.proximity, &eventData.mouse.tablet.proximity, sizeof(stylus.proximity));
+				case NX_SUBTYPE_TABLET_PROXIMITY:
+					bcopy(&stylus.proximity, &eventData.mouse.tablet.proximity, sizeof(stylus.proximity));
 #if LOG_STREAM_TO_FILE
-						if (logfile) fprintf(logfile, " | PROXIMITY");
+					if (logfile) fprintf(logfile, " | PROXIMITY");
 #endif
-						break;
-				}
-//			}
+					break;
+			}
 			break;
 
 		case NX_MOUSEMOVED:
 		case NX_LMOUSEDRAGGED:
 		case NX_RMOUSEDRAGGED:
 
-//			if (!no_tablet_events) {
-//				fprintf(output, "[POST] Mouse Event %d Subtype %d\n", eventType, eventSubType);
+//			fprintf(output, "[POST] Mouse Event %d Subtype %d\n", eventType, eventSubType);
 
-				eventData.mouseMove.subType = eventSubType;
-				/* UInt8 */		eventData.mouseMove.reserved1 = 0;
-				/* SInt32 */	eventData.mouseMove.reserved2 = 0;
+			eventData.mouseMove.subType = eventSubType;
+			/* UInt8 */		eventData.mouseMove.reserved1 = 0;
+			/* SInt32 */	eventData.mouseMove.reserved2 = 0;
 
-				switch (eventSubType) {
-					case NX_SUBTYPE_TABLET_POINT:
-						eventData.mouseMove.tablet.point.x = stylus.point.x;
-						eventData.mouseMove.tablet.point.y = stylus.point.y;
-						eventData.mouseMove.tablet.point.buttons = 0x0000;
-						eventData.mouseMove.tablet.point.pressure = stylus.pressure;
-						eventData.mouseMove.tablet.point.tilt.x = stylus.tilt.x;
-						eventData.mouseMove.tablet.point.tilt.y = stylus.tilt.y;
-						eventData.mouseMove.tablet.point.deviceID = stylus.proximity.deviceID;
+			switch (eventSubType) {
+				case NX_SUBTYPE_TABLET_POINT:
+					eventData.mouseMove.tablet.point.x = stylus.point.x;
+					eventData.mouseMove.tablet.point.y = stylus.point.y;
+					eventData.mouseMove.tablet.point.buttons = 0x0000;
+					eventData.mouseMove.tablet.point.pressure = stylus.pressure;
+					eventData.mouseMove.tablet.point.tilt.x = stylus.tilt.x;
+					eventData.mouseMove.tablet.point.tilt.y = stylus.tilt.y;
+					eventData.mouseMove.tablet.point.deviceID = stylus.proximity.deviceID;
 
 #if LOG_STREAM_TO_FILE
-						if (logfile) fprintf(logfile, " | MOVE | pressure=%u | point=(%d,%d) | tilt=(%d,%d)", stylus.pressure, stylus.point.x, stylus.point.y, stylus.tilt.x, stylus.tilt.y);
+					if (logfile) fprintf(logfile, " | MOVE | pressure=%u | point=(%d,%d) | tilt=(%d,%d)", stylus.pressure, stylus.point.x, stylus.point.y, stylus.tilt.x, stylus.tilt.y);
 #endif
 
-						/* SInt32 */ eventData.mouseMove.tablet.point.z = 0;					/* absolute z coordinate in tablet space at full tablet resolution */
-						/* UInt16 */ eventData.mouseMove.tablet.point.rotation = 0;				/* Fixed-point representation of device rotation in a 10.6 format */
-						/* SInt16 */ eventData.mouseMove.tablet.point.tangentialPressure = 0;	/* tangential pressure on the device; same range as tilt */
+					/* SInt32 */ eventData.mouseMove.tablet.point.z = 0;					/* absolute z coordinate in tablet space at full tablet resolution */
+					/* UInt16 */ eventData.mouseMove.tablet.point.rotation = 0;				/* Fixed-point representation of device rotation in a 10.6 format */
+					/* SInt16 */ eventData.mouseMove.tablet.point.tangentialPressure = 0;	/* tangential pressure on the device; same range as tilt */
 //						/* SInt16 */ eventData.mouseMove.tablet.point.vendor1 = 0;				/* vendor-defined signed 16-bit integer */
 //						/* SInt16 */ eventData.mouseMove.tablet.point.vendor2 = 0;				/* vendor-defined signed 16-bit integer */
 //						/* SInt16 */ eventData.mouseMove.tablet.point.vendor3 = 0;				/* vendor-defined signed 16-bit integer */
-						break;
+					break;
 
-					case NX_SUBTYPE_TABLET_PROXIMITY:
-						bcopy(&stylus.proximity, &eventData.mouseMove.tablet.proximity, sizeof(NXTabletProximityData));
+				case NX_SUBTYPE_TABLET_PROXIMITY:
+					bcopy(&stylus.proximity, &eventData.mouseMove.tablet.proximity, sizeof(NXTabletProximityData));
 #if LOG_STREAM_TO_FILE
-						if (logfile) fprintf(logfile, " | PROXIMITY");
+					if (logfile) fprintf(logfile, " | PROXIMITY");
 #endif
-						break;
-				}
-//			}
+					break;
+			}
 
 			// Relative motion is needed for the mouseMove event
 			if (stylus.oldPos.x == SHRT_MIN) {
@@ -2392,17 +2384,15 @@ void WacomTablet::PostNXEvent(int eventType, SInt16 eventSubType, UInt8 otherBut
 	if (logfile) fprintf(logfile, " | xy=(%.2f,%.2f)", stylus.scrPos.x, stylus.scrPos.y);
 #endif
 
-//	if (!no_tablet_events) {
-		//
-		// Some apps only expect proximity events to arrive as pure tablet events (Desktastic, for one).
-		// Generate a pure tablet form of all proximity events as well.
-		//
-		if (eventSubType == NX_SUBTYPE_TABLET_PROXIMITY) {
-//			fprintf(output, "[POST] Proximity Event %d Subtype %d\n", NX_TABLETPROXIMITY, NX_SUBTYPE_TABLET_PROXIMITY);
-			bcopy(&stylus.proximity, &eventData.proximity, sizeof(NXTabletProximityData));
-			(void)IOHIDPostEvent(gEventDriver, NX_TABLETPROXIMITY, newPoint, &eventData, kNXEventDataVersion, 0, 0);
-		}
-//	}
+	//
+	// Some apps only expect proximity events to arrive as pure tablet events (Desktastic, for one).
+	// Generate a pure tablet form of all proximity events as well.
+	//
+	if (eventSubType == NX_SUBTYPE_TABLET_PROXIMITY) {
+//		fprintf(output, "[POST] Proximity Event %d Subtype %d\n", NX_TABLETPROXIMITY, NX_SUBTYPE_TABLET_PROXIMITY);
+		bcopy(&stylus.proximity, &eventData.proximity, sizeof(NXTabletProximityData));
+		(void)IOHIDPostEvent(gEventDriver, NX_TABLETPROXIMITY, newPoint, &eventData, kNXEventDataVersion, 0, 0);
+	}
 }
 
 
@@ -2437,7 +2427,6 @@ void WacomTablet::PostCGEvent(int eventType, SInt16 eventSubType, UInt8 otherBut
 			
 		case kCGEventOtherMouseDown:
 		case kCGEventOtherMouseUp:
-//			CGEventSetIntegerValueField(move1, kCGMouseEventSubtype, kCGEventMouseSubtypeTabletPoint);
 			CGEventSetIntegerValueField(move1, kCGMouseEventClickState, 1);
 			CGEventSetIntegerValueField(move1, kCGMouseEventButtonNumber, otherButton);
             
@@ -2450,10 +2439,8 @@ void WacomTablet::PostCGEvent(int eventType, SInt16 eventSubType, UInt8 otherBut
 		case kCGEventLeftMouseUp:
 		case kCGEventRightMouseDown:
 		case kCGEventRightMouseUp:
-			//			if (!no_tablet_events) {
-			//				fprintf(output, "[POST] Button Event %d\n", eventType);
+//			fprintf(output, "[POST] Button Event %d\n", eventType);
 			
-//          CGEventSetIntegerValueField(move1, kCGMouseEventSubtype, eventSubType);
 			// Note: No subx/suby to set for CG
             CGEventSetDoubleValueField(move1, kCGMouseEventPressure, stylus.pressure / PRESSURE_SCALE);
 			CGEventSetIntegerValueField(move1, kCGMouseEventNumber, 1); // unique identifier for this button
@@ -2507,7 +2494,6 @@ void WacomTablet::PostCGEvent(int eventType, SInt16 eventSubType, UInt8 otherBut
             
             switch (eventSubType) {
                 case NX_SUBTYPE_TABLET_POINT:
-//					CGEventSetIntegerValueField(move1, kCGMouseEventSubtype, kCGEventMouseSubtypeTabletPoint);
                     CGEventSetIntegerValueField(move1, kCGTabletEventPointX, stylus.point.x);
                     CGEventSetIntegerValueField(move1, kCGTabletEventPointY, stylus.point.y);
                     CGEventSetIntegerValueField(move1, kCGTabletEventPointButtons, 0x0000);
@@ -2540,7 +2526,7 @@ void WacomTablet::PostCGEvent(int eventType, SInt16 eventSubType, UInt8 otherBut
                     CGEventSetIntegerValueField(move1, kCGTabletProximityEventPointerType, stylus.proximity.pointerType);
                     CGEventSetIntegerValueField(move1, kCGTabletProximityEventEnterProximity, stylus.proximity.enterProximity);
 
-//                    fprintf(stdout, "Proximity Generated with Pointer Type %d\n", stylus.proximity.pointerType);
+                    fprintf(stdout, "Post Mouse Event (subtype=proximity, pointerType=%d)\n", stylus.proximity.pointerType);
 
 #if LOG_STREAM_TO_FILE
                     if (logfile) fprintf(logfile, " | PROXIMITY");
@@ -2558,17 +2544,25 @@ void WacomTablet::PostCGEvent(int eventType, SInt16 eventSubType, UInt8 otherBut
     if (logfile) fprintf(logfile, " | xy=(%.2f,%.2f)", stylus.scrPos.x, stylus.scrPos.y);
 #endif
 	
-    //	if (!no_tablet_events) {
     //
     // Some apps only expect proximity events to arrive as pure tablet events (Desktastic, for one).
     // Generate a pure tablet form of all proximity events as well.
     //
     if (eventSubType == NX_SUBTYPE_TABLET_PROXIMITY) {
-		//			fprintf(output, "[POST] Proximity Event %d Subtype %d\n", NX_TABLETPROXIMITY, NX_SUBTYPE_TABLET_PROXIMITY);
+//		fprintf(output, "[POST] Proximity Event %d Subtype %d\n", NX_TABLETPROXIMITY, NX_SUBTYPE_TABLET_PROXIMITY);
         CGEventSetType(move1, kCGEventTabletProximity);
+		CGEventSetIntegerValueField(move1, kCGTabletProximityEventVendorID, stylus.proximity.vendorID);
+		CGEventSetIntegerValueField(move1, kCGTabletProximityEventTabletID, stylus.proximity.tabletID);
+		CGEventSetIntegerValueField(move1, kCGTabletProximityEventDeviceID, stylus.proximity.deviceID);
+		CGEventSetIntegerValueField(move1, kCGTabletProximityEventSystemTabletID, stylus.proximity.systemTabletID);
+		CGEventSetIntegerValueField(move1, kCGTabletProximityEventVendorPointerType, stylus.proximity.vendorPointerType);
+		CGEventSetIntegerValueField(move1, kCGTabletProximityEventVendorPointerSerialNumber, stylus.proximity.pointerSerialNumber);
+		CGEventSetIntegerValueField(move1, kCGTabletProximityEventVendorUniqueID, stylus.proximity.uniqueID);
+		CGEventSetIntegerValueField(move1, kCGTabletProximityEventCapabilityMask, stylus.proximity.capabilityMask);
+		CGEventSetIntegerValueField(move1, kCGTabletProximityEventPointerType, stylus.proximity.pointerType);
+		CGEventSetIntegerValueField(move1, kCGTabletProximityEventEnterProximity, stylus.proximity.enterProximity);
         CGEventPost(kCGHIDEventTap, move1);
     }
-    //	}
 	
     CFRelease(move1);
 }
