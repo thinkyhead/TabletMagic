@@ -409,12 +409,11 @@ int TMSerialPort::ReadLine(char *buffer, int maxlen, __darwin_suseconds_t usec) 
 	int		numBytes = 0;
 	char	*bufPtr = buffer;
 	bool	gotLine = false, in_packet = false;
-	int		sel_result, byte_result;
 
 	// Loop while bytes await
-	while (!gotLine && (sel_result = Select(usec)) > 0) {
+	while (!gotLine && Select(usec) > 0) {
 		// Loop through bytes received
-		while (!gotLine && (byte_result = BytesOnPort())) {
+		while (!gotLine && BytesOnPort()) {
 			char temp[1];
 			numBytes = Read(temp, 1);
 
@@ -490,6 +489,7 @@ int TMSerialPort::BytesOnPort() {
 }
 
 #pragma mark -
+
 //
 // BeginPortScan(RS232Only?)
 //

@@ -87,6 +87,7 @@
 }
 
 #pragma mark -
+
 -(BOOL)matchesTabletLeft:(int)tl top:(int)tt right:(int)tr bottom:(int)tb {
 	return	tabletLeft == tl
 		&&	tabletTop == tt
@@ -217,8 +218,8 @@
 - (BOOL)constrained	{ return constrained; }
 
 #pragma mark -
-- (void)setName:(NSString *)n
-{
+
+- (void)setName:(NSString *)n {
 	[ name release ];
 	name = [ n copy ];
 }

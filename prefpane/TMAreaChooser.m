@@ -35,6 +35,7 @@
 }
 
 #pragma mark -
+
 - (void)constrain:(NSSize)size {
 	if (size.width < size.height) {
 		constrainW = size.width / size.height;
@@ -243,8 +244,7 @@
 	[ (TMPresetsController*)controller presetChanged:self ];
 }
 
-#pragma mark -
-#pragma mark Class Overrides
+#pragma mark - Class Overrides
 
 - (BOOL)acceptsFirstMouse:(NSEvent *)theEvent { return YES; }
 
@@ -421,6 +421,7 @@
 }
 
 #pragma mark -
+
 // NOTE: the Y part should be inverted before calling this
 - (NSPoint)repPointFromViewPoint:(NSPoint)viewPoint {
 	NSPoint repPoint = { viewPoint.x * scaleFactorW, viewPoint.y * scaleFactorH };
@@ -509,8 +510,8 @@
 	[ bez stroke ];
 }
 
-#pragma mark -
-#pragma mark Accessors
+#pragma mark - Accessors
+
 - (unsigned)left		{ return (unsigned)left; }
 - (unsigned)top			{ return (unsigned)top; }
 - (unsigned)right		{ return (unsigned)right; }
@@ -523,9 +524,8 @@
 - (NSSize)activeArea	{ return NSMakeSize(right - left, bottom - top); }
 - (NSRect)activeRect	{ return NSMakeRect(left, top, right - left, bottom - top); }
 
-// Actions
-#pragma mark -
-#pragma mark Actions
+
+#pragma mark - Actions
 
 - (IBAction)setToMaxSize:(id)sender {
 	[ self resetToAll ];

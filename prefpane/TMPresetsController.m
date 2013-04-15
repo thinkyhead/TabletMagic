@@ -300,6 +300,7 @@
 
 
 #pragma mark -
+
 - (void)setTabletRangeX:(unsigned)x y:(unsigned)y {
 	[ activePreset setTabletRangeX:x y:y ];
 }
@@ -358,8 +359,7 @@
 	[ presetsArray replaceObjectAtIndex:activePresetIndex withObject:[activePreset dictionary] ];
 }
 
-#pragma mark -
-#pragma mark Actions
+#pragma mark - Actions
 
 - (IBAction)selectedPreset:(id)sender {
 	activePresetIndex = [sender indexOfSelectedItem];

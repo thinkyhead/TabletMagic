@@ -162,7 +162,7 @@ BOOL tablet_eraser = NO;
 }
 
 - (void)mouseUp:(NSEvent *)theEvent {
-	tablet_eraser = NO;
+//	tablet_eraser = NO;
 }
 
 - (void)drawBlobAtPoint:(NSPoint)point withPressure:(float)pressure erasing:(BOOL)is_eraser {

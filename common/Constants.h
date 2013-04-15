@@ -8,7 +8,7 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
-#define TABLETMAGIC_VERSION "2.0b19"
+#define TABLETMAGIC_VERSION "2.0b20"
 
 #define	ASYNCHRONOUS_MESSAGING	0
 #define FORCE_TABLETPC			0
@@ -56,6 +56,7 @@ enum {
 
 
 #pragma mark -
+
 //
 // TabletPC Command Strings
 //
@@ -69,6 +70,7 @@ enum {
 
 
 #pragma mark -
+
 //
 // Wacom Tablet Command Strings
 //
@@ -128,6 +130,7 @@ enum {
 
 
 #pragma mark -
+
 //
 // Wacom V Command Strings
 //
@@ -141,6 +144,7 @@ enum {
 
 
 #pragma mark -
+
 //
 // CalComp Tablet Command Strings
 //

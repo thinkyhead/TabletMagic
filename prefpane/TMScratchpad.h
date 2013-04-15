@@ -22,6 +22,5 @@
 - (void)drawBlobAtPoint:(NSPoint)point withPressure:(float)pressure erasing:(BOOL)is_eraser;
 
 - (void)_tabletProximity:(NSEvent *)theEvent;
-- (void)_tabletPoint:(NSEvent *)theEvent;
 
 @end

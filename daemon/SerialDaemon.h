@@ -103,6 +103,7 @@ typedef struct {
 
 
 #pragma mark -
+
 class WacomTablet {
 
 private:
@@ -233,7 +234,7 @@ public:
 
 	void			PostChangeEvents();
 	void			PostNXEvent(int eventType, SInt16 eventSubType, UInt8 otherButton=0);
-	void			PostCGEvent(int eventType, SInt16 eventSubType, UInt8 otherButton=0);
+	void			PostCGEvent(CGEventType eventType, SInt16 eventSubType, CGMouseButton otherButton=kCGMouseButtonLeft, UInt16 clickCount=1);
 
 	void			ApplySettings(int i);
 
@@ -246,6 +247,7 @@ public:
 	void			DisableNotifications();
 	static void		PowerCallBack(void *x, io_service_t y, natural_t messageType, void *messageArgument);
 	static void		ResolutionChangeCallback( CFNotificationCenterRef center, void *observer, CFStringRef name, const void *object, CFDictionaryRef userInfo );
+	static void		DisplayCallback(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void *userInfo);
 	void			ScreenChanged();
 
 	void			CreateLocalMessagePort();

@@ -13,6 +13,8 @@
 #import "Constants.h"
 #import "GetPID.h"
 
+#include <ServiceManagement/ServiceManagement.h>
+
 #include <IOKit/IOKitLib.h>
 #include <IOKit/serial/IOSerialKeys.h>
 
@@ -27,7 +29,7 @@
 #define kDaemonName			@kCDaemonName
 #define kLaunchHelperName	@"LaunchHelper"
 #define kLaunchPlistName	@"com.thinkyhead.TabletMagic.plist"
-#define	kLaunchdKeyName		@"com.thinkyhead.TabletMagic"
+#define	kLaunchdLabel		@"com.thinkyhead.TabletMagic"
 #define	kStartupItem		@"/Library/StartupItems/TabletMagic"
 
 
@@ -325,6 +327,7 @@ TMCommand tabletCommands[] = {
 }
 
 #pragma mark -
+
 - (void)loadPreferences {
 	NSDictionary *prefs = [ [NSUserDefaults standardUserDefaults] persistentDomainForName:bundleID ];
 
@@ -418,6 +421,7 @@ TMCommand tabletCommands[] = {
 }
 
 #pragma mark -
+
 - (void)selectPortByName:(NSString*)portName {
 	int i;
 	for (i=0; i<[popupSerialPort numberOfItems]; i++) {
@@ -498,8 +502,7 @@ exit:
 	return serialArray;
 }
 
-#pragma mark -
-#pragma mark Messages
+#pragma mark - Messages
 
 #if ASYNCHRONOUS_MESSAGES
 - (CFDataRef)handleMessageFromPort:(CFMessagePortRef)loc withData:(CFDataRef)data andInfo:(void*)info {
@@ -739,8 +742,8 @@ exit:
 	//*/
 }
 
-#pragma mark -
-#pragma mark Message Sending
+#pragma mark - Message Sending
+
 - (CFMessagePortRef)getRemoteMessagePort {
 	if ( ![self remotePortExists]
 		&& (cfPortOut = CFMessagePortCreateRemote(kCFAllocatorDefault, CFSTR("com.thinkyhead.tabletmagic.daemon"))) )
@@ -866,8 +869,7 @@ exit:
 	}
 }
 
-#pragma mark -
-#pragma mark Daemon Process
+#pragma mark - Daemon Process
 
 - (BOOL)startDaemon {
     FILE		*file = nil;
@@ -890,7 +892,7 @@ exit:
 				- Start with "launchctl -F" on 10.4 and higher
 
 		*/
-		NSMutableArray *argsArray = [ NSMutableArray arrayWithArray:[ [ self getStartupArguments:NO ] componentsSeparatedByString:@" " ] ];
+		NSMutableArray *argsArray = [ NSMutableArray arrayWithArray:[ [ self GetStartupArgsAndDaemonize:NO ] componentsSeparatedByString:@" " ] ];
 
 		if ([ self isFileSuidRoot:fullpath ]) {
 			NSTask *task = [NSTask launchedTaskWithLaunchPath:daemonPath arguments:argsArray ];
@@ -1042,8 +1044,7 @@ exit:
 	return suid_root;
 }
 
-#pragma mark -
-#pragma mark Control States
+#pragma mark - Control States
 
 - (void)requestCurrentSettings {
 	[ matrixMem selectCellWithTag:0 ];
@@ -1330,8 +1331,7 @@ exit:
 	lastTab = current_tab;
 }
 
-#pragma mark -
-#pragma mark Stream Monitoring
+#pragma mark - Stream Monitoring
 
 //
 // setStreamMonitorEnabled
@@ -1368,8 +1368,7 @@ exit:
 		[ self setStreamMonitorEnabled:YES ];
 }
 
-#pragma mark -
-#pragma mark Actions
+#pragma mark - Actions
 
 //
 // selectedSerialPort
@@ -1541,8 +1540,7 @@ exit:
 	}
 }
 
-#pragma mark -
-#pragma mark Daemon Auto Start
+#pragma mark - Daemon Auto Start
 //
 // toggleAutoStart
 // The "Launch at Startup" checkbox was toggled
@@ -1556,9 +1554,9 @@ exit:
 }
 
 //
-// getStartupArguments
+// GetStartupArgsAndDaemonize
 //
-- (NSString*)getStartupArguments:(BOOL)daemonize {
+- (NSString*)GetStartupArgsAndDaemonize:(BOOL)daemonize {
 	TMPreset	*preset = [presetsController activePreset];
 
 	NSMutableString *argString = [ NSMutableString stringWithFormat:
@@ -1599,39 +1597,56 @@ exit:
 - (OSStatus)updateAutoStart {
 	BOOL		state = ([checkAutoStart state] == NSOnState);
     OSStatus	result = errAuthorizationSuccess;
-	long		version = [ thePane systemVersion ];
+	long		sysVer = [ thePane systemVersion ];
 
-	if (version < 0x1040)
-		(void) [ self runLaunchHelper:(state ? [ self getStartupArguments:YES ] : @"disable") ];
+	if (sysVer < 0x1040)
+		(void) [ self runLaunchHelper:(state ? [ self GetStartupArgsAndDaemonize:YES ] : @"disable") ];
 
 	else {
-		NSMutableArray *args = [ NSMutableArray arrayWithArray:[ [ self getStartupArguments:NO ] componentsSeparatedByString:@" " ] ];
-		[ args insertObject:@"/Library/PreferencePanes/TabletMagic.prefPane/Contents/Resources/TabletMagicDaemon" atIndex:0 ];
+//		if (NO && !state && sysVer >= 0x1060) {
+//			CFErrorRef cfError;
+//			BOOL result = SMJobRemove(kSMDomainUserLaunchd, (CFStringRef)kLaunchdLabel, nil, FALSE, &cfError);
+//			NSLog(@"Was job removed? %s", result ? "YES" : "NO");
+//		}
+//		else
+		{
+			NSMutableArray *args = [ NSMutableArray arrayWithArray:[ [ self GetStartupArgsAndDaemonize:NO ] componentsSeparatedByString:@" " ] ];
+			NSString *daemonPath = [[thePane bundle] pathForResource:kDaemonName ofType:nil ];
+			[ args insertObject:daemonPath atIndex:0 ];
 
-		// Create a Dictionary for launchd, either enabled or disabled
-		NSMutableDictionary *launcher = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-			[NSNumber numberWithBool:!state],			@"Disabled",
-			kLaunchdKeyName,							@"Label",
-			args,										@"ProgramArguments",
-			[NSNumber numberWithBool:YES],				@"RunAtLoad",
-			@"Daemon to support Wacom serial tablets",	@"ServiceDescription",	
-			@"root",									@"UserName",
-			nil];
+			// Create a Dictionary for launchd, either enabled or disabled
+			NSMutableDictionary *launcher = [NSMutableDictionary dictionaryWithDictionary:@{
+											 @"Disabled" : [NSNumber numberWithBool:!state],
+											 @"Label" :  kLaunchdLabel,
+											 @"ProgramArguments" : args,
+											 @"RunAtLoad" : [NSNumber numberWithBool:YES],
+											 @"ServiceDescription" :  @"Daemon to support Wacom serial tablets"
+											 } ];
 
-		// In Leopard load as a LaunchAgent in both LoginWindow and Aqua window sessions
-		if (version >= 0x1050) {
-			[ launcher	setObject: [ @"LoginWindow Aqua" componentsSeparatedByString:@" " ]
-						forKey: @"LimitLoadToSessionType" ];
+			if (sysVer >= 0x1050) {
+				// In Leopard load as a LaunchAgent in both LoginWindow and Aqua window sessions
+				[ launcher	setObject: @[ @"LoginWindow", @"Aqua" ]
+							forKey: @"LimitLoadToSessionType" ];
+			}
+			else {
+				// 
+				[ launcher	setObject: @"root" forKey: @"UserName" ];
+			}
+
+//			if (NO && sysVer >= 0x1060) {
+//				CFErrorRef cfError;
+//				BOOL result = SMJobSubmit(kSMDomainUserLaunchd, (CFDictionaryRef)launcher, nil, &cfError);
+//				NSLog(@"Was job submitted? %s", result ? "YES" : "NO");
+//			}
+//			else
+			{
+				// Write the Dictionary out as a temporary file
+				[ launcher writeToFile:(@"/tmp/" kLaunchPlistName) atomically:NO ];
+
+				// Run the LaunchHelper bin to install the agent or daemon
+				(void)[ self runLaunchHelper:(sysVer < 0x1050) ? @"launchd" : @"launchd10.5" ];
+			}
 		}
-
-		// Write the Dictionary out as a temporary file
-		[ launcher writeToFile:(@"/tmp/" kLaunchPlistName) atomically:NO ];
-
-		// Run the LaunchHelper bin to install the agent or daemon item
-		if (version < 0x1050)
-			(void) [ self runLaunchHelper:@"launchd" ];
-		else
-			(void) [ self runLaunchHelper:@"launchd10.5" ];
 	}
 
 	return result;
@@ -1649,9 +1664,15 @@ exit:
 // Set the Auto Start checkbox to the proper state
 //
 - (void)updateAutoStartCheckbox {
-	BOOL isAutoStarting = [[NSFileManager defaultManager] fileExistsAtPath:kStartupItem];
+	BOOL isAutoStarting = NO;
 
-	if (!isAutoStarting && [ thePane systemVersion ] >= 0x1040) {
+	UInt32 sysVer = [ thePane systemVersion ];
+//	if (NO && sysVer >= 0x1060) {
+//		NSDictionary *launchDict = (NSDictionary*)SMJobCopyDictionary(kSMDomainUserLaunchd, (CFStringRef)kLaunchdLabel);
+//		isAutoStarting = launchDict != nil;
+//	}
+//	else
+	if (sysVer >= 0x1040) {
 		NSDictionary *launchDict = [ NSDictionary dictionaryWithContentsOfFile: @"/Library/LaunchDaemons/" kLaunchPlistName ];
 
 		if (launchDict == nil)
@@ -1659,7 +1680,9 @@ exit:
 
 		if (launchDict != nil)
 			isAutoStarting = ![[launchDict objectForKey:@"Disabled"] boolValue];
-
+	}
+	else {
+		isAutoStarting = [[NSFileManager defaultManager] fileExistsAtPath:kStartupItem];
 	}
 
 	[ checkAutoStart setState:isAutoStarting ? NSOnState : NSOffState ];
@@ -1708,7 +1731,6 @@ exit:
 
 		FILE *pipe = nil;
 
-		// TODO: Open a "file" and pass it as the last argument so the output can be captured
 		result = AuthorizationExecuteWithPrivileges(fAuthorization, fullpath, kAuthorizationFlagDefaults, args, &pipe);
 
 		if (pipe != nil) {
@@ -1725,8 +1747,8 @@ exit:
 	return outputBuffer;
 }
 
-#pragma mark -
-#pragma mark Other Extras Controls
+#pragma mark - Other Extras Controls
+
 - (IBAction)enableInk:(id)sender {
 //	NSString	*com1 = @"/usr/bin/defaults write com.apple.ink.framework inkWindowVisible -bool true",
 
@@ -1749,8 +1771,6 @@ exit:
 	[ [NSUserDefaults standardUserDefaults] setPersistentDomain:inkprefs forName:inkBundle ];
 	[ [NSUserDefaults standardUserDefaults] synchronize ];
 	[ inkprefs release ];
-
-//				*com2 = @"/usr/bin/open ";
 
 	task = [[NSTask alloc] init];
 	[ task setLaunchPath:@"/usr/bin/open" ];
@@ -1808,8 +1828,8 @@ exit:
 }
 
 
-#pragma mark -
-#pragma mark TabletPC Extras
+#pragma mark - TabletPC Extras
+
 #define kHackHeading	@"Enable TabletPC Digitizer?"
 #define kHackMessage	@"This will modify a core system component to enable your digitizer, if possible."
 #define kHackOkay		@"Modify and Reboot"
@@ -1957,8 +1977,8 @@ exit:
 	return (has_digitizer_entry || !is_known_mac);
 }
 
-#pragma mark -
-#pragma mark Donate Controls
+#pragma mark - Donate Controls
+
 - (IBAction)donate:(id)sender {
 	char *url_donate = "http://www.thinkyhead.com/tabletmagic/contribute";
 	CFURLRef url = CFURLCreateWithBytes( kCFAllocatorDefault, (const UInt8 *) url_donate, strlen(url_donate), kCFStringEncodingASCII, nil);
@@ -2009,6 +2029,7 @@ exit:
 }
 
 #pragma mark -
+
 - (void)setText:(id)control1 andStepper:(id)control2 toInt:(int)value {
 	if ([self setValueOfControl:control1 toInt:value ] || [self setValueOfControl:control2 toInt:value ])
 		[ settingTimer setFireDate: [ NSDate dateWithTimeIntervalSinceNow:0.6 ] ];
@@ -2055,6 +2076,7 @@ exit:
 }
 
 #pragma mark -
+
 - (void)forgetTabletInfo {
 	modelCT = modelSD = modelPL = modelGD = modelPC = NO;
 }

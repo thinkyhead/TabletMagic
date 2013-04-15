@@ -320,6 +320,7 @@ extern int errno;
 int set_suid_root(char *path);
 
 #pragma mark -
+
 //
 // main(argc, argv)
 //
@@ -888,6 +889,7 @@ void WacomTablet::RunEventLoop() {
 
 
 #pragma mark -
+
 //
 // InitializeForPort
 //
@@ -1279,6 +1281,7 @@ void WacomTablet::ResetStylus() {
 
 
 #pragma mark -
+
 //
 // SendUDSetupString
 //
@@ -1360,6 +1363,7 @@ void WacomTablet::RequestUDSettings(int bank) {
 }
 
 #pragma mark -
+
 //
 // SendCommandToTablet
 //
@@ -1421,10 +1425,12 @@ bool WacomTablet::SendScaleToTablet(int h, int v) {
 }
 
 #pragma mark -
+
 //
 // TabletTimerCallback
 //
 void WacomTablet::TabletTimerCallback( CFRunLoopTimerRef timer, void *info ) {
+//	static Boolean didInit = false;
 	if (quitProcessor)
 		CFRunLoopStop( CFRunLoopGetCurrent() );
 	else {
@@ -1443,6 +1449,7 @@ void WacomTablet::EventTimerCallback( CFRunLoopTimerRef timer, void *info ) {
 }
 
 #pragma mark -
+
 //
 // SetStreamLogging
 //
@@ -1488,6 +1495,7 @@ void WacomTablet::StreamTimerCallback( CFRunLoopTimerRef timer, void *info ) {
 
 
 #pragma mark -
+
 //
 // ProcessSerialStream
 //
@@ -2144,40 +2152,35 @@ void WacomTablet::PostChangeEvents() {
 	}
 
 	// Is a Double-Click warranted?
+	// TODO: Use a timer to generate these events
 	if (buttonState[kSystemDoubleClick] && !oldButtonState[kSystemDoubleClick]) {
 		if (oldButtonState[kSystemButton1]) {
 			POST_EVENT(NX_LMOUSEUP, NX_SUBTYPE_TABLET_POINT);
-			ShortSleep();
 		}
 
 		POST_EVENT(NX_LMOUSEDOWN, NX_SUBTYPE_TABLET_POINT);
-		ShortSleep();
 		POST_EVENT(NX_LMOUSEUP, NX_SUBTYPE_TABLET_POINT);
-		ShortSleep();
-		POST_EVENT(NX_LMOUSEDOWN, NX_SUBTYPE_TABLET_POINT);
+		POST_EVENT(NX_LMOUSEDOWN, NX_SUBTYPE_TABLET_POINT, kCGMouseButtonLeft, 2);
 
 		if (!oldButtonState[kSystemButton1]) {
-			ShortSleep();
-			POST_EVENT(NX_LMOUSEUP, NX_SUBTYPE_TABLET_POINT);
+			POST_EVENT(NX_LMOUSEUP, NX_SUBTYPE_TABLET_POINT, kCGMouseButtonLeft, 2);
 		}
 
 		postedPosition = true;
 	}
 
 	// Is a Single-Click warranted?
+	// TODO: Use a timer to generate these events
 	if (buttonState[kSystemSingleClick] && !oldButtonState[kSystemSingleClick]) {
 		if (oldButtonState[kSystemButton1]) {
 			POST_EVENT(NX_LMOUSEUP, NX_SUBTYPE_TABLET_POINT);
-			ShortSleep();
 		}
 
 		POST_EVENT(NX_LMOUSEDOWN, NX_SUBTYPE_TABLET_POINT);
-		ShortSleep();
 		POST_EVENT(NX_LMOUSEUP, NX_SUBTYPE_TABLET_POINT);
 
-		if (!oldButtonState[kSystemButton1]) {
-			ShortSleep();
-			POST_EVENT(NX_LMOUSEUP, NX_SUBTYPE_TABLET_POINT);
+		if (oldButtonState[kSystemButton1]) {
+			POST_EVENT(NX_LMOUSEDOWN, NX_SUBTYPE_TABLET_POINT);
 		}
 
 		postedPosition = true;
@@ -2209,7 +2212,7 @@ void WacomTablet::PostChangeEvents() {
 
 	// Has Button 2 changed?
 	if (oldButtonState[kSystemButton2] != buttonState[kSystemButton2]) {
-		POST_EVENT((buttonState[kSystemButton2] ? NX_RMOUSEDOWN : NX_RMOUSEUP), NX_SUBTYPE_TABLET_POINT);
+		POST_EVENT((buttonState[kSystemButton2] ? NX_RMOUSEDOWN : NX_RMOUSEUP), NX_SUBTYPE_TABLET_POINT, kCGMouseButtonRight);
 		postedPosition = true;
 	}
 
@@ -2399,7 +2402,7 @@ void WacomTablet::PostNXEvent(int eventType, SInt16 eventSubType, UInt8 otherBut
 //
 //	PostCGEvent
 //
-void WacomTablet::PostCGEvent(int eventType, SInt16 eventSubType, UInt8 otherButton) {
+void WacomTablet::PostCGEvent(CGEventType eventType, SInt16 eventSubType, CGMouseButton otherButton, UInt16 clickCount) {
 	if (!tablet_on)
 		return;
 
@@ -2427,7 +2430,7 @@ void WacomTablet::PostCGEvent(int eventType, SInt16 eventSubType, UInt8 otherBut
 			
 		case kCGEventOtherMouseDown:
 		case kCGEventOtherMouseUp:
-			CGEventSetIntegerValueField(move1, kCGMouseEventClickState, 1);
+			CGEventSetIntegerValueField(move1, kCGMouseEventClickState, clickCount);
 			CGEventSetIntegerValueField(move1, kCGMouseEventButtonNumber, otherButton);
             
 #if LOG_STREAM_TO_FILE
@@ -2444,9 +2447,7 @@ void WacomTablet::PostCGEvent(int eventType, SInt16 eventSubType, UInt8 otherBut
 			// Note: No subx/suby to set for CG
             CGEventSetDoubleValueField(move1, kCGMouseEventPressure, stylus.pressure / PRESSURE_SCALE);
 			CGEventSetIntegerValueField(move1, kCGMouseEventNumber, 1); // unique identifier for this button
-			CGEventSetIntegerValueField(move1, kCGMouseEventClickState, 1); // click count = 1 for single-click
-
-			// [A.Bohm] sets this to 1 (kCGMouseButtonRight)
+			CGEventSetIntegerValueField(move1, kCGMouseEventClickState, clickCount); // click count = 1 for single-click
 			CGEventSetIntegerValueField(move1, kCGMouseEventButtonNumber, otherButton); // button generating other button event (0-31)
             
 #if LOG_STREAM_TO_FILE
@@ -2526,7 +2527,7 @@ void WacomTablet::PostCGEvent(int eventType, SInt16 eventSubType, UInt8 otherBut
                     CGEventSetIntegerValueField(move1, kCGTabletProximityEventPointerType, stylus.proximity.pointerType);
                     CGEventSetIntegerValueField(move1, kCGTabletProximityEventEnterProximity, stylus.proximity.enterProximity);
 
-                    fprintf(stdout, "Post Mouse Event (subtype=proximity, pointerType=%d)\n", stylus.proximity.pointerType);
+//                    fprintf(stdout, "Post Mouse Event (subtype=proximity, pointerType=%d)\n", stylus.proximity.pointerType);
 
 #if LOG_STREAM_TO_FILE
                     if (logfile) fprintf(logfile, " | PROXIMITY");
@@ -2569,11 +2570,12 @@ void WacomTablet::PostCGEvent(int eventType, SInt16 eventSubType, UInt8 otherBut
 
 
 #pragma mark - Tablet Protocol Interpreters
+
 //
 // ProcessWacomIIS_Binary(packet, size)
 //
 void WacomTablet::ProcessWacomIIS_Binary(char *packet, int pack_size) {
-	UInt32	h, v;
+	SInt32	h, v;
 	UInt16	bm = 0;
 	bool	ot = false;
 
@@ -3452,7 +3454,7 @@ void WacomTablet::ProcessGraphire(char *packet, int pack_size) {
 	stylus.old.x = stylus.point.x;
 	stylus.old.y = stylus.point.y;
 
-	if (packet[0] != 0x02)
+	if (!quiet_mode && (packet[0] != 0x02))
 		fprintf(output, "[PROC] Graphire: Unknown Packet #%d\n", packet[0]);
 
 	if ( packet[1] & 0x80 ) {
@@ -3657,6 +3659,7 @@ void WacomTablet::ProcessFujitsuPSeries(char *packet) {
 
 
 #pragma mark - Screen and Tablet Mapping
+
 //
 // SetScreenMapping
 //
@@ -3730,7 +3733,7 @@ void WacomTablet::UpdateTabletScale(SInt32 h, SInt32 v, bool tellprefs) {
 #pragma mark - Resolution Change
 
 void WacomTablet::ScreenChanged() {
-	fprintf(output, "The resolution changed!\n");
+	if (!quiet_mode) fprintf(output, "The resolution changed!\n");
 
 	CGFloat	oldScreenWidth = screenBounds.size.width,
 			oldScreenHeight = screenBounds.size.height;
@@ -3754,42 +3757,56 @@ void WacomTablet::ResolutionChangeCallback( CFNotificationCenterRef center, void
 	((WacomTablet*)observer)->ScreenChanged();
 }
 
+void WacomTablet::DisplayCallback(CGDirectDisplayID display, CGDisplayChangeSummaryFlags flags, void *userInfo) {
+	((WacomTablet*)userInfo)->ScreenChanged();
+}
+
 #pragma mark - Major system event handling
 
 #include <IOKit/pwr_mgt/IOPMLib.h>
 #include <IOKit/IOMessage.h>
 
 IONotificationPortRef	powerRef = NULL;
+CFRunLoopSourceRef		pwrRunLoop = 0;
 io_object_t				pwrNotifier = 0;
 io_connect_t			pwrRootPort = 0;
 
 void WacomTablet::RegisterForNotifications() {
-	CFNotificationCenterAddObserver(
-		CFNotificationCenterGetDistributedCenter(),
-		this,
-		WacomTablet::ResolutionChangeCallback,
-		CFSTR("O3DeviceChanged"),
-		NULL,
-		CFNotificationSuspensionBehaviorDeliverImmediately
-		);
+//	CFNotificationCenterAddObserver(
+//		CFNotificationCenterGetLocalCenter(),
+//		this,
+//		WacomTablet::ResolutionChangeCallback,
+//		NSApplicationDidChangeScreenParametersNotification,
+//		NULL,
+//		CFNotificationSuspensionBehaviorDeliverImmediately
+//		);
+
+	CGError err = CGDisplayRegisterReconfigurationCallback(WacomTablet::DisplayCallback, this);
 
 	// Enable "Wake from sleep" handling
-	if ((pwrRootPort = IORegisterForSystemPower(0, &powerRef, WacomTablet::PowerCallBack, &pwrNotifier)))
+	if ((pwrRootPort = IORegisterForSystemPower(0, &powerRef, WacomTablet::PowerCallBack, &pwrNotifier))) {
+		pwrRunLoop = IONotificationPortGetRunLoopSource(powerRef);
 		CFRunLoopAddSource(
 			CFRunLoopGetCurrent(),
-			IONotificationPortGetRunLoopSource(powerRef),
+			pwrRunLoop,
 			kCFRunLoopDefaultMode
 		);
+	}
 }
 
 void WacomTablet::DisableNotifications() {
 	// Disable "Wake from sleep" handling
-	if (powerRef)
+	if (powerRef) {
 		CFRunLoopRemoveSource(
 			CFRunLoopGetCurrent(),
-			IONotificationPortGetRunLoopSource(powerRef),
+			pwrRunLoop,
 			kCFRunLoopDefaultMode
 		);
+		CFRunLoopSourceInvalidate(pwrRunLoop);
+		CFRelease(pwrRunLoop);
+		pwrRunLoop = NULL;
+		powerRef = NULL;
+	}
 
 	IODeregisterForSystemPower(&pwrNotifier);
 }
@@ -4050,6 +4067,7 @@ void WacomTablet::CreateLocalMessagePort() {
 
 
 #pragma mark -
+
 #if ASYNCHRONOUS_MESSAGING
 
 CFMessagePortRef WacomTablet::GetRemoteMessagePort() {
@@ -4072,6 +4090,7 @@ void WacomTablet::HandleInvalidation(CFMessagePortRef mp) {
 }
 
 #else
+
 #pragma mark -
 
 void WacomTablet::AddMessageToQueue(CFDataRef data) {
@@ -4100,6 +4119,7 @@ void WacomTablet::FlushMessageQueue() {
 
 
 #pragma mark -
+
 //
 // SendMessage(char* or CFDataRef)
 // Send a message to the Preference Pane
@@ -4159,6 +4179,7 @@ void WacomTablet::SendMessageProtocol() {
 
 
 #pragma mark -
+
 char* WacomTablet::GetMessageScale() {
 	sprintf(out_message, "[scale] %ld %ld", (long)settings[0].xscale, (long)settings[0].yscale);
 	return out_message;
@@ -4230,6 +4251,7 @@ char* WacomTablet::GetMessageSerialPort() {
 
 
 #pragma mark - Utility Functions
+
 //
 // LogString(str)
 // Escape a string for logging purposes

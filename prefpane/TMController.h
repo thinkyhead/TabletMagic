@@ -179,7 +179,7 @@
 // Convenience methods
 - (BOOL)setValueOfControl:(id)control toInt:(int)value;
 - (void)setText:(id)control andStepper:(id)control2 toInt:(int)value;
-- (NSString*)getStartupArguments:(BOOL)daemonize;
+- (NSString*)GetStartupArgsAndDaemonize:(BOOL)daemonize;
 
 // Incoming Messages
 
