@@ -928,7 +928,7 @@ exit:
 
 		if ( errAuthorizationSuccess != result ) {
 			[ textTabletInfo setStringValue:[ thePane localizedString:kDriverNotLoaded ] ];
-			NSLog(@"Failed to start the daemon: %d", result);
+			NSLog(@"Failed to start the daemon: %ld", result);
 		}
 	}
 
@@ -985,7 +985,7 @@ exit:
 			if (args[i]) free(args[i]);
 
 		if ( errAuthorizationSuccess != result )
-			NSLog(@"Failed to kill the daemon: %d", result);
+			NSLog(@"Failed to kill the daemon: %ld", result);
 
 		if (file) fclose(file);
 	}
@@ -1007,7 +1007,7 @@ exit:
     
     result = AuthorizationCreate(nil, kAuthorizationEmptyEnvironment, kAuthorizationFlagDefaults, &fAuthorization);
     if (result != errAuthorizationSuccess) {
-        NSLog(@"Failed to create an authorization record: %d", result);
+        NSLog(@"Failed to create an authorization record: %ld", result);
         fAuthorization = nil;
     }
 }
@@ -1018,7 +1018,7 @@ exit:
     result = AuthorizationFree(fAuthorization, kAuthorizationFlagDestroyRights);
     
     if ( result != errAuthorizationSuccess )
-        NSLog(@"Failed to free the authorization record: %d", result);
+        NSLog(@"Failed to free the authorization record: %ld", result);
 }
 
 //
@@ -1308,7 +1308,7 @@ exit:
 	// Tilt checkbox
 	if (NSOnState == [ checkTilt state ]) bits |= 0x00000010;
 
-	return [ NSString stringWithFormat:@"%08X,%03d,%02d,%04d,%04d",
+	return [ NSString stringWithFormat:@"%08lX,%03d,%02d,%04d,%04d",
 						bits,
 						[ editIncrement intValue ],
 						[ editInterval intValue ],
@@ -1742,7 +1742,7 @@ exit:
 //	NSLog(@"The Helper said: %s (%d)", outputBuffer, strlen(outputBuffer));
 
 	if ( errAuthorizationSuccess != result )
-		NSLog(@"Failed to run the Launch Helper: %d", result);
+		NSLog(@"Failed to run the Launch Helper: %ld", result);
 
 	return outputBuffer;
 }
