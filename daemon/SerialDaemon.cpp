@@ -412,7 +412,7 @@ int main(int argc, char *argv[]) {
 #if LOG_STREAM_TO_FILE
         fprintf(output, " (logging version)");
 #endif
-        fprintf(output, "\n(c) 2013 Thinkyhead Software <www.thinkyhead.com>\n\n");
+        fprintf(output, "\n(c) 2016 Thinkyhead Software <www.thinkyhead.com>\n\n");
 
 
         //
