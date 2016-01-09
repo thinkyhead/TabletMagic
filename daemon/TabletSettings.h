@@ -36,55 +36,55 @@
 class TabletSettings {
 
 public:
-	static int index;
-	char	*bankname;
-	UInt8	mem_slot;
+    static int index;
+    char    *bankname;
+    UInt8   mem_slot;
 
-	UInt8	command_set;
-	UInt8	baud_rate;
-	UInt8	parity;
-	UInt8	data_bits;
-	UInt8	stop_bits;
-	UInt8	cts;
-	UInt8	dsr;
-	UInt8	transfer_mode;
-	UInt8	output_format;
-	UInt8	coordsys;
-	UInt8	transfer_rate;
-	UInt8	resolution;
-	UInt8	origin;
-	UInt8	oor_data;
-	UInt8	terminator;
-	UInt8	pnp;
-	UInt8	sensitivity;
-	UInt8	read_height;
-	UInt8	mdm;
-	UInt8	tilt;
-	UInt8	mm_comm;
-	UInt8	orientation;
-	UInt8	cursor_data;
-	UInt8	remote_mode;
+    UInt8   command_set;
+    UInt8   baud_rate;
+    UInt8   parity;
+    UInt8   data_bits;
+    UInt8   stop_bits;
+    UInt8   cts;
+    UInt8   dsr;
+    UInt8   transfer_mode;
+    UInt8   output_format;
+    UInt8   coordsys;
+    UInt8   transfer_rate;
+    UInt8   resolution;
+    UInt8   origin;
+    UInt8   oor_data;
+    UInt8   terminator;
+    UInt8   pnp;
+    UInt8   sensitivity;
+    UInt8   read_height;
+    UInt8   mdm;
+    UInt8   tilt;
+    UInt8   mm_comm;
+    UInt8   orientation;
+    UInt8   cursor_data;
+    UInt8   remote_mode;
 
-	int		increment;
-	int		interval;
-	int		xrez, yrez;
-	SInt32	xscale, yscale;
-	UInt16  screen_width, screen_height;
-	int		packet_size;
+    int     increment;
+    int     interval;
+    int     xrez, yrez;
+    SInt32  xscale, yscale;
+    UInt16  screen_width, screen_height;
+    int     packet_size;
 
 public:
-	TabletSettings();
-	~TabletSettings();
+    TabletSettings();
+    ~TabletSettings();
 
-	bool	Import(const char *state);
-	void	InitForCalComp();
-	void	InitForTabletPC(Boolean use38400=false);
-	void	InitForSD();
-	void	InitForPL();
-	void	InitForPenPartner();
-	void	InitForIntuos();
-	char*   Description();
-	char*   SettingsString(bool notail=false);
+    bool    Import(const char *state);
+    void    InitForCalComp();
+    void    InitForTabletPC(Boolean use38400=false);
+    void    InitForSD();
+    void    InitForPL();
+    void    InitForPenPartner();
+    void    InitForIntuos();
+    char*   Description();
+    char*   SettingsString(bool notail=false);
 };
 
 #endif

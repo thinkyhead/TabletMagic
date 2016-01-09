@@ -8,7 +8,7 @@
 #import "TMAreaChooser.h"
 
 @interface TMAreaChooserScreen : TMAreaChooser {
-	float minX, minY, maxX, maxY;
+    float minX, minY, maxX, maxY;
 }
 
 - (void)calibrate:(BOOL)bReset;

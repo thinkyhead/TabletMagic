@@ -6,15 +6,15 @@
  */
 
 @interface TMPreset : NSObject {
-	NSString	*name;
-	int			tabletLeft, tabletTop, tabletRight, tabletBottom;
-	int			tabletRangeX, tabletRangeY;
-	int			screenLeft, screenTop, screenRight, screenBottom;
-	int			screenWidth, screenHeight;
-	int			buttonTip, buttonSwitch1, buttonSwitch2, buttonEraser;
-	BOOL		mouseMode;
-	float		mouseScaling;
-	BOOL		constrained;
+    NSString    *name;
+    int         tabletLeft, tabletTop, tabletRight, tabletBottom;
+    int         tabletRangeX, tabletRangeY;
+    int         screenLeft, screenTop, screenRight, screenBottom;
+    int         screenWidth, screenHeight;
+    int         buttonTip, buttonSwitch1, buttonSwitch2, buttonEraser;
+    BOOL        mouseMode;
+    float       mouseScaling;
+    BOOL        constrained;
 }
 
 - (void)setTabletRangeX:(int)x y:(int)y;

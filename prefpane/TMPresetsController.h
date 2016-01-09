@@ -11,41 +11,41 @@
 @class TMAreaChooserTablet, TMAreaChooserScreen, TMPreset;
 
 @interface TMPresetsController : NSObject {
-	int				activePresetIndex;
-	NSMutableArray	*presetsArray;
-	TMPreset		*activePreset;			// the active preset, unarchived from the dictionary
+    int             activePresetIndex;
+    NSMutableArray  *presetsArray;
+    TMPreset        *activePreset;          // the active preset, unarchived from the dictionary
 
-	IBOutlet NSWindow *prefsWindow;
-	IBOutlet NSWindow *sheetAdd;
-	IBOutlet NSWindow *sheetDelete;
-	IBOutlet NSWindow *sheetRename;
+    IBOutlet NSWindow *prefsWindow;
+    IBOutlet NSWindow *sheetAdd;
+    IBOutlet NSWindow *sheetDelete;
+    IBOutlet NSWindow *sheetRename;
 
-	IBOutlet NSButton *buttonAdd;
-	IBOutlet NSButton *buttonDelete;
-	IBOutlet NSButton *buttonRename;
+    IBOutlet NSButton *buttonAdd;
+    IBOutlet NSButton *buttonDelete;
+    IBOutlet NSButton *buttonRename;
 
-	IBOutlet NSTextField *editAdd;
-	IBOutlet NSTextField *editRename;
-	IBOutlet NSTextField *textDelete;
+    IBOutlet NSTextField *editAdd;
+    IBOutlet NSTextField *editRename;
+    IBOutlet NSTextField *textDelete;
 
-	IBOutlet NSButton *checkMouseMode;
+    IBOutlet NSButton *checkMouseMode;
 
-	IBOutlet NSPopUpButton *popupEraser;
-	IBOutlet NSPopUpButton *popupPresets;
-	IBOutlet NSPopUpButton *popupStylusTip;
-	IBOutlet NSPopUpButton *popupSwitch1;
-	IBOutlet NSPopUpButton *popupSwitch2;
+    IBOutlet NSPopUpButton *popupEraser;
+    IBOutlet NSPopUpButton *popupPresets;
+    IBOutlet NSPopUpButton *popupStylusTip;
+    IBOutlet NSPopUpButton *popupSwitch1;
+    IBOutlet NSPopUpButton *popupSwitch2;
 
-	IBOutlet NSSlider *sliderScaling;
+    IBOutlet NSSlider *sliderScaling;
 
-	IBOutlet TMAreaChooserTablet *chooserTablet;
-	IBOutlet TMAreaChooserScreen *chooserScreen;
+    IBOutlet TMAreaChooserTablet *chooserTablet;
+    IBOutlet TMAreaChooserScreen *chooserScreen;
     IBOutlet NSButton *buttonConstrain;
 }
 
 // Initialization
 - (void)mainViewDidLoad;
-- (BOOL)apply2b8Patches;	// 2b8 is a minor release to automate the new button mappings
+- (BOOL)apply2b8Patches;    // 2b8 is a minor release to automate the new button mappings
 
 // Methods
 - (void)loadPresets;

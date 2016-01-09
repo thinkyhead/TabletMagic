@@ -6,13 +6,13 @@
  */
 
 @interface TMScratchpad : NSView {
-	BOOL smoothing;
-	NSPoint startPoint;
-	float startPressure;
-	IBOutlet NSColorWell *penColor;
-	IBOutlet NSColorWell *eraserColor;
-	IBOutlet NSSlider *penFlow;
-	IBOutlet NSSlider *eraserFlow;
+    BOOL smoothing;
+    NSPoint startPoint;
+    float startPressure;
+    IBOutlet NSColorWell *penColor;
+    IBOutlet NSColorWell *eraserColor;
+    IBOutlet NSSlider *penFlow;
+    IBOutlet NSSlider *eraserFlow;
 }
 
 - (IBAction)clear:(id)sender;

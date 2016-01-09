@@ -8,8 +8,8 @@
 #import <PreferencePanes/PreferencePanes.h>
 
 @interface TabletMagicPref : NSPreferencePane {
-	SInt32	systemVersion;
-	BOOL	has_tablet_events;
+    SInt32  systemVersion;
+    BOOL    has_tablet_events;
 }
 
 //

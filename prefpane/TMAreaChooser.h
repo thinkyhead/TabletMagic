@@ -6,25 +6,25 @@
  */
 
 enum {
-	DRAG_NONE,
-	DRAG_TOPLEFT,
-	DRAG_TOPRIGHT,
-	DRAG_BOTTOMLEFT,
-	DRAG_BOTTOMRIGHT,
-	DRAG_WHOLE
+    DRAG_NONE,
+    DRAG_TOPLEFT,
+    DRAG_TOPRIGHT,
+    DRAG_BOTTOMLEFT,
+    DRAG_BOTTOMRIGHT,
+    DRAG_WHOLE
 };
 
 @interface TMAreaChooser : NSView {
-	id			controller;
-	int			dragType;
-	NSPoint		dragStart;
-	NSRect		originalFrame;
-	float		constrainW, constrainH;
-	BOOL		isConstrained;
+    id          controller;
+    int         dragType;
+    NSPoint     dragStart;
+    NSRect      originalFrame;
+    float       constrainW, constrainH;
+    BOOL        isConstrained;
 
-	float		maxWidth, maxHeight;
-	float		scaleFactorW, scaleFactorH;
-	float		left, top, right, bottom;
+    float       maxWidth, maxHeight;
+    float       scaleFactorW, scaleFactorH;
+    float       left, top, right, bottom;
 
     IBOutlet NSButton *buttonAll;
     IBOutlet NSTextField *textBottom;
@@ -74,6 +74,5 @@ enum {
 - (NSPoint)viewPointFromRepPoint:(NSPoint)repPoint;
 
 - (void)drawHandlePart:(NSRect)rect asActive:(BOOL)active;
-
 
 @end

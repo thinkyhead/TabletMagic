@@ -13,55 +13,55 @@ TabletMagicPref *thePane;
 @implementation TabletMagicPref
 
 - (void) mainViewDidLoad {
-	thePane = self;
+    thePane = self;
 
-	Gestalt(gestaltSystemVersion, &systemVersion);
-	has_tablet_events = (systemVersion >= 0x1030);
+    Gestalt(gestaltSystemVersion, &systemVersion);
+    has_tablet_events = (systemVersion >= 0x1030);
 
-	// Notify us if the preference pane is closed
-	[[NSNotificationCenter defaultCenter] addObserver:self
-            selector:@selector(paneTerminating:)
-            name:NSApplicationWillTerminateNotification
-            object:nil];
+    // Notify us if the preference pane is closed
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(paneTerminating:)
+                                                 name:NSApplicationWillTerminateNotification
+                                               object:nil];
 
-	[[NSNotificationCenter defaultCenter] addObserver:self
-            selector:@selector(screenChanged:)
-            name:NSApplicationDidChangeScreenParametersNotification
-            object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(screenChanged:)
+                                                 name:NSApplicationDidChangeScreenParametersNotification
+                                               object:nil];
 
-	[ theController mainViewDidLoad ];
+    [ theController mainViewDidLoad ];
 }
 
 - (void) willUnselect {
-	[ theController paneWillUnselect ];
+    [ theController paneWillUnselect ];
 }
 
 - (void) didSelect {
-	[ theController paneDidSelect ];
+    [ theController paneDidSelect ];
 }
 
 - (void) paneTerminating:(NSNotification*)aNotification {
-	[ theController paneTerminating ];
+    [ theController paneTerminating ];
 }
 
 - (void) screenChanged:(NSNotification*)aNotification {
-	[ theController screenChanged ];
+    [ theController screenChanged ];
 }
 
 - (long) systemVersion {
-	return systemVersion;
+    return systemVersion;
 }
 
 - (BOOL) canUseTabletEvents {
-	return has_tablet_events;
+    return has_tablet_events;
 }
 
 - (NSBundle*) bundle {
-	return [NSBundle bundleForClass:[self class]];
+    return [NSBundle bundleForClass:[self class]];
 }
 
 - (NSString*) localizedString:(NSString*)string {
-	return NSLocalizedStringFromTableInBundle(string, nil, [self bundle], @"Convenience method");
+    return NSLocalizedStringFromTableInBundle(string, nil, [self bundle], @"Convenience method");
 }
 
 @end

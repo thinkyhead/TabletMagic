@@ -9,40 +9,40 @@
 
 @interface TMController : NSObject {
 
-	NSDistributedNotificationCenter	*ncenter;
-	NSPort				*mPort;
-	CFMessagePortRef	cfPortIn;
-	CFMessagePortRef	cfPortOut;
-	NSString			*bundleID;
-    AuthorizationRef	fAuthorization;
-	BOOL				tabletEnabled;
-	BOOL				autoLaunchEnabled;
-	NSTimer				*settingTimer, *scaleTimer, *autoStartTimer;
-	NSTimer				*streamTimer, *killTimer, *pingTimer;
-	BOOL				modelUD, modelCT, modelSD, modelPL, modelGD, modelPC;
-	BOOL				ignore_next_info;
-	int					stream_reply_size;
-	int					stream_reply_count;
-	BOOL				hackintosh;
-	BOOL				scale_from_stylus;
-	int					current_tab;
+    NSDistributedNotificationCenter *ncenter;
+    NSPort              *mPort;
+    CFMessagePortRef    cfPortIn;
+    CFMessagePortRef    cfPortOut;
+    NSString            *bundleID;
+    AuthorizationRef    fAuthorization;
+    BOOL                tabletEnabled;
+    BOOL                autoLaunchEnabled;
+    NSTimer             *settingTimer, *scaleTimer, *autoStartTimer;
+    NSTimer             *streamTimer, *killTimer, *pingTimer;
+    BOOL                modelUD, modelCT, modelSD, modelPL, modelGD, modelPC;
+    BOOL                ignore_next_info;
+    int                 stream_reply_size;
+    int                 stream_reply_count;
+    BOOL                hackintosh;
+    BOOL                scale_from_stylus;
+    int                 current_tab;
 
-	IBOutlet NSTabView	*tabview;
+    IBOutlet NSTabView  *tabview;
 
-	// Top controls
-    IBOutlet NSPopUpButton			*popupSerialPort;
-    IBOutlet NSTextField			*textTabletInfo;
-    IBOutlet NSTextField			*textVersion;
-    IBOutlet NSButton				*checkEnabled;
+    // Top controls
+    IBOutlet NSPopUpButton          *popupSerialPort;
+    IBOutlet NSTextField            *textTabletInfo;
+    IBOutlet NSTextField            *textVersion;
+    IBOutlet NSButton               *checkEnabled;
 
-	// Memory bank controls
+    // Memory bank controls
     IBOutlet NSMatrix *matrixMem;
     IBOutlet NSButtonCell *cellMem0;
     IBOutlet NSButtonCell *cellMem1;
     IBOutlet NSButtonCell *cellMem2;
     IBOutlet NSButton *buttonSetBank;
 
-	// Serial connection controls
+    // Serial connection controls
     IBOutlet NSPopUpButton *popupBaud;
     IBOutlet NSPopUpButton *popupDataBits;
     IBOutlet NSPopUpButton *popupParity;
@@ -50,7 +50,7 @@
     IBOutlet NSButton *checkCTS;
     IBOutlet NSButton *checkDSR;
 
-	// Settings controls
+    // Settings controls
     IBOutlet NSPopUpButton *popupCommandSet;
     IBOutlet NSPopUpButton *popupOutputFormat;
     IBOutlet NSPopUpButton *popupCoordSys;
@@ -83,17 +83,17 @@
     IBOutlet NSBox *groupProtocol;
     IBOutlet NSBox *groupDigitizer;
 
-	// Data stream and commands
+    // Data stream and commands
     IBOutlet NSBox *groupDatastream;
     IBOutlet NSTextField *textDatastream;
     IBOutlet NSPopUpButton *popupCommands;
     IBOutlet NSButton *buttonSendCommand;
 
-	// Tablet data rates
+    // Tablet data rates
     IBOutlet NSTextField *textRateBytes;
     IBOutlet NSTextField *textRatePackets;
 
-	// Tablet data interpreted
+    // Tablet data interpreted
     IBOutlet NSTextField *textPosX;
     IBOutlet NSTextField *textPosY;
     IBOutlet NSTextField *textTiltX;
@@ -106,14 +106,14 @@
     IBOutlet NSButton *buttonView4;
     IBOutlet NSProgressIndicator *progPressure;
 
-	// A scratch pad to draw inside
+    // A scratch pad to draw inside
     IBOutlet TMScratchpad *scratchPad;
     IBOutlet NSColorWell *colorPen;
     IBOutlet NSColorWell *colorEraser;
     IBOutlet NSSlider *sliderFlowPen;
     IBOutlet NSSlider *sliderFlowEraser;
 
-	// Geometry controls
+    // Geometry controls
     IBOutlet TMPresetsController *presetsController;
 
     IBOutlet NSPopUpButton *popupStylusTip;
@@ -126,17 +126,17 @@
 
     IBOutlet NSButton *checkDonation;
 
-	// Extras
+    // Extras
     IBOutlet NSBox *groupAutoStart;
-	IBOutlet NSButton *checkAutoStart;
-	IBOutlet NSButton *buttonInk;
-	IBOutlet NSButton *buttonKill;
-	IBOutlet NSButton *buttonPanic;
+    IBOutlet NSButton *checkAutoStart;
+    IBOutlet NSButton *buttonInk;
+    IBOutlet NSButton *buttonKill;
+    IBOutlet NSButton *buttonPanic;
 
-	// TabletPC
-	IBOutlet NSButton *buttonEnableDigitizer;
-	IBOutlet NSButton *checkTabletPC;
-	IBOutlet NSButton *checkGetFromStylus;
+    // TabletPC
+    IBOutlet NSButton *buttonEnableDigitizer;
+    IBOutlet NSButton *checkTabletPC;
+    IBOutlet NSButton *checkGetFromStylus;
     IBOutlet NSTextField *textTweakScaleX;
     IBOutlet NSTextField *textTweakScaleY;
 }
