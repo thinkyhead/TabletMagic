@@ -1,9 +1,9 @@
-/*
-	TabletMagicPrefPane
-	Thinkyhead Software
-
-	TMScratchpad.m
-*/
+/**
+ * TMScratchpad.m
+ *
+ * TabletMagicPrefPane
+ * Thinkyhead Software
+ */
 
 #import "TMScratchpad.h"
 #import "Constants.h"

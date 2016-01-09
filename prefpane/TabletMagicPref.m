@@ -1,9 +1,9 @@
-/*
-	TabletMagicPrefPane
-	Thinkyhead Software
-
-	TabletMagicPrefPanePref.m
-*/
+/**
+ * TabletMagicPref.m
+ *
+ * TabletMagicPrefPane
+ * Thinkyhead Software
+ */
 
 #import "TabletMagicPref.h"
 #import "TMController.h"

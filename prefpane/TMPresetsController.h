@@ -1,12 +1,12 @@
-/*
-	TabletMagicPrefPane
-	Thinkyhead Software
-
-	TMPresetsController.h
-
-	This controller connects the Preset model to
-	the Mapping view and the main TMController.
-*/
+/**
+ * TMPresetsController.h
+ *
+ * TabletMagicPrefPane
+ * Thinkyhead Software
+ *
+ * This controller connects the Preset model to
+ * the Mapping view and the main TMController.
+ */
 
 @class TMAreaChooserTablet, TMAreaChooserScreen, TMPreset;
 

@@ -1,9 +1,9 @@
-/*
-	TabletMagicPrefPane
-	Thinkyhead Software
-
-	TMController.h
-*/
+/**
+ * TMController.h
+ *
+ * TabletMagicPrefPane
+ * Thinkyhead Software
+ */
 
 @class TMScratchpad, TMPresetsController;
 

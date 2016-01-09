@@ -1,19 +1,17 @@
 /*----------------------------------------------------------------------------
-
-NAME
-
-	Wacom.h -- your basic useful enums and defines
-	
-	See CarbonEvents.h for definitions of the tablet event structs.
-
-COPYRIGHT
-
-	Copyright WACOM Technologies, Inc. 2001
-	All rights reserved.
-
------------------------------------------------------------------------------*/
-
-
+ 
+ NAME
+ 
+    Wacom.h -- your basic useful enums and defines
+ 
+    See CarbonEvents.h for definitions of the tablet event structs.
+ 
+ COPYRIGHT
+ 
+    Copyright WACOM Technologies, Inc. 2001
+    All rights reserved.
+ 
+ -----------------------------------------------------------------------------*/
 
 typedef enum EPointerType
 {

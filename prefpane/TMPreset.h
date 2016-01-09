@@ -1,9 +1,9 @@
-/*
-	TabletMagicPrefPane
-	Thinkyhead Software
-
-	TMPreset.h
-*/
+/**
+ * TMPReset.h
+ *
+ * TabletMagicPrefPane
+ * Thinkyhead Software
+ */
 
 @interface TMPreset : NSObject {
 	NSString	*name;

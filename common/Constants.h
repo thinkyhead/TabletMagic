@@ -1,9 +1,9 @@
-/*
-	TabletMagicDaemon
-	Thinkyhead Software
-
-	Constants.h
-*/
+/**
+ * Constants.h
+ *
+ * TabletMagicPrefPane
+ * Thinkyhead Software
+ */
 
 #ifndef CONSTANTS_H
 #define CONSTANTS_H

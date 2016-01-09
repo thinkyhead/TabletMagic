@@ -1,10 +1,11 @@
-/*
-	TabletMagic
-
-	Digitizers.h
-
-	Utility functions to help retrieve a digitizer string from the IO Registry
-*/
+/**
+ * Digitizers.h
+ *
+ * TabletMagic
+ * Thinkyhead Software
+ *
+ * Utility functions to help retrieve a digitizer string from the IO Registry
+ */
 
 #define KNOWN_MACHINES {"AAPL","iMac","PowerBook","PowerMac","RackMac","Macmini","MacPro","MacBookPro","MacBook"}
 

@@ -1,9 +1,9 @@
-/*
-	TabletMagicPrefPane
-	Thinkyhead Software
-
-	TMAreaChooserTablet.h
-*/
+/**
+ * TMAreaChooserTablet.h
+ *
+ * TabletMagicPrefPane
+ * Thinkyhead Software
+ */
 
 #import "TMAreaChooser.h"
 

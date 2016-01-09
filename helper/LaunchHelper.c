@@ -1,18 +1,18 @@
-/*
-	TabletMagic
-	Thinkyhead Software
-
-	LaunchHelper.c
-
-	This helper executable is used by the Preference Pane to:
-		(no arguments)		Just SUID the LaunchHelper binary
-		"launchd"			Create a LaunchD entry (which may be 'Disabled=YES')
-		"launchd10.5"		Create a LaunchD entry suitable for Leopard
-		"disable"			Delete the StartupItem
-		"enabletabletpc"	Hack the serial driver plist to enable the digitizer
-		"getdigitizer"		Return the digitizer code, if any
-		(other)				Create a StartupItem using the passed arguments
-*/
+/**
+ * LaunchHelper.c
+ *
+ * TabletMagic
+ * Thinkyhead Software
+ *
+ *  This helper executable is used by the Preference Pane to:
+ *      (no arguments)      Just SUID the LaunchHelper binary
+ *      "launchd"           Create a LaunchD entry (which may be 'Disabled=YES')
+ *      "launchd10.5"       Create a LaunchD entry suitable for Leopard
+ *      "disable"           Delete the StartupItem
+ *      "enabletabletpc"    Hack the serial driver plist to enable the digitizer
+ *      "getdigitizer"      Return the digitizer code, if any
+ *      (other)             Create a StartupItem using the passed arguments
+ */
 
 #include "Digitizers.h"
 

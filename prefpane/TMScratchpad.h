@@ -1,9 +1,9 @@
-/*
-	TabletMagicPrefPane
-	Thinkyhead Software
-
-	TMScratchpad.h
-*/
+/**
+ * TMScratchpad.h
+ *
+ * TabletMagicPrefPane
+ * Thinkyhead Software
+ */
 
 @interface TMScratchpad : NSView {
 	BOOL smoothing;

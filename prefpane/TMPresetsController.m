@@ -1,24 +1,27 @@
-/*
-	TabletMagicPrefPane
-	Thinkyhead Software
-
-	TMPresetsController.m
-
-	- If presets exist load them into a local array
-
-	- When [geom] arrives, either select the corresponding preset
-		or create/update the Custom preset
-
-		NOTE - [geom] only arrives if the daemon is already
-		running when the preference pane starts.
-
-	- When a preset changes automatically save it
-
-	- The custom preset can be renamed
-
-	- The last preset can't be deleted. If you delete the last preset
-		it just gets renamed "Custom"
-*/
+/**
+ * TMPresetsController.m
+ *
+ * TabletMagicPrefPane
+ * Thinkyhead Software
+ *
+ * This controller connects the Preset model to
+ * the Mapping view and the main TMController.
+ *
+ * - If presets exist load them into a local array
+ *
+ * - When [geom] arrives, either select the corresponding preset
+ *   or create/update the Custom preset
+ *
+ *   NOTE - [geom] only arrives if the daemon is already
+ *   running when the preference pane starts.
+ *
+ * - When a preset changes automatically save it
+ *
+ * - The custom preset can be renamed
+ *
+ * - The last preset can't be deleted. If you delete the last preset
+ *   it just gets renamed "Custom"
+ */
 
 #import "TMPreset.h"
 #import "TMPresetsController.h"

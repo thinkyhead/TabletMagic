@@ -1,52 +1,53 @@
-/*
-	TabletMagicDaemon
-
-	SerialDaemon.cpp
-
-	This program is a component of TabletMagic. See the
-	accompanying documentation for more details about the
-	TabletMagic project.
-
-	Startup Stages:
-		1. Set up signal handlers so the daemon can quit cleanly.
-		2. Create a WacomTablet object to represent a virtual tablet.
-		3. Create a message port for the preference pane if running in command mode.
-		4. Create a CFTimer to poll the serial port for data.
-		5. Look for a tablet on the specified serial port (or all ports).
-		6. Bail out if no tablet found (unless running in "command mode")
-
-	Tablet Decoding:
-		- Continuously read the datastream from the serial port.
-		- Maintain a state representation of stylus and tablet.
-		- Generate system mouse and tablet events in sync with the internal state.
-		- Message the preference pane as requested and on spurious events.
-
-	Current Development:
-		- Tested with several tablets and adapters
-		- Fully implemented II-S (ASCII and Binary), Wacom IV, Wacom V, and TabletPC
-		- Adapted for use with PenPartner (CT) tablets
-		- Adapted for Calcomp tablets
-
-	In Progress:
-		- Handle screen resolution changes in the preference pane
-		  (Looks like System Preferences swallows the notification!)
-
-	LICENSE
-
-    This program is free software; you can redistribute it and/or
-    modify it under the terms of the GNU Library General Public
-    License as published by the Free Software Foundation; either
-    version 2 of the License, or (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-    Library General Public License for more details.
-
-    You should have received a copy of the GNU Library General Public
-    License along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
+/**
+ * SerialDaemon.cpp
+ *
+ * TabletMagicDaemon
+ * Thinkyhead Software
+ *
+ * This program is a component of TabletMagic. See the
+ * accompanying documentation for more details about the
+ * TabletMagic project.
+ *
+ * Startup Stages:
+ *  1. Set up signal handlers so the daemon can quit cleanly.
+ *  2. Create a WacomTablet object to represent a virtual tablet.
+ *  3. Create a message port for the preference pane if running in command mode.
+ *  4. Create a CFTimer to poll the serial port for data.
+ *  5. Look for a tablet on the specified serial port (or all ports).
+ *  6. Bail out if no tablet found (unless running in "command mode")
+ *
+ * Tablet Decoding:
+ *  - Continuously read the datastream from the serial port.
+ *  - Maintain a state representation of stylus and tablet.
+ *  - Generate system mouse and tablet events in sync with the internal state.
+ *  - Message the preference pane as requested and on spurious events.
+ *
+ * Current Development:
+ *  - Tested with several tablets and adapters
+ *  - Fully implemented II-S (ASCII and Binary), Wacom IV, Wacom V, and TabletPC
+ *  - Adapted for use with PenPartner (CT) tablets
+ *  - Adapted for Calcomp tablets
+ *
+ * In Progress:
+ *  - Handle screen resolution changes in the preference pane
+ *    (Looks like System Preferences swallows the notification!)
+ *
+ * LICENSE
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Library General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Library General Public License for more details.
+ *
+ * You should have received a copy of the GNU Library General Public
+ * License along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
 
 #include "SerialDaemon.h"
 #include "TMSerialPort.h"

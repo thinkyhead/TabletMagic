@@ -1,11 +1,11 @@
-/*
-	TabletMagic
-	Thinkyhead Software
-
-	Digitizers.c
-
-	Utility functions to help retrieve a digitizer string from the IO Registry
-*/
+/**
+ * Digitizers.c
+ *
+ * TabletMagic
+ * Thinkyhead Software
+ *
+ * Utility functions to help retrieve a digitizer string from the IO Registry
+ */
 
 #include "Digitizers.h"
 

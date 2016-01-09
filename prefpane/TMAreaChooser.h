@@ -1,9 +1,9 @@
-/*
-	TabletMagicPrefPane
-	Thinkyhead Software
-
-	TMAreaChooser.h
-*/
+/**
+ * TMAreaChooser.h
+ *
+ * TabletMagicPrefPane
+ * Thinkyhead Software
+ */
 
 enum {
 	DRAG_NONE,

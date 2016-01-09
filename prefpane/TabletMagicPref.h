@@ -1,9 +1,9 @@
-/*
-	TabletMagicPrefPane
-	Thinkyhead Software
-
-	TabletMagicPref.h
-*/
+/**
+ * TabletMagicPref.h
+ *
+ * TabletMagicPrefPane
+ * Thinkyhead Software
+ */
 
 #import <PreferencePanes/PreferencePanes.h>
 
