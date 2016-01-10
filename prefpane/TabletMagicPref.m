@@ -15,7 +15,19 @@ TabletMagicPref *thePane;
 - (void) mainViewDidLoad {
     thePane = self;
 
-    Gestalt(gestaltSystemVersion, &systemVersion);
+#if __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_10
+    NSOperatingSystemVersion ver = [[NSProcessInfo processInfo] operatingSystemVersion];
+    systemVersion = ver.majorVersion * 0x10 / 10 + ver.minorVersion;
+#else
+    if ([NSProcessInfo respondsToSelector:@selector(operatingSystemVersion)]) {
+        NSOperatingSystemVersion ver = [[NSProcessInfo processInfo] operatingSystemVersion];
+        systemVersion = ver.majorVersion * 0x10 / 10 + ver.minorVersion;
+    }
+    else {
+        Gestalt(gestaltSystemVersion, &systemVersion);
+    }
+#endif
+
     has_tablet_events = (systemVersion >= 0x1030);
 
     // Notify us if the preference pane is closed
