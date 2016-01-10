@@ -353,7 +353,10 @@ int main(int argc, char *argv[]) {
 
 
         //
-        // Run as a daemon unless that would be bad
+        // Run as a daemon unless quitting
+        //
+        // Add the -d flag when launching this binary directly.
+        // It will be started on 10.4 and later by launchd without the -d flag.
         //
         if (args.dodaemon && !args.quit) {
             int isdaemon = daemon(0, 1);
@@ -3782,7 +3785,7 @@ void WacomTablet::RegisterForNotifications() {
     //      CFNotificationSuspensionBehaviorDeliverImmediately
     //      );
 
-    CGError err = CGDisplayRegisterReconfigurationCallback(WacomTablet::DisplayCallback, this);
+    (void)CGDisplayRegisterReconfigurationCallback(WacomTablet::DisplayCallback, this);
 
     // Enable "Wake from sleep" handling
     if ((pwrRootPort = IORegisterForSystemPower(0, &powerRef, WacomTablet::PowerCallBack, &pwrNotifier))) {

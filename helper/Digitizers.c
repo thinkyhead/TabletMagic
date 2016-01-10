@@ -18,7 +18,6 @@
 const char *known_machines[] = KNOWN_MACHINES;
 
 char* get_digitizer_string() {
-    int     result = EX_OK;
     char    *cmd, *tmp;
 
     // Find a digitizer in the IO Registry
@@ -43,7 +42,7 @@ char* get_digitizer_string() {
 
         // If the string was very long, convert hex to decimal
         if (strlen(digitizer_string) > 12) {
-            result = asprintf(&cmd, "echo %s | xxd -r -p", digitizer_string);
+            (void)asprintf(&cmd, "echo %s | xxd -r -p", digitizer_string);
             tmp = digitizer_string;
             digitizer_string = run_tool(cmd);
             clean_string(digitizer_string);
