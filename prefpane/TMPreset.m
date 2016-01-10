@@ -165,7 +165,13 @@
 - (NSDictionary*)dictionary {
     static NSDictionary *dict = nil;
 
-    if (dict) [ dict release ];
+    if (dict) {
+#if !ARC_ENABLED
+        [ dict release ];
+#else
+        dict = nil;
+#endif
+    }
 
     NSArray * keys   = [NSArray arrayWithObjects:
                         @keyName,
@@ -220,7 +226,9 @@
 #pragma mark -
 
 - (void)setName:(NSString *)n {
+#if !ARC_ENABLED
     [ name release ];
+#endif
     name = [ n copy ];
 }
 

@@ -64,97 +64,97 @@ typedef struct _TMCommand {
     UInt16      compatibility;      // a bit-mask of compatibility
     int         replysize;          // the expected size of the reply
     char        *command;           // the command string reference
-    NSString    *description;       // the menu title and command description
+    char        *description;       // the menu title and command description
 } TMCommand;
 
 TMCommand tabletCommands[] = {
     //    div   set     ign     compatibility flags                 replysize   command             description
 
-    { NO,   NO,     NO,     COMP_UD|COMP_SD|COMP_PL|COMP_CT,            2, WAC_SelfTest,        @"Do Self-Test" },
-    { NO,   NO,     NO,     COMP_UD|COMP_SD|COMP_PL|COMP_CT|COMP_GD,    1, WAC_TabletID,        @"Get Model & ROM Version" },
-    { NO,   NO,     NO,     COMP_UD|COMP_PL|COMP_CT|COMP_GD,            1, WAC_TabletSize,      @"Get Maximum Coordinates" },
-    { NO,   NO,     YES,    COMP_UD|COMP_PL|COMP_CT,                    1, WAC_ReadSetting,     @"Get Current Settings" },
-    { NO,   NO,     YES,    COMP_UD|COMP_PL|COMP_CT,                    1, WAC_ReadSettingM1,   @"Get Setting M1" },
-    { NO,   NO,     YES,    COMP_UD|COMP_PL|COMP_CT,                    1, WAC_ReadSettingM2,   @"Get Setting M2" },
+    { NO,   NO,     NO,     COMP_UD|COMP_SD|COMP_PL|COMP_CT,            2, WAC_SelfTest,        "Do Self-Test" },
+    { NO,   NO,     NO,     COMP_UD|COMP_SD|COMP_PL|COMP_CT|COMP_GD,    1, WAC_TabletID,        "Get Model & ROM Version" },
+    { NO,   NO,     NO,     COMP_UD|COMP_PL|COMP_CT|COMP_GD,            1, WAC_TabletSize,      "Get Maximum Coordinates" },
+    { NO,   NO,     YES,    COMP_UD|COMP_PL|COMP_CT,                    1, WAC_ReadSetting,     "Get Current Settings" },
+    { NO,   NO,     YES,    COMP_UD|COMP_PL|COMP_CT,                    1, WAC_ReadSettingM1,   "Get Setting M1" },
+    { NO,   NO,     YES,    COMP_UD|COMP_PL|COMP_CT,                    1, WAC_ReadSettingM2,   "Get Setting M2" },
 
-    { YES,  NO,     NO,     COMP_UD|COMP_SD|COMP_PL|COMP_CT|COMP_GD,    0, WAC_StartTablet,     @"Start" },
-    { NO,   NO,     NO,     COMP_UD|COMP_SD|COMP_PL|COMP_CT|COMP_GD,    0, WAC_StopTablet,      @"Stop" },
+    { YES,  NO,     NO,     COMP_UD|COMP_SD|COMP_PL|COMP_CT|COMP_GD,    0, WAC_StartTablet,     "Start" },
+    { NO,   NO,     NO,     COMP_UD|COMP_SD|COMP_PL|COMP_CT|COMP_GD,    0, WAC_StopTablet,      "Stop" },
 
     // Known TabletPC Commands
-    { YES,  NO,     YES,    COMP_PC,                                    1, TPC_TabletID,        @"Get Tablet Info" },
+    { YES,  NO,     YES,    COMP_PC,                                    1, TPC_TabletID,        "Get Tablet Info" },
 
-    { YES,  NO,     NO,     COMP_PC,                                    0, TPC_StopTablet,      @"Stop" },
-    { NO,   NO,     NO,     COMP_PC,                                    0, TPC_Sample133pps,    @"Sample at 133pps" },
-    { NO,   NO,     NO,     COMP_PC,                                    0, TPC_Sample80pps,     @"Sample at 80pps" },
-    { NO,   NO,     NO,     COMP_PC,                                    0, TPC_Sample40pps,     @"Sample at 40pps" },
-    { NO,   NO,     NO,     COMP_PC,                                    0, TPC_SurveyScanOn,    @"Enable Survey Scan" },
-    { NO,   NO,     NO,     COMP_PC,                                    0, TPC_SurveyScanOff,   @"Disable Survey Scan" },
+    { YES,  NO,     NO,     COMP_PC,                                    0, TPC_StopTablet,      "Stop" },
+    { NO,   NO,     NO,     COMP_PC,                                    0, TPC_Sample133pps,    "Sample at 133pps" },
+    { NO,   NO,     NO,     COMP_PC,                                    0, TPC_Sample80pps,     "Sample at 80pps" },
+    { NO,   NO,     NO,     COMP_PC,                                    0, TPC_Sample40pps,     "Sample at 40pps" },
+    { NO,   NO,     NO,     COMP_PC,                                    0, TPC_SurveyScanOn,    "Enable Survey Scan" },
+    { NO,   NO,     NO,     COMP_PC,                                    0, TPC_SurveyScanOff,   "Disable Survey Scan" },
 
     // All below are unavailable on CT tablets
-    { YES,  YES,    NO,     COMP_UD|COMP_SD|COMP_PL,                    0, WAC_ResetBitpad2,    @"Reset to Bit Pad Two" },
-    { NO,   YES,    NO,     COMP_UD|COMP_SD|COMP_PL,                    0, WAC_ResetMM1201,     @"Reset to MM1201" },
-    { NO,   YES,    NO,     COMP_UD|COMP_PL,                            0, WAC_ResetWacomII,    @"Reset to WACOM II-S" },
-    { NO,   YES,    NO,     COMP_UD|COMP_PL,                            0, WAC_ResetWacomIV,    @"Reset to WACOM IV" },
-    { NO,   YES,    NO,     COMP_UD|COMP_SD|COMP_PL,                    0, WAC_ResetDefaults,   @"Reset to Defaults of Mode" },
+    { YES,  YES,    NO,     COMP_UD|COMP_SD|COMP_PL,                    0, WAC_ResetBitpad2,    "Reset to Bit Pad Two" },
+    { NO,   YES,    NO,     COMP_UD|COMP_SD|COMP_PL,                    0, WAC_ResetMM1201,     "Reset to MM1201" },
+    { NO,   YES,    NO,     COMP_UD|COMP_PL,                            0, WAC_ResetWacomII,    "Reset to WACOM II-S" },
+    { NO,   YES,    NO,     COMP_UD|COMP_PL,                            0, WAC_ResetWacomIV,    "Reset to WACOM IV" },
+    { NO,   YES,    NO,     COMP_UD|COMP_SD|COMP_PL,                    0, WAC_ResetDefaults,   "Reset to Defaults of Mode" },
 
-    { YES,  YES,    NO,     COMP_UD|COMP_PL,                            0, WAC_TiltModeOn,      @"Enable Tilt Mode" },
-    { NO,   YES,    NO,     COMP_UD|COMP_PL,                            0, WAC_TiltModeOff,     @"Disable Tilt Mode" },
+    { YES,  YES,    NO,     COMP_UD|COMP_PL,                            0, WAC_TiltModeOn,      "Enable Tilt Mode" },
+    { NO,   YES,    NO,     COMP_UD|COMP_PL,                            0, WAC_TiltModeOff,     "Disable Tilt Mode" },
 
-    { YES,  YES,    NO,     COMP_UD|COMP_SD|COMP_PL|COMP_GD,            0, WAC_SuppressIN2,     @"Suppressed Mode (IN2)" },
-    { NO,   YES,    NO,     COMP_UD|COMP_SD|COMP_PL|COMP_GD,            0, WAC_PointMode,       @"Point Mode" },
-    { NO,   YES,    NO,     COMP_UD|COMP_SD|COMP_PL|COMP_GD,            0, WAC_SwitchStreamMode, @"Switch Stream Mode" },
-    { NO,   YES,    NO,     COMP_UD|COMP_SD|COMP_PL|COMP_GD,            0, WAC_StreamMode,      @"Stream Mode" },
+    { YES,  YES,    NO,     COMP_UD|COMP_SD|COMP_PL|COMP_GD,            0, WAC_SuppressIN2,     "Suppressed Mode (IN2)" },
+    { NO,   YES,    NO,     COMP_UD|COMP_SD|COMP_PL|COMP_GD,            0, WAC_PointMode,       "Point Mode" },
+    { NO,   YES,    NO,     COMP_UD|COMP_SD|COMP_PL|COMP_GD,            0, WAC_SwitchStreamMode, "Switch Stream Mode" },
+    { NO,   YES,    NO,     COMP_UD|COMP_SD|COMP_PL|COMP_GD,            0, WAC_StreamMode,      "Stream Mode" },
 
-    { YES,  YES,    NO,     COMP_UD|COMP_SD|COMP_PL|COMP_GD,            0, WAC_DataContinuous,  @"Continuous Data Mode" },
-    { NO,   YES,    NO,     COMP_UD|COMP_SD|COMP_PL|COMP_GD,            0, WAC_DataTrailing,    @"Trailing Data Mode" },
-    { NO,   YES,    NO,     COMP_UD|COMP_SD|COMP_PL|COMP_GD,            0, WAC_DataNormal,      @"Normal Data Mode" },
+    { YES,  YES,    NO,     COMP_UD|COMP_SD|COMP_PL|COMP_GD,            0, WAC_DataContinuous,  "Continuous Data Mode" },
+    { NO,   YES,    NO,     COMP_UD|COMP_SD|COMP_PL|COMP_GD,            0, WAC_DataTrailing,    "Trailing Data Mode" },
+    { NO,   YES,    NO,     COMP_UD|COMP_SD|COMP_PL|COMP_GD,            0, WAC_DataNormal,      "Normal Data Mode" },
 
-    { YES,  YES,    NO,     COMP_UD|COMP_SD|COMP_PL|COMP_GD,            0, WAC_OriginUL,        @"Origin UL" },
-    { NO,   YES,    NO,     COMP_UD|COMP_SD|COMP_PL|COMP_GD,            0, WAC_OriginLL,        @"Origin LL" },
+    { YES,  YES,    NO,     COMP_UD|COMP_SD|COMP_PL|COMP_GD,            0, WAC_OriginUL,        "Origin UL" },
+    { NO,   YES,    NO,     COMP_UD|COMP_SD|COMP_PL|COMP_GD,            0, WAC_OriginLL,        "Origin LL" },
 
-    { YES,  YES,    NO,     COMP_UD|COMP_SD|COMP_PL,                    0, "SC15240,15240\r",   @"Scale 15240 x 15240" },
-    { NO,   YES,    NO,     COMP_UD|COMP_SD|COMP_PL,                    0, "SC32768,32768\r",   @"Scale 32768 x 32768" },
+    { YES,  YES,    NO,     COMP_UD|COMP_SD|COMP_PL,                    0, "SC15240,15240\r",   "Scale 15240 x 15240" },
+    { NO,   YES,    NO,     COMP_UD|COMP_SD|COMP_PL,                    0, "SC32768,32768\r",   "Scale 32768 x 32768" },
 
     // Wacom II-S Specific Commands
-    { YES,  YES,    NO,     COMP_UD|COMP_SD|COMP_PL|ONLY_IIS,           0, WAC_PressureModeOn,  @"Enable Pressure Mode" },
-    { NO,   YES,    NO,     COMP_UD|COMP_SD|COMP_PL|ONLY_IIS,           0, WAC_PressureModeOff, @"Disable Pressure Mode" },
+    { YES,  YES,    NO,     COMP_UD|COMP_SD|COMP_PL|ONLY_IIS,           0, WAC_PressureModeOn,  "Enable Pressure Mode" },
+    { NO,   YES,    NO,     COMP_UD|COMP_SD|COMP_PL|ONLY_IIS,           0, WAC_PressureModeOff, "Disable Pressure Mode" },
 
-    { YES,  YES,    NO,     COMP_UD|COMP_SD|COMP_PL|ONLY_IIS,           0, WAC_ASCIIMode,       @"ASCII Data Mode" },
-    { NO,   YES,    NO,     COMP_UD|COMP_SD|COMP_PL|ONLY_IIS,           0, WAC_BinaryMode,      @"Binary Data Mode" },
+    { YES,  YES,    NO,     COMP_UD|COMP_SD|COMP_PL|ONLY_IIS,           0, WAC_ASCIIMode,       "ASCII Data Mode" },
+    { NO,   YES,    NO,     COMP_UD|COMP_SD|COMP_PL|ONLY_IIS,           0, WAC_BinaryMode,      "Binary Data Mode" },
 
-    { YES,  YES,    NO,     COMP_UD|COMP_SD|COMP_PL|ONLY_IIS,           0, WAC_RelativeModeOn,  @"Enable Relative Mode" },
-    { NO,   YES,    NO,     COMP_UD|COMP_SD|COMP_PL|ONLY_IIS,           0, WAC_RelativeModeOff, @"Disable Relative Mode" },
+    { YES,  YES,    NO,     COMP_UD|COMP_SD|COMP_PL|ONLY_IIS,           0, WAC_RelativeModeOn,  "Enable Relative Mode" },
+    { NO,   YES,    NO,     COMP_UD|COMP_SD|COMP_PL|ONLY_IIS,           0, WAC_RelativeModeOff, "Disable Relative Mode" },
 
-    { YES,  YES,    NO,     COMP_UD|COMP_SD|COMP_PL|ONLY_IIS,           0, WAC_Rez1000ppi,      @"Set 1000p/i Resolution" },
-    { NO,   YES,    NO,     COMP_UD|COMP_SD|COMP_PL|ONLY_IIS,           0, WAC_Rez50ppmm,       @"Set 50p/mm Resolution" },
+    { YES,  YES,    NO,     COMP_UD|COMP_SD|COMP_PL|ONLY_IIS,           0, WAC_Rez1000ppi,      "Set 1000p/i Resolution" },
+    { NO,   YES,    NO,     COMP_UD|COMP_SD|COMP_PL|ONLY_IIS,           0, WAC_Rez50ppmm,       "Set 50p/mm Resolution" },
 
     // Macro button commands
-    { YES,  NO,     NO,     COMP_UD,                                    0, WAC_MacroAll,        @"Enable All Menu Buttons" },
-    { NO,   NO,     NO,     COMP_UD,                                    0, WAC_MacroNoSetup,    @"Disable Setup Button" },
-    { NO,   NO,     NO,     COMP_UD,                                    0, WAC_MacroNoFunction, @"Disable Function Buttons" },
-    { NO,   NO,     NO,     COMP_UD,                                    0, WAC_MacroNoPressure, @"Disable Pressure Buttons" },
-    { NO,   NO,     NO,     COMP_UD,                                    0, WAC_MacroExtended,   @"Pressure Buttons as Macros" }
+    { YES,  NO,     NO,     COMP_UD,                                    0, WAC_MacroAll,        "Enable All Menu Buttons" },
+    { NO,   NO,     NO,     COMP_UD,                                    0, WAC_MacroNoSetup,    "Disable Setup Button" },
+    { NO,   NO,     NO,     COMP_UD,                                    0, WAC_MacroNoFunction, "Disable Function Buttons" },
+    { NO,   NO,     NO,     COMP_UD,                                    0, WAC_MacroNoPressure, "Disable Pressure Buttons" },
+    { NO,   NO,     NO,     COMP_UD,                                    0, WAC_MacroExtended,   "Pressure Buttons as Macros" }
 
     //  // Wacom II commands: BA, LA, CA, OR, RC, RS, SB, YR
-    //  { YES,  NO,     NO,     COMP_NONE,                                  0, "BA\r",  @"BA Command" },
-    //  { NO,   NO,     NO,     COMP_NONE,                                  0, "LA\r",  @"LA Command" },
-    //  { NO,   NO,     NO,     COMP_NONE,                                  0, "CA\r",  @"CA Command" },
-    //  { NO,   NO,     NO,     COMP_NONE,                                  0, "OR\r",  @"OR Command" },
-    //  { NO,   NO,     NO,     COMP_NONE,                                  0, "RC\r",  @"RC Command" },
-    //  { NO,   NO,     NO,     COMP_NONE,                                  0, "RS\r",  @"RS Command" },
-    //  { NO,   NO,     NO,     COMP_NONE,                                  0, "SB\r",  @"SB Command" },
-    //  { NO,   NO,     NO,     COMP_NONE,                                  0, "YR\r",  @"YR Command" },
+    //  { YES,  NO,     NO,     COMP_NONE,                                  0, "BA\r",  "BA Command" },
+    //  { NO,   NO,     NO,     COMP_NONE,                                  0, "LA\r",  "LA Command" },
+    //  { NO,   NO,     NO,     COMP_NONE,                                  0, "CA\r",  "CA Command" },
+    //  { NO,   NO,     NO,     COMP_NONE,                                  0, "OR\r",  "OR Command" },
+    //  { NO,   NO,     NO,     COMP_NONE,                                  0, "RC\r",  "RC Command" },
+    //  { NO,   NO,     NO,     COMP_NONE,                                  0, "RS\r",  "RS Command" },
+    //  { NO,   NO,     NO,     COMP_NONE,                                  0, "SB\r",  "SB Command" },
+    //  { NO,   NO,     NO,     COMP_NONE,                                  0, "YR\r",  "YR Command" },
     //
     //  // Obsolete II-S Commands: AS, DE, IC, PH, SC
-    //  { YES,  NO,     NO,     COMP_NONE,                                  0, "AS\r",  @"AS Command" },
-    //  { NO,   NO,     NO,     COMP_NONE,                                  0, "DE\r",  @"DE Command" },
-    //  { NO,   NO,     NO,     COMP_NONE,                                  0, "IC\r",  @"IC Command" },
-    //  { NO,   NO,     NO,     COMP_NONE,                                  0, "PH\r",  @"PH Command" },
-    //  { NO,   NO,     NO,     COMP_NONE,                                  0, "SC\r",  @"SC Command" }
+    //  { YES,  NO,     NO,     COMP_NONE,                                  0, "AS\r",  "AS Command" },
+    //  { NO,   NO,     NO,     COMP_NONE,                                  0, "DE\r",  "DE Command" },
+    //  { NO,   NO,     NO,     COMP_NONE,                                  0, "IC\r",  "IC Command" },
+    //  { NO,   NO,     NO,     COMP_NONE,                                  0, "PH\r",  "PH Command" },
+    //  { NO,   NO,     NO,     COMP_NONE,                                  0, "SC\r",  "SC Command" }
 };
 
 - (id)init {
-    [super init];
+    self = [super init];
 
     // Set some values we'll use later
     theController       = self;
@@ -332,7 +332,9 @@ TMCommand tabletCommands[] = {
     NSDictionary *prefs = [ [NSUserDefaults standardUserDefaults] persistentDomainForName:bundleID ];
 
     if (prefs != nil) {
+#if !ARC_ENABLED
         [ prefs retain ];
+#endif
 
         // Tablet Enabled
         [ checkEnabled setState:[ [prefs objectForKey:keyTabletEnabled] boolValue ] ? NSMixedState : NSOffState ];
@@ -376,8 +378,9 @@ TMCommand tabletCommands[] = {
             [ textTweakScaleX setIntValue:[[prefs objectForKey:keyTabletPCScaleX] intValue] ];
             [ textTweakScaleY setIntValue:[[prefs objectForKey:keyTabletPCScaleY] intValue] ];
         }
-
+#if !ARC_ENABLED
         [ prefs release ];
+#endif
     }
 }
 
@@ -477,16 +480,20 @@ TMCommand tabletCommands[] = {
     kernResult = IOServiceGetMatchingServices(masterPort, classesToMatch, &serialPortIterator);
 
     if (KERN_SUCCESS == kernResult) {
-        //      while (IOIteratorIsValid(serialPortIterator))
-        //      {
+      // while (IOIteratorIsValid(serialPortIterator)) {
         io_object_t portService;
 
         // Keep iterating until successful
         while ((portService = IOIteratorNext(serialPortIterator))) {
+#if !ARC_ENABLED
             NSString *devicePath = (NSString*)IORegistryEntryCreateCFProperty(portService, CFSTR(kIOCalloutDeviceKey), kCFAllocatorDefault, 0);
+#else
+            NSString *devicePath = (__bridge NSString*)IORegistryEntryCreateCFProperty(portService, CFSTR(kIOCalloutDeviceKey), kCFAllocatorDefault, 0);
+#endif
 
             if (devicePath) {
                 NSMutableString *devPath = [ NSMutableString stringWithString:devicePath ];
+                CFRelease((CFTypeRef)devicePath);
                 [ devPath replaceOccurrencesOfString:@"/dev/cu." withString:@"" options:NSLiteralSearch range:NSMakeRange(0, [devPath length]) ];
                 [ devPath replaceOccurrencesOfString:@"/dev/" withString:@"" options:NSLiteralSearch range:NSMakeRange(0, [devPath length]) ];
                 [ serialArray addObject:devPath ];
@@ -494,7 +501,7 @@ TMCommand tabletCommands[] = {
 
             (void) IOObjectRelease(portService);
         }
-        //      }
+   // }
     }
 
 exit:
@@ -553,7 +560,10 @@ exit:
         sscanf(stats, "%d %d : %d %d : %d %d : %d : %d %d %d %d : %d : %d %d", &set, &fmt, &sx, &sy, &tx, &ty, &ev, &b1, &b2, &b3, &b4, &p, &bps, &pps);
 
         if (current_tab == 3) {
-            NSString *streamString = [ [ NSString stringWithCString:packet encoding:NSASCIIStringEncoding ] retain ];
+            NSString *streamString = [ NSString stringWithCString:packet encoding:NSASCIIStringEncoding ];
+#if !ARC_ENABLED
+            [ streamString retain ];
+#endif
 
             // Replace or append the stream based on expectation
             if (stream_reply_size == 0) {
@@ -1152,7 +1162,7 @@ exit:
             if (divFlag && addedOne)
                 [[popupCommands menu] addItem:[NSMenuItem separatorItem]];
 
-            [ popupCommands addItemWithTitle:[ thePane localizedString:item->description ] ];
+            [ popupCommands addItemWithTitle:[ thePane localizedString:[ NSString stringWithCString:item->description encoding:NSASCIIStringEncoding ] ] ];
             [ [popupCommands lastItem] setTag:i ];
             addedOne = YES;
             divFlag = NO;
@@ -1413,7 +1423,10 @@ exit:
 
     [ self sendNSStringToDaemon:settingsString ];
 
+#if !ARC_ENABLED
     [ settingsString autorelease ];
+#endif
+
     [ self requestCurrentSettings ];
 }
 
@@ -1757,12 +1770,17 @@ exit:
     [ task setArguments:[ NSArray arrayWithObjects:@"-e", @"'tell application \"InkServer\" to quit'", nil ] ];
     [ task launch ];
     [ task waitUntilExit ];
+#if !ARC_ENABLED
     [ task release ];
+#endif
 
     [ NSThread sleepUntilDate:[ NSDate dateWithTimeIntervalSinceNow:0.5 ] ];
 
     static NSString *inkBundle = @"com.apple.ink.framework";
-    NSMutableDictionary *inkprefs = [ [ NSMutableDictionary dictionaryWithCapacity:100 ] retain ];
+    NSMutableDictionary *inkprefs = [ NSMutableDictionary dictionaryWithCapacity:100 ];
+#if !ARC_ENABLED
+    [ inkprefs retain ];
+#endif
     [ inkprefs addEntriesFromDictionary:[ [NSUserDefaults standardUserDefaults] persistentDomainForName:inkBundle ] ];
     [ inkprefs setValue:NSBOOL(YES) forKey:@"recognitionEnabled" ];
     [ inkprefs setValue:NSBOOL(YES) forKey:@"inkMenuVisible" ];
@@ -1770,13 +1788,17 @@ exit:
     [ inkprefs setValue:NSBOOL(YES) forKey:@"inkWindowVisible" ];
     [ [NSUserDefaults standardUserDefaults] setPersistentDomain:inkprefs forName:inkBundle ];
     [ [NSUserDefaults standardUserDefaults] synchronize ];
+#if !ARC_ENABLED
     [ inkprefs release ];
+#endif
 
     task = [[NSTask alloc] init];
     [ task setLaunchPath:@"/usr/bin/open" ];
     [ task setArguments:[ NSArray arrayWithObjects:@"/System/Library/Components/Ink.component/Contents/SharedSupport/InkServer.app", nil ] ];
     [ task launch ];
+#if !ARC_ENABLED
     [ task release ];
+#endif
 }
 
 #define kKillHeading    @"Kill TabletMagicDaemon?"
@@ -1807,12 +1829,13 @@ exit:
            alertWithMessageText: kill
            defaultButton: okay
            alternateButton: cancel
-           otherButton:nil
+           otherButton: nil
            informativeTextWithFormat: detail
-           ]    beginSheetModalForWindow: [[thePane mainView] window]
-         modalDelegate:self
-         didEndSelector:@selector(killDialogEnded:returnCode:contextInfo:)
-         contextInfo:self
+           ]
+            beginSheetModalForWindow: [[thePane mainView] window]
+            modalDelegate: self
+            didEndSelector: @selector(killDialogEnded:returnCode:contextInfo:)
+            contextInfo: (void*)self
          ];
     }
 
@@ -1862,10 +1885,11 @@ exit:
            alternateButton: cancel
            otherButton:nil
            informativeTextWithFormat: detail
-           ]    beginSheetModalForWindow: [[thePane mainView] window]
-         modalDelegate:self
-         didEndSelector:@selector(hackDialogEnded:returnCode:contextInfo:)
-         contextInfo:self
+           ]
+            beginSheetModalForWindow: [[thePane mainView] window]
+            modalDelegate: self
+            didEndSelector: @selector(hackDialogEnded:returnCode:contextInfo:)
+            contextInfo: (void*)self
          ];
     }
 
@@ -1873,8 +1897,11 @@ exit:
 
 - (void)hackDialogEnded:(NSAlert *)alert returnCode:(int)returnCode contextInfo:(void *)contextInfo {
     if (returnCode == 1) {
+#if !ARC_ENABLED
         TMController *controller = ((TMController*)contextInfo);
-
+#else
+        TMController *controller = ((__bridge TMController*)contextInfo);
+#endif
         (void) [ NSTimer scheduledTimerWithTimeInterval:0.1
                                                  target:controller
                                                selector:@selector(doApplyHackTimer:)

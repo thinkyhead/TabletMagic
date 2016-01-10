@@ -5,5 +5,6 @@
 #ifdef __OBJC__
     #import <Foundation/Foundation.h>
     #import <AppKit/AppKit.h>
+    #define ARC_ENABLED (__has_feature(objc_arc) && __clang_major__ >= 3)
 #endif
 

@@ -77,25 +77,27 @@
      [[proxDict objectForKey:kEnterProximity] getValue:&enterProximity];
  
      if (enterProximity != 0) { //Enter Proximity
-     [[proxDict objectForKey:kPointerType] getValue:&pointerType];
-     erasing = (pointerType == NX_TABLET_POINTER_ERASER);
+         [[proxDict objectForKey:kPointerType] getValue:&pointerType];
+         erasing = (pointerType == NX_TABLET_POINTER_ERASER);
+     
+         [[proxDict objectForKey:kDeviceID] getValue:&deviceID];
+     
+         if ([knownDevices setCurrentDeviceByID: deviceID] == NO) {
+             //must be a new device
+             Transducer *newDevice = [[Transducer alloc]
+             initWithIdent: deviceID
+             color: [NSColor blackColor]];
+         
+             [knownDevices addDevice:newDevice];
+#if !ARC_ENABLED
+             [newDevice release];
+#endif
+             [knownDevices setCurrentDeviceByID: deviceID];
+         }
  
-     [[proxDict objectForKey:kDeviceID] getValue:&deviceID];
- 
-     if ([knownDevices setCurrentDeviceByID: deviceID] == NO) {
-     //must be a new device
-     Transducer *newDevice = [[Transducer alloc]
-     initWithIdent: deviceID
-     color: [NSColor blackColor]];
- 
-     [knownDevices addDevice:newDevice];
-     [newDevice release];
-     [knownDevices setCurrentDeviceByID: deviceID];
-     }
- 
-     [[NSNotificationCenter defaultCenter]
-     postNotificationName:WTViewUpdatedNotification
-     object: self];
+         [[NSNotificationCenter defaultCenter]
+         postNotificationName:WTViewUpdatedNotification
+         object: self];
      }
      */
 }

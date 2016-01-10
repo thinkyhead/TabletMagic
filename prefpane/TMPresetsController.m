@@ -92,7 +92,9 @@
     NSDictionary *prefs = [ [NSUserDefaults standardUserDefaults] persistentDomainForName:[[thePane bundle] bundleIdentifier] ];
 
     if (prefs != nil) {
+#if !ARC_ENABLED
         [ prefs retain ];
+#endif
 
         NSDictionary *dict = [ prefs objectForKey:keyPresets ];
         if (dict) {
@@ -105,7 +107,9 @@
             }
         }
 
+#if !ARC_ENABLED
         [ prefs release ];
+#endif
     }
 
     if (!presetsArray || [presetsArray count] == 0) {
@@ -203,7 +207,9 @@
         }
     }
 
-    [p release];
+#if !ARC_ENABLED
+    [ p release ];
+#endif
 }
 
 - (void)updateControlsForActivePreset {
@@ -426,7 +432,9 @@
     [ newPreset initWithDictionary:[activePreset dictionary] ];
     [ newPreset setName:n ];
     [ presetsArray addObject:[newPreset dictionary] ];
+#if !ARC_ENABLED
     [ newPreset release ];
+#endif
     activePresetIndex = [ presetsArray count ] - 1;
     [ activePreset initWithDictionary:[presetsArray objectAtIndex:activePresetIndex] ];
     [ self updatePresetsMenu ];
@@ -493,7 +501,13 @@
 - (NSDictionary*)dictionary {
     static NSDictionary *dict = NULL;
 
-    if (dict) [ dict release ];
+    if (dict) {
+#if !ARC_ENABLED
+        [ dict release ];
+#else
+        dict = nil;
+#endif
+    }
 
     NSArray *keys   = [NSArray arrayWithObjects:keyPresetList, keySelectedPreset, nil];
     NSArray *values = [NSArray arrayWithObjects:presetsArray, NSINT(activePresetIndex), nil];

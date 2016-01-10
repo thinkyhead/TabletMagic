@@ -566,7 +566,10 @@
 		1DBD214908BA80EA00186707 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				"CLANG_ENABLE_OBJC_ARC[arch=x86_64]" = YES;
+				"CLANG_ENABLE_OBJC_ARC[sdk=macosx10.5][arch=x86_64]" = NO;
+				"CLANG_ENABLE_OBJC_ARC[sdk=macosx10.6][arch=x86_64]" = NO;
+				"CLANG_ENABLE_OBJC_ARC[sdk=macosx10.7][arch=x86_64]" = NO;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				DEPLOYMENT_LOCATION = YES;
@@ -587,6 +590,10 @@
 		1DBD214A08BA80EA00186707 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				"CLANG_ENABLE_OBJC_ARC[arch=x86_64]" = YES;
+				"CLANG_ENABLE_OBJC_ARC[sdk=macosx10.5][arch=x86_64]" = NO;
+				"CLANG_ENABLE_OBJC_ARC[sdk=macosx10.6][arch=x86_64]" = NO;
+				"CLANG_ENABLE_OBJC_ARC[sdk=macosx10.7][arch=x86_64]" = NO;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -596,6 +603,7 @@
 				GCC_PREFIX_HEADER = prefpane/TabletMagic_Prefix.pch;
 				INFOPLIST_FILE = prefpane/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/PreferencePanes";
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				PRODUCT_NAME = TabletMagic;
 				WRAPPER_EXTENSION = prefPane;
 			};
@@ -604,7 +612,6 @@
 		1DBD214D08BA80EA00186707 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PREPROCESSOR_DEFINITIONS = CONFIG_$CONFIGURATION;
@@ -642,7 +649,6 @@
 				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
