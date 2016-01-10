@@ -572,7 +572,8 @@
 				DEPLOYMENT_LOCATION = YES;
 				DSTROOT = /;
 				GCC_DYNAMIC_NO_PIC = NO;
-				"GCC_ENABLE_OBJC_GC[arch=x86_64]" = supported;
+				"GCC_ENABLE_OBJC_GC[sdk=macosx10.6][arch=x86_64]" = supported;
+				"GCC_ENABLE_OBJC_GC[sdk=macosx10.7][arch=x86_64]" = supported;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = prefpane/TabletMagic_Prefix.pch;
@@ -589,7 +590,8 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				"GCC_ENABLE_OBJC_GC[arch=x86_64]" = supported;
+				"GCC_ENABLE_OBJC_GC[sdk=macosx10.6][arch=x86_64]" = supported;
+				"GCC_ENABLE_OBJC_GC[sdk=macosx10.7][arch=x86_64]" = supported;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = prefpane/TabletMagic_Prefix.pch;
 				INFOPLIST_FILE = prefpane/Info.plist;
