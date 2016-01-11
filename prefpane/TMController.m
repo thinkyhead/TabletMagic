@@ -1924,7 +1924,7 @@ exit:
            alertWithMessageText: hack
            defaultButton: okay
            alternateButton: cancel
-           otherButton:nil
+           otherButton: nil
            informativeTextWithFormat: detail
            ]
             beginSheetModalForWindow: [[thePane mainView] window]
@@ -1984,7 +1984,7 @@ exit:
 
 - (void)doApplyHackTimer:(NSTimer*)theTimer {
     char *reply = [ self runLaunchHelper:@"enabletabletpc" ];
-    [ self handleEnablerResponse: reply ];
+    [ self handleEnablerResponse:reply ];
 }
 
 #define kFailHeading    @"No Digitizer Found!"
@@ -2020,15 +2020,15 @@ exit:
             // For 10.3 through 10.9 ...
             
             [ [ NSAlert
-               alertWithMessageText: heading
-               defaultButton: okay
-               alternateButton: nil
+               alertWithMessageText:heading
+               defaultButton:okay
+               alternateButton:nil
                otherButton:nil
-               informativeTextWithFormat: msg
-               ]    beginSheetModalForWindow: [[thePane mainView] window]
-             modalDelegate:self
-             didEndSelector:@selector(failDialogEnded:returnCode:contextInfo:)
-             contextInfo:nil
+               informativeTextWithFormat:msg
+               ] beginSheetModalForWindow:[[thePane mainView] window]
+                            modalDelegate:self
+                           didEndSelector:@selector(failDialogEnded:returnCode:contextInfo:)
+                              contextInfo:nil
              ];
             
 #if __MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_9
@@ -2055,7 +2055,7 @@ exit:
     else {
         NSDictionary *error;
         NSAppleScript *restartScript = [[NSAppleScript alloc] initWithSource:@"tell application \"Finder\" to restart" ];
-        [restartScript executeAndReturnError: &error];
+        [restartScript executeAndReturnError:&error];
     }
 }
 
