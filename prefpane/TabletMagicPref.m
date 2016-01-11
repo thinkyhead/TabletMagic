@@ -43,12 +43,12 @@ TabletMagicPref *thePane;
 
     // Notify us if the preference pane is closed
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(paneTerminating:)
+                                             selector:@selector(paneTerminating)
                                                  name:NSApplicationWillTerminateNotification
                                                object:nil];
 
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(screenChanged:)
+                                             selector:@selector(screenChanged)
                                                  name:NSApplicationDidChangeScreenParametersNotification
                                                object:nil];
 

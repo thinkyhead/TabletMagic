@@ -176,6 +176,7 @@ TMCommand tabletCommands[] = {
     cfPortIn = CFMessagePortCreateLocal(kCFAllocatorDefault, CFSTR("com.thinkyhead.tabletmagic.prefpane"), message_callback, nil, false);
     CFRunLoopSourceRef source = CFMessagePortCreateRunLoopSource(kCFAllocatorDefault, cfPortIn, 0);
     CFRunLoopAddSource( CFRunLoopGetCurrent(), source, kCFRunLoopDefaultMode );
+    CFRelease(source);
 
     return self;
 }
