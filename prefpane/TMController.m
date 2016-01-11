@@ -1901,6 +1901,9 @@ exit:
         cancel = [ thePane localizedString:kHackCancel ];
     }
 
+#if __MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_10
+
+#if __MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_9
     if ([ thePane systemVersionBeforeMajor:10 minor:3 ]) {
 
         // Before 10.3 ...
@@ -1912,6 +1915,7 @@ exit:
         }
     }
     else {
+#endif
 
         // For 10.3 through 10.9 ...
 
@@ -1927,7 +1931,10 @@ exit:
             didEndSelector: @selector(hackDialogEnded:returnCode:contextInfo:)
             contextInfo: (void*)self
          ];
+
+#if __MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_9
     }
+#endif
 
 #else
 
@@ -1955,6 +1962,8 @@ exit:
 
 }
 
+#if __MAC_OS_X_VERSION_MIN_REQUIRED == MAC_OS_X_VERSION_10_9
+
 - (void)hackDialogEnded:(NSAlert *)alert returnCode:(int)returnCode contextInfo:(void *)contextInfo {
     if (returnCode == 1) {
 #if !ARC_ENABLED
@@ -1969,6 +1978,8 @@ exit:
                                                 repeats:NO ];
     }
 }
+
+#endif
 
 - (void)doApplyHackTimer:(NSTimer*)theTimer {
     char *reply = [ self runLaunchHelper:@"enabletabletpc" ];
@@ -1995,11 +2006,18 @@ exit:
     if (foundNone || didFail) {
         NSString *msg = didFail ? detail2 : detail;
 
+#if __MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_10
+        
+#if __MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_9
         if ([ thePane systemVersionBeforeMajor:10 minor:3 ]) {
             // Before 10.3 ...
             (void) NSRunAlertPanelRelativeToWindow( heading, msg, okay, nil, nil, [ [thePane mainView] window ] );
         }
         else {
+#endif
+            
+            // For 10.3 through 10.9 ...
+            
             [ [ NSAlert
                alertWithMessageText: heading
                defaultButton: okay
@@ -2011,7 +2029,10 @@ exit:
              didEndSelector:@selector(failDialogEnded:returnCode:contextInfo:)
              contextInfo:nil
              ];
+            
+#if __MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_9
         }
+#endif
         
 #else
         
