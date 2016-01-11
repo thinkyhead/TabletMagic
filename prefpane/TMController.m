@@ -969,7 +969,7 @@ exit:
         pid_t pids[10];
         char *args[] = { nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil };
 
-        if ([ thePane systemVersion ] < 0x1030) {
+        if ([ thePane systemVersionBeforeMajor:10 minor:3 ]) {
             int err = 0;
             unsigned num = 0;
 
@@ -1610,13 +1610,11 @@ exit:
 - (OSStatus)updateAutoStart {
     BOOL        state = ([checkAutoStart state] == NSOnState);
     OSStatus    result = errAuthorizationSuccess;
-    long        sysVer = [ thePane systemVersion ];
 
-    if (sysVer < 0x1040)
+    if ([ thePane systemVersionBeforeMajor:10 minor:4 ])
         (void) [ self runLaunchHelper:(state ? [ self GetStartupArgsAndDaemonize:YES ] : @"disable") ];
-
     else {
-        //      if (NO && !state && sysVer >= 0x1060) {
+        //      if (NO && [ thePane systemVersionAtLeastMajor:10 minor:6 ]) {
         //          CFErrorRef cfError;
         //          BOOL result = SMJobRemove(kSMDomainUserLaunchd, (CFStringRef)kLaunchdLabel, nil, FALSE, &cfError);
         //          NSLog(@"Was job removed? %s", result ? "YES" : "NO");
@@ -1636,7 +1634,7 @@ exit:
                                                                                             @"ServiceDescription" :  @"Daemon to support Wacom serial tablets"
                                                                                             } ];
 
-            if (sysVer >= 0x1050) {
+            if ([ thePane systemVersionAtLeastMajor:10 minor:5 ]) {
                 // In Leopard load as a LaunchAgent in both LoginWindow and Aqua window sessions
                 [ launcher  setObject: @[ @"LoginWindow", @"Aqua" ]
                                forKey: @"LimitLoadToSessionType" ];
@@ -1646,7 +1644,7 @@ exit:
                 [ launcher  setObject: @"root" forKey: @"UserName" ];
             }
 
-            //          if (NO && sysVer >= 0x1060) {
+            //          if (NO && [ thePane systemVersionAtLeastMajor:10 minor:6 ]) {
             //              CFErrorRef cfError;
             //              BOOL result = SMJobSubmit(kSMDomainUserLaunchd, (CFDictionaryRef)launcher, nil, &cfError);
             //              NSLog(@"Was job submitted? %s", result ? "YES" : "NO");
@@ -1657,7 +1655,7 @@ exit:
                 [ launcher writeToFile:(@"/tmp/" kLaunchPlistName) atomically:NO ];
 
                 // Run the LaunchHelper bin to install the agent or daemon
-                (void)[ self runLaunchHelper:(sysVer < 0x1050) ? @"launchd" : @"launchd10.5" ];
+                (void)[ self runLaunchHelper:[ thePane systemVersionBeforeMajor:10 minor:5 ] ? @"launchd" : @"launchd10.5" ];
             }
         }
     }
@@ -1679,13 +1677,12 @@ exit:
 - (void)updateAutoStartCheckbox {
     BOOL isAutoStarting = NO;
 
-    UInt32 sysVer = [ thePane systemVersion ];
-    //  if (NO && sysVer >= 0x1060) {
+    // if (NO && [ thePane systemVersionAtLeastMajor:10 minor:6 ]) {
     //      NSDictionary *launchDict = (NSDictionary*)SMJobCopyDictionary(kSMDomainUserLaunchd, (CFStringRef)kLaunchdLabel);
     //      isAutoStarting = launchDict != nil;
     //  }
     //  else
-    if (sysVer >= 0x1040) {
+    if ([ thePane systemVersionAtLeastMajor:10 minor:4 ]) {
         NSDictionary *launchDict = [ NSDictionary dictionaryWithContentsOfFile: @"/Library/LaunchDaemons/" kLaunchPlistName ];
 
         if (launchDict == nil)
@@ -1818,13 +1815,22 @@ exit:
         cancel = [ thePane localizedString:kKillCancel ];
     }
 
-    if ([thePane systemVersion] < 0x1030) {
-        result = NSRunAlertPanelRelativeToWindow( kill, detail, okay, cancel, nil, [ [thePane mainView] window ] );
+#if __MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_10
+
+#if __MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_9
+
+    if ([ thePane systemVersionBeforeMajor:10 minor:3 ]) {
+        result = NSRunAlertPanelRelativeToWindow( kill, detail, okay, cancel, nil, [ [thePane mainView] window ] ); // NSBeginAlertSheet up to 10.8, NSAlert from 10.9 onward
 
         if (result == 1)
             [ self killDaemonSoftly ];
     }
     else {
+
+#endif
+
+        // For 10.3 through 10.9 ...
+
         [ [ NSAlert
            alertWithMessageText: kill
            defaultButton: okay
@@ -1832,12 +1838,35 @@ exit:
            otherButton: nil
            informativeTextWithFormat: detail
            ]
-            beginSheetModalForWindow: [[thePane mainView] window]
-            modalDelegate: self
-            didEndSelector: @selector(killDialogEnded:returnCode:contextInfo:)
-            contextInfo: (void*)self
+         beginSheetModalForWindow: [[thePane mainView] window]
+         modalDelegate: self
+         didEndSelector: @selector(killDialogEnded:returnCode:contextInfo:)
+         contextInfo: (void*)self
          ];
+
+#if __MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_9
     }
+#endif
+
+#else
+
+    // For 10.10 and up ...
+
+    NSAlert *alert = [[NSAlert alloc] init];
+    [alert setMessageText: kill];
+    [alert addButtonWithTitle: okay];
+    [alert addButtonWithTitle: cancel];
+    [alert setInformativeText: detail];
+    
+    [alert beginSheetModalForWindow:[[thePane mainView] window]
+                  completionHandler:^(NSModalResponse returnCode) {
+                      if (returnCode == NSAlertFirstButtonReturn) {
+                          [ self killDaemonSoftly ];
+                      }
+                  }
+     ];
+    
+#endif
 
 }
 
@@ -1870,15 +1899,20 @@ exit:
         cancel = [ thePane localizedString:kHackCancel ];
     }
 
-    if ([thePane systemVersion] < 0x1030) {
-        result = NSRunAlertPanelRelativeToWindow( hack, detail, okay, cancel, nil, [ [thePane mainView] window ] );
+    if ([ thePane systemVersionBeforeMajor:10 minor:3 ]) {
 
+        // Before 10.3 ...
+
+        result = NSRunAlertPanelRelativeToWindow( hack, detail, okay, cancel, nil, [ [thePane mainView] window ] );
         if (result == 1) {
             char *reply = [ self runLaunchHelper:@"enabletabletpc" ];
             [ self handleEnablerResponse:reply ];
         }
     }
     else {
+
+        // For 10.3 through 10.9 ...
+
         [ [ NSAlert
            alertWithMessageText: hack
            defaultButton: okay
@@ -1892,6 +1926,30 @@ exit:
             contextInfo: (void*)self
          ];
     }
+
+#else
+
+    // For 10.10 and up ...
+
+    NSAlert *alert = [[NSAlert alloc] init];
+    [ alert setMessageText:hack ];
+    [ alert addButtonWithTitle:okay ];
+    [ alert addButtonWithTitle:cancel ];
+    [ alert setInformativeText:detail ];
+
+    [ alert beginSheetModalForWindow:[[thePane mainView] window]
+                  completionHandler:^(NSModalResponse returnCode) {
+                      if (returnCode == NSAlertFirstButtonReturn) {
+                          (void) [ NSTimer scheduledTimerWithTimeInterval:0.1
+                                                                   target:self
+                                                                 selector:@selector(doApplyHackTimer:)
+                                                                 userInfo:nil
+                                                                  repeats:NO ];
+                      }
+                  }
+     ];
+
+#endif
 
 }
 
@@ -1935,7 +1993,8 @@ exit:
     if (foundNone || didFail) {
         NSString *msg = didFail ? detail2 : detail;
 
-        if ([thePane systemVersion] < 0x1030) {
+        if ([ thePane systemVersionBeforeMajor:10 minor:3 ]) {
+            // Before 10.3 ...
             (void) NSRunAlertPanelRelativeToWindow( heading, msg, okay, nil, nil, [ [thePane mainView] window ] );
         }
         else {
@@ -1951,6 +2010,23 @@ exit:
              contextInfo:nil
              ];
         }
+        
+#else
+        
+        // For 10.10 and up ...
+        
+        NSAlert *alert = [[NSAlert alloc] init];
+        [ alert setMessageText:heading ];
+        [ alert addButtonWithTitle:okay ];
+        [ alert setInformativeText:msg ];
+
+        [ alert beginSheetModalForWindow:[[thePane mainView] window]
+                       completionHandler:^(NSModalResponse returnCode) { /* do nothing */ }
+         ];
+        
+#endif
+
+
     }
     else {
         NSDictionary *error;
@@ -2116,7 +2192,7 @@ exit:
     char *outstring;
     int len=0;
 
-    if ([ thePane systemVersion ] < 0x1040) {
+    if ([ thePane systemVersionBeforeMajor:10 minor:4 ]) {
         NSData *data = [ string dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES ];
         len = [ data length ];
         outstring = malloc(len + 1);

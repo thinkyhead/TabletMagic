@@ -7,8 +7,14 @@
 
 #import <PreferencePanes/PreferencePanes.h>
 
+typedef struct {
+    NSInteger majorVersion;
+    NSInteger minorVersion;
+    NSInteger patchVersion;
+} TMOperatingSystemVersion;
+
 @interface TabletMagicPref : NSPreferencePane {
-    SInt32  systemVersion;
+    TMOperatingSystemVersion systemVersion;
     BOOL    has_tablet_events;
 }
 
@@ -31,7 +37,9 @@
 //
 - (void) screenChanged:(NSNotification*)aNotification;
 
-- (long) systemVersion;
+- (TMOperatingSystemVersion*) systemVersion;
+- (BOOL) systemVersionAtLeastMajor:(long)maj minor:(long)min;
+- (BOOL) systemVersionBeforeMajor:(long)maj minor:(long)min;
 - (BOOL) canUseTabletEvents;
 - (NSBundle*) bundle;
 - (NSString*) localizedString:(NSString*)string;

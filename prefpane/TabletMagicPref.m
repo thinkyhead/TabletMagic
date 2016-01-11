@@ -16,19 +16,30 @@ TabletMagicPref *thePane;
     thePane = self;
 
 #if __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_10
+    // This replacement is available from 10.10 onward
     NSOperatingSystemVersion ver = [[NSProcessInfo processInfo] operatingSystemVersion];
-    systemVersion = ver.majorVersion * 0x10 / 10 + ver.minorVersion;
+    systemVersion.majorVersion = ver.majorVersion;
+    systemVersion.minorVersion = ver.minorVersion;
+    systemVersion.patchVersion = ver.patchVersion;
 #else
+    // This method may be available in 10.9
+    // or by extending NSProcessInfo with a category
     if ([NSProcessInfo respondsToSelector:@selector(operatingSystemVersion)]) {
         NSOperatingSystemVersion ver = [[NSProcessInfo processInfo] operatingSystemVersion];
-        systemVersion = ver.majorVersion * 0x10 / 10 + ver.minorVersion;
+        systemVersion.majorVersion = ver.majorVersion;
+        systemVersion.minorVersion = ver.minorVersion;
+        systemVersion.patchVersion = ver.patchVersion;
     }
     else {
-        Gestalt(gestaltSystemVersion, &systemVersion);
+        // Deprecated since 10.8
+        SInt32 val;
+        Gestalt(gestaltSystemVersionMajor, &val); systemVersion.majorVersion = val;
+        Gestalt(gestaltSystemVersionMinor, &val); systemVersion.minorVersion = val;
+        Gestalt(gestaltSystemVersionBugFix, &val); systemVersion.patchVersion = val;
     }
 #endif
 
-    has_tablet_events = (systemVersion >= 0x1030);
+    has_tablet_events = [ self systemVersionAtLeastMajor:10 minor:3 ];
 
     // Notify us if the preference pane is closed
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -60,8 +71,16 @@ TabletMagicPref *thePane;
     [ theController screenChanged ];
 }
 
-- (long) systemVersion {
-    return systemVersion;
+- (TMOperatingSystemVersion*) systemVersion {
+    return &systemVersion;
+}
+
+- (BOOL) systemVersionAtLeastMajor:(long)maj minor:(long)min {
+    return systemVersion.majorVersion >= maj || (systemVersion.majorVersion == maj && systemVersion.minorVersion >= min);
+}
+
+- (BOOL) systemVersionBeforeMajor:(long)maj minor:(long)min {
+    return systemVersion.majorVersion < maj || (systemVersion.majorVersion == maj && systemVersion.minorVersion < min);
 }
 
 - (BOOL) canUseTabletEvents {

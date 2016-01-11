@@ -170,7 +170,7 @@
     scaleFactorW = maxWidth / activeWidth;
     scaleFactorH = maxHeight / activeHeight;
 
-    if ([ thePane systemVersion ] >= 0x1030)
+    if ([ thePane systemVersionAtLeastMajor:10 minor:3 ])
         [ self setHidden:YES ];
 
     // Make the control size match the proportions
@@ -179,7 +179,7 @@
                                originalFrame.origin.y + (originalFrame.size.height - activeHeight) / 2.0f,
                                activeWidth, activeHeight) ];
 
-    if ([ thePane systemVersion ] >= 0x1030)
+    if ([ thePane systemVersionAtLeastMajor:10 minor:3 ])
         [ self setHidden:NO ];
 
     [ self setNeedsDisplay:YES ];
