@@ -46,7 +46,9 @@
 typedef struct init_arguments {
     bool    quiet;      //!< suppress diagnostic messages
     bool    command;    //!< run in command mode
+#if __MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5
     bool    dodaemon;   //!< run as a daemon
+#endif
     bool    forcepc;    //!< always assume ISD-V4 at 19200
     bool    baud38400;  //!< initially try 38400
     bool    startoff;   //!< start up in disabled mode

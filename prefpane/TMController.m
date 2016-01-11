@@ -1583,8 +1583,10 @@ exit:
         [ argString appendString:[NSString stringWithFormat:@" -m -s%.4f", preset.mouseScaling ] ];
     }
 
+#if __MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5
     if ( daemonize )
         [ argString appendString:@" -d" ];
+#endif
 
     if ( hackintosh ) {
         if ( [checkTabletPC state] == NSOnState )

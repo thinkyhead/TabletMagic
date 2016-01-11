@@ -352,6 +352,7 @@ int main(int argc, char *argv[]) {
             (void)set_suid_root(argv[0]);
 
 
+#if __MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5
         //
         // Run as a daemon unless quitting
         //
@@ -363,7 +364,7 @@ int main(int argc, char *argv[]) {
             if (isdaemon != 0)
                 syslog(LOG_ERR, "TabletMagicDaemon failed to daemonize!");
         }
-
+#endif
 
         //
         // The logging version redirects output to a file
@@ -569,7 +570,9 @@ bool process_arguments(int argc, char *argv[]) {
 
     args.quiet          = false;        // DON'T suppress diagnostic messages
     args.command        = false;        // DON'T run in command mode
+#if __MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5
     args.dodaemon       = false;        // DON'T daemonize at startup
+#endif
     args.forcepc        = false;        // DON'T always assume ISD-V4 at 19200
     args.baud38400      = false;        // DON'T initially try 38400 baud
     args.startoff       = false;        // DON'T start up in disabled mode
@@ -599,7 +602,9 @@ bool process_arguments(int argc, char *argv[]) {
         switch(c) {
             case EOF: break;
             case 'c': args.command      = true; break;
+#if __MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5
             case 'd': args.dodaemon     = true; break;
+#endif
             case 'F': args.forcepc      = true; break;
             case '3': args.baud38400    = true; break;
             case 'q': args.quiet        = true; break;
@@ -671,7 +676,9 @@ void usage() {
     printf("\nUsage: TabletMagicDaemon [options]\n");
     printf(fmt, "-3",               "Initially try 38400 baud");
     printf(fmt, "-c",               "Run in command mode");
+#if __MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5
     printf(fmt, "-d",               "Daemonize when starting");
+#endif
     printf(fmt, "-F",               "Force TabletPC Mode");
     printf(fmt, "-h",               "Print this helpful message");
     printf(fmt, "-i setup",         "Initialize with a setup string");
