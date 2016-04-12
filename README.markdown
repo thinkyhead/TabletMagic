@@ -11,6 +11,10 @@ _TabletMagic_ is an OS X driver for obsolete serial Wacom tablets. The minimum s
 
 TabletMagic also works as a driver for TabletPC digitizers based on Wacom serial hardware. TabletPCs with "ISD-V4" or "Fujitsu P-series" protocol are currently supported. [This Page](http://www.insanelymac.com/forum/topic/43948-tabletmagic-for-tabletpcs/) contains more information and help for TabletPC users.
 
+Installation
+------------
+Double-click the control panel to install it. The panel will install the other components when you start the daemon for the first time. If you want the daemon to start automatically when you boot the computer, you need to check the `Launch at Startup` option in the `Extras` tab.
+
 Installed Components
 --------------------
 - "TabletMagicDaemon" is the actual device driver that communicates with the tablet and produces Mac system events. The daemon is a relatively simple C++ project. There's a class to represent the tablet, one for the serial port interface, and a small class to encapsulate UD-style tablet parameters. The intra-application messaging interface is part of the tablet class, but this will be placed in its own class pretty soon.
