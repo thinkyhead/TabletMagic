@@ -410,6 +410,17 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0440;
+				TargetAttributes = {
+					22403DDC13A54D2C00BF3B88 = {
+						DevelopmentTeam = 8TBXVC655K;
+					};
+					22403E0F13A54DB900BF3B88 = {
+						DevelopmentTeam = 8TBXVC655K;
+					};
+					8D202CE80486D31800D8A456 = {
+						DevelopmentTeam = 8TBXVC655K;
+					};
+				};
 			};
 			buildConfigurationList = 1DBD214C08BA80EA00186707 /* Build configuration list for PBXProject "TabletMagic" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -573,6 +584,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				DEPLOYMENT_LOCATION = YES;
+				DEVELOPMENT_TEAM = 8TBXVC655K;
 				DSTROOT = /;
 				GCC_DYNAMIC_NO_PIC = NO;
 				"GCC_ENABLE_OBJC_GC[sdk=macosx10.6][arch=x86_64]" = supported;
@@ -597,13 +609,13 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 8TBXVC655K;
 				"GCC_ENABLE_OBJC_GC[sdk=macosx10.6][arch=x86_64]" = supported;
 				"GCC_ENABLE_OBJC_GC[sdk=macosx10.7][arch=x86_64]" = supported;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = prefpane/TabletMagic_Prefix.pch;
 				INFOPLIST_FILE = prefpane/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/PreferencePanes";
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				PRODUCT_NAME = TabletMagic;
 				WRAPPER_EXTENSION = prefPane;
 			};
@@ -617,6 +629,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = CONFIG_$CONFIGURATION;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				ONLY_ACTIVE_ARCH = YES;
 				PROVISIONING_PROFILE = "";
 			};
@@ -625,13 +638,13 @@
 		1DBD214E08BA80EA00186707 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				ARCHS = "$(ARCHS_STANDARD)";
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PREPROCESSOR_DEFINITIONS = CONFIG_$CONFIGURATION;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.5;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
@@ -641,6 +654,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = 8TBXVC655K;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -659,6 +673,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 8TBXVC655K;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = daemon/Daemon_Prefix.pch;
@@ -672,6 +687,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = 8TBXVC655K;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -689,6 +705,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 8TBXVC655K;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";

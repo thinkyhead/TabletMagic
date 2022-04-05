@@ -11,7 +11,7 @@
 #import "TabletMagicPref.h"
 #import "Digitizers.h"
 #import "Constants.h"
-#import "GetPID.h"
+#import "include/GetPID.h"
 
 #include <ServiceManagement/ServiceManagement.h>
 
@@ -939,7 +939,7 @@ exit:
 
         if ( errAuthorizationSuccess != result ) {
             [ textTabletInfo setStringValue:[ thePane localizedString:kDriverNotLoaded ] ];
-            NSLog(@"Failed to start the daemon: %ld", result);
+            NSLog(@"Failed to start the daemon: %ld", (long)result);
         }
     }
 
@@ -996,7 +996,7 @@ exit:
             if (args[i]) free(args[i]);
 
         if ( errAuthorizationSuccess != result )
-            NSLog(@"Failed to kill the daemon: %ld", result);
+            NSLog(@"Failed to kill the daemon: %ld", (long)result);
 
         if (file) fclose(file);
     }
@@ -1018,7 +1018,7 @@ exit:
 
     result = AuthorizationCreate(nil, kAuthorizationEmptyEnvironment, kAuthorizationFlagDefaults, &fAuthorization);
     if (result != errAuthorizationSuccess) {
-        NSLog(@"Failed to create an authorization record: %ld", result);
+        NSLog(@"Failed to create an authorization record: %ld", (long)result);
         fAuthorization = nil;
     }
 }
@@ -1029,7 +1029,7 @@ exit:
     result = AuthorizationFree(fAuthorization, kAuthorizationFlagDestroyRights);
 
     if ( result != errAuthorizationSuccess )
-        NSLog(@"Failed to free the authorization record: %ld", result);
+        NSLog(@"Failed to free the authorization record: %ld", (long)result);
 }
 
 //
@@ -1755,7 +1755,7 @@ exit:
     //  NSLog(@"The Helper said: %s (%d)", outputBuffer, strlen(outputBuffer));
 
     if ( errAuthorizationSuccess != result )
-        NSLog(@"Failed to run the Launch Helper: %ld", result);
+        NSLog(@"Failed to run the Launch Helper: %ld", (long)result);
 
     return outputBuffer;
 }
