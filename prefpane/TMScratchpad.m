@@ -6,7 +6,7 @@
  */
 
 #import "TMScratchpad.h"
-#import "Constants.h"
+#import "../common/Constants.h"
 
 @implementation TMScratchpad
 

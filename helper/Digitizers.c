@@ -17,7 +17,7 @@
 
 const char *known_machines[] = KNOWN_MACHINES;
 
-char* get_digitizer_string() {
+char* get_digitizer_string(void) {
     char    *cmd, *tmp;
 
     // Find a digitizer in the IO Registry

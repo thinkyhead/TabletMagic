@@ -8,7 +8,7 @@
 #import "TMAreaChooser.h"
 #import "TMPresetsController.h"
 #import "TabletMagicPref.h"
-#import "Constants.h"
+#import "../common/Constants.h"
 
 #define HandleSize  4
 #define HSize2      (HandleSize*2+1)
@@ -273,9 +273,9 @@
     NSRect  brRect = { { r - HandleSize - 1, rect.size.height - b - HandleSize }, { HSize2, HSize2 } };
 
     if (dragType == DRAG_WHOLE)
-        [[NSColor colorWithCalibratedRed:0.92 green:0.92 blue:0.98 alpha:1.0] setFill];
+        [[NSColor colorWithCalibratedRed:0.92 green:0.92 blue:0.98 alpha:0.5] setFill];
     else
-        [[NSColor colorWithCalibratedRed:0.96 green:0.96 blue:0.99 alpha:1.0] setFill];
+        [[NSColor colorWithCalibratedRed:0.96 green:0.96 blue:0.99 alpha:0.5] setFill];
 
     NSRectFill(innerRect);
 
@@ -451,14 +451,14 @@
     }
 
     // Sanity check all values
-    if (l < 0.0f)       r -= l, l = 0.0f;
-    if (l > maxWidth)   r -= (l - maxWidth + 1.0f), l = maxWidth - 1.0f;
-    if (t < 0.0f)       b -= t, t = 0.0f;
-    if (t >= maxHeight) b -= (t - maxHeight + 1.0f), t = maxHeight - 1.0f;
-    if (r < 0.0f)       l -= r, r = 0.0f;
-    if (r >= maxWidth)  l -= (r - maxWidth + 1.0f), r = maxWidth - 1.0f;
-    if (b < 0.0f)       t -= b, b = 0.0f;
-    if (b >= maxHeight) t -= (b - maxHeight + 1.0f), b = maxHeight - 1.0f;
+    if (l < 0.0f)       { r -= l; l = 0.0f; }
+    if (l > maxWidth)   { r -= (l - maxWidth + 1.0f); l = maxWidth - 1.0f; }
+    if (t < 0.0f)       { b -= t; t = 0.0f; }
+    if (t >= maxHeight) { b -= (t - maxHeight + 1.0f); t = maxHeight - 1.0f; }
+    if (r < 0.0f)       { l -= r; r = 0.0f; }
+    if (r >= maxWidth)  { l -= (r - maxWidth + 1.0f); r = maxWidth - 1.0f; }
+    if (b < 0.0f)       { t -= b; b = 0.0f; }
+    if (b >= maxHeight) { t -= (b - maxHeight + 1.0f); b = maxHeight - 1.0f; }
 
     if (l < 0.0f)       l = 0.0f;
     if (l >= maxWidth)  l = maxWidth - 1.0f;

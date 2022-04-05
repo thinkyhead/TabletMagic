@@ -9,7 +9,7 @@
 
 #define KNOWN_MACHINES {"AAPL","iMac","PowerBook","PowerMac","RackMac","Macmini","MacPro","MacBookPro","MacBook"}
 
-char* get_digitizer_string();
+char* get_digitizer_string(void);
 char* run_tool(char *cmd);
 void clean_string(char *string);
 char is_known_machine(char **machine_string);

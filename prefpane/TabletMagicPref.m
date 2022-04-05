@@ -15,8 +15,8 @@ TabletMagicPref *thePane;
 - (void) mainViewDidLoad {
     thePane = self;
 
-#if __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_10
-    // This replacement is available from 10.10 onward
+#if __MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_8
+    // This replacement is available from 10.8 onward
     NSOperatingSystemVersion ver = [[NSProcessInfo processInfo] operatingSystemVersion];
     systemVersion.majorVersion = ver.majorVersion;
     systemVersion.minorVersion = ver.minorVersion;

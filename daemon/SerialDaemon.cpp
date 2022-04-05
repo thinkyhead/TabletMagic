@@ -781,7 +781,7 @@ WacomTablet::~WacomTablet() {
     // Disable notifications
     DisableNotifications();
 
-    if (local_message_port)
+    if (local_message_port && portShouldFree)
         CFRelease(local_message_port);
 
 #if ASYNCHRONOUS_MESSAGING
@@ -1072,7 +1072,7 @@ bool WacomTablet::InitializeTablet(int try_tablet_model) {
                     tablet_id = NULL;
                 }
 
-                asprintf(&tablet_id, RequestTabletIDModal());
+                asprintf(&tablet_id, "%s", RequestTabletIDModal());
 
                 if (strlen(tablet_id) && tablet_id[0] == '~')
                     break;
@@ -4067,7 +4067,8 @@ CFDataRef WacomTablet::HandleMessage(CFMessagePortRef loc, SInt32 msgid, CFDataR
 void WacomTablet::CreateLocalMessagePort() {
     CFMessagePortContext context = { 0, this, NULL, NULL, NULL };
 
-    local_message_port = CFMessagePortCreateLocal(NULL, CFSTR("com.thinkyhead.tabletmagic.daemon"), message_callback, &context, false);
+    portShouldFree = false;
+    local_message_port = CFMessagePortCreateLocal(NULL, CFSTR("com.thinkyhead.tabletmagic.daemon"), message_callback, &context, &portShouldFree);
     if (NULL != local_message_port) {
         CFRunLoopSourceRef source = CFMessagePortCreateRunLoopSource(NULL, local_message_port, 0);
         CFRunLoopAddSource( CFRunLoopGetCurrent(), source, kCFRunLoopDefaultMode );

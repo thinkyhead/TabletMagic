@@ -28,7 +28,7 @@
 #import "TMController.h"
 #import "TMAreaChooserScreen.h"
 #import "TMAreaChooserTablet.h"
-#import "Constants.h"
+#import "../common/Constants.h"
 
 #import "TabletMagicPref.h"
 
@@ -64,8 +64,8 @@
         didUpdates = ([ prefs objectForKey:keyDidFixButtons ] != nil);
 
     if (!didUpdates) {
-        int i, b;
-        for (i=[presetsArray count]; i--;) {
+        int b;
+        for (int i=(int)[presetsArray count]; i--;) {
             TMPreset *preset = [ [ TMPreset alloc ] initWithDictionary:[presetsArray objectAtIndex:i] ];
             if ((b = [ preset buttonEraser ]) >= kSystemButton3)    [ preset setButtonEraser:b+3 ];
             if ((b = [ preset buttonTip ]) >= kSystemButton3)       [ preset setButtonTip:b+3 ];
@@ -121,7 +121,7 @@
 
 - (void)activatePresetIndex:(int)i {
     if (i < (int)[ presetsArray count ]) {
-        [ activePreset initWithDictionary:[presetsArray objectAtIndex:(i < 0) ? activePresetIndex : i] ];
+        (void)[ activePreset initWithDictionary:[presetsArray objectAtIndex:(i < 0) ? activePresetIndex : i] ];
         [ self updateControlsForActivePreset ];
     }
 }
@@ -135,7 +135,7 @@
 }
 
 - (void)updatePresetsMenu {
-    int count = [presetsArray count];
+    int count = (int)[presetsArray count];
     [ popupPresets removeAllItems ];
 
     if (count) {
@@ -175,7 +175,7 @@
                      &tl, &tt, &tr, &tb, &sl, &st, &sr, &sb, &b0, &b1, &b2, &be, &mm, &ms)) {
         // Try to find a matching preset
         for (i=0;i<[presetsArray count];i++) {
-            [p initWithDictionary:[presetsArray objectAtIndex:i]];
+            (void)[p initWithDictionary:[presetsArray objectAtIndex:i]];
 
             if (    [p matchesTabletLeft:tl top:tt right:tr bottom:tb]
                 &&  [p matchesScreenLeft:sl top:st right:sr bottom:sb]
@@ -198,7 +198,7 @@
 
         if (foundIndex == -1) {
             [ self addPresetNamed:[thePane localizedString:kCustom] ];
-            foundIndex = [presetsArray count] - 1;
+            foundIndex = (int)[presetsArray count] - 1;
         }
 
         if (foundIndex != activePresetIndex) {
@@ -256,16 +256,16 @@
 }
 
 - (void)initControls {
-    NSString        *imagePath = [[thePane bundle] pathForImageResource:@"button.jpg" ];
-    NSImage         *img1 = [[NSImage alloc] initWithContentsOfFile:imagePath];
-    NSImage         *img2 = [ theController retainedHighlightedImageForImage:img1 ];
+    //NSString        *imagePath = [[thePane bundle] pathForImageResource:@"button.jpg" ];
+    //NSImage         *img1 = [[NSImage alloc] initWithContentsOfFile:imagePath];
+    //NSImage         *img2 = [ theController retainedHighlightedImageForImage:img1 ];
 
     NSButtonCell    *cell = [buttonConstrain cell];
-    [cell setImage:img1];
-    [cell setAlternateImage:img2];
-    [cell setShowsStateBy:NSContentsCellMask];
-    [cell setHighlightsBy:NSNoCellMask];
-    [ buttonConstrain setTitle:[ thePane localizedString:@"< constrain <" ] ];
+    //[cell setImage:img1];
+    //[cell setAlternateImage:img2];
+    [cell setShowsStateBy:NSChangeBackgroundCellMask];
+    [cell setHighlightsBy:NSPushInCellMask];
+    //[ buttonConstrain setTitle:[ thePane localizedString:@"< constrain <" ] ];
 
     //
     // Set the initial dimensions for the Screen Chooser
@@ -344,10 +344,10 @@
     [ activePreset setTabletRangeX:[chooserTablet maxWidth] y:[chooserTablet maxHeight] ];
     [ activePreset setScreenAreaLeft:[chooserScreen left] top:[chooserScreen top] right:[chooserScreen right] bottom:[chooserScreen bottom] ];
     [ activePreset setTabletAreaLeft:[chooserTablet left] top:[chooserTablet top] right:[chooserTablet right] bottom:[chooserTablet bottom] ];
-    [ activePreset setMappingForTip:[[popupStylusTip selectedItem] tag]
-                              side1:[[popupSwitch1 selectedItem] tag]
-                              side2:[[popupSwitch2 selectedItem] tag]
-                             eraser:[[popupEraser selectedItem] tag] ];
+    [ activePreset setMappingForTip:(int)[[popupStylusTip selectedItem] tag]
+                              side1:(int)[[popupSwitch1 selectedItem] tag]
+                              side2:(int)[[popupSwitch2 selectedItem] tag]
+                             eraser:(int)[[popupEraser selectedItem] tag] ];
 
     [ activePreset setMouseMode:[checkMouseMode state]==NSOnState ];
     [ activePreset setMouseScaling:[sliderScaling floatValue] ];
@@ -371,7 +371,7 @@
 #pragma mark - Actions
 
 - (IBAction)selectedPreset:(id)sender {
-    activePresetIndex = [sender indexOfSelectedItem];
+    activePresetIndex = (int)[sender indexOfSelectedItem];
     [ self activatePresetIndex:activePresetIndex ];
     [ self sendPresetToDaemon ];
 }
@@ -429,14 +429,14 @@
 
 -(void)addPresetNamed:(NSString*)n {
     TMPreset *newPreset = [[TMPreset alloc] init];
-    [ newPreset initWithDictionary:[activePreset dictionary] ];
+    (void)[ newPreset initWithDictionary:[activePreset dictionary] ];
     [ newPreset setName:n ];
     [ presetsArray addObject:[newPreset dictionary] ];
 #if !ARC_ENABLED
     [ newPreset release ];
 #endif
-    activePresetIndex = [ presetsArray count ] - 1;
-    [ activePreset initWithDictionary:[presetsArray objectAtIndex:activePresetIndex] ];
+    activePresetIndex = (int)[ presetsArray count ] - 1;
+    (void)[ activePreset initWithDictionary:[presetsArray objectAtIndex:activePresetIndex] ];
     [ self updatePresetsMenu ];
 }
 

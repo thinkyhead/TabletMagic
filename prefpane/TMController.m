@@ -9,9 +9,9 @@
 #import "TMPresetsController.h"
 #import "TMPreset.h"
 #import "TabletMagicPref.h"
-#import "Digitizers.h"
-#import "Constants.h"
-#import "GetPID.h"
+#import "../helper/Digitizers.h"
+#import "../common/Constants.h"
+#import "include/GetPID.h"
 
 #include <ServiceManagement/ServiceManagement.h>
 
@@ -396,10 +396,10 @@ TMCommand tabletCommands[] = {
     NSMutableDictionary *prefs = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                   portName,                                 keySerialPort,
                                   NSBOOL([checkEnabled state] != NSOffState),   keyTabletEnabled,
-                                  NSINT([popupBaud indexOfSelectedItem]),       keySerialBaudRate,
-                                  NSINT([popupDataBits indexOfSelectedItem]),   keySerialDataBits,
-                                  NSINT([popupStopBits indexOfSelectedItem]),   keySerialStopBits,
-                                  NSINT([[popupParity selectedItem] tag]),  keySerialParity,
+                                  NSINT((int)[popupBaud indexOfSelectedItem]),       keySerialBaudRate,
+                                  NSINT((int)[popupDataBits indexOfSelectedItem]),   keySerialDataBits,
+                                  NSINT((int)[popupStopBits indexOfSelectedItem]),   keySerialStopBits,
+                                  NSINT((int)[[popupParity selectedItem] tag]),  keySerialParity,
                                   NSBOOL([checkCTS state] == NSOnState),        keySerialCTS,
                                   NSBOOL([checkDSR state] == NSOnState),        keySerialDSR,
                                   tabIdentifier,                                keySelectedTab,
@@ -911,7 +911,7 @@ exit:
             if (pid) result = errAuthorizationSuccess;
         }
         else {
-            int i, count = [argsArray count];
+            int i, count = (int)[argsArray count];
             char **args = calloc(count+1, sizeof(char*));
             static char argstring[200];
             strcpy(argstring, "[ TabletMagicDaemon");
@@ -939,7 +939,7 @@ exit:
 
         if ( errAuthorizationSuccess != result ) {
             [ textTabletInfo setStringValue:[ thePane localizedString:kDriverNotLoaded ] ];
-            NSLog(@"Failed to start the daemon: %ld", result);
+            NSLog(@"Failed to start the daemon: %ld", (long)result);
         }
     }
 
@@ -984,7 +984,7 @@ exit:
                     result = AuthorizationExecuteWithPrivileges(fAuthorization, "/bin/kill", kAuthorizationFlagDefaults, args, &file);
 
                 for(i=0; i<num; i++)
-                    if (args[i]) free(args[i]), args[i] = nil;
+                    if (args[i]) { free(args[i]); args[i] = nil; }
             }
         }
         else {
@@ -996,7 +996,7 @@ exit:
             if (args[i]) free(args[i]);
 
         if ( errAuthorizationSuccess != result )
-            NSLog(@"Failed to kill the daemon: %ld", result);
+            NSLog(@"Failed to kill the daemon: %ld", (long)result);
 
         if (file) fclose(file);
     }
@@ -1018,7 +1018,7 @@ exit:
 
     result = AuthorizationCreate(nil, kAuthorizationEmptyEnvironment, kAuthorizationFlagDefaults, &fAuthorization);
     if (result != errAuthorizationSuccess) {
-        NSLog(@"Failed to create an authorization record: %ld", result);
+        NSLog(@"Failed to create an authorization record: %ld", (long)result);
         fAuthorization = nil;
     }
 }
@@ -1029,7 +1029,7 @@ exit:
     result = AuthorizationFree(fAuthorization, kAuthorizationFlagDestroyRights);
 
     if ( result != errAuthorizationSuccess )
-        NSLog(@"Failed to free the authorization record: %ld", result);
+        NSLog(@"Failed to free the authorization record: %ld", (long)result);
 }
 
 //
@@ -1131,14 +1131,14 @@ exit:
 }
 
 - (void)setControlsForCommandSet {
-    int set = [[popupCommandSet selectedItem] tag];
-    int fmt = set == kCommandSetWacomIV ? 0 : [popupOutputFormat indexOfSelectedItem];
+    int set = (int)[[popupCommandSet selectedItem] tag];
+    int fmt = set == kCommandSetWacomIV ? 0 : (int)[popupOutputFormat indexOfSelectedItem];
 
     // Datastream Box Heading
     [ self setStreamHeadingForSet:set andFormat:fmt ];
 
     // Command popup
-    int oldselection = [[popupCommands selectedItem] tag];
+    int oldselection = (int)[[popupCommands selectedItem] tag];
     [ popupCommands removeAllItems ];
 
     BOOL addedOne = NO;
@@ -1408,7 +1408,7 @@ exit:
 // chooseMemoryBank
 //
 - (IBAction)chooseMemoryBank:(id)sender {
-    int bank = [ [ sender selectedCell ] tag ];
+    int bank = (int)[ [ sender selectedCell ] tag ];
     char message[10];
     sprintf(message, "?bank %d", bank);
     [ self sendMessageToDaemon:message ];
@@ -1461,7 +1461,7 @@ exit:
 // Send the selected command to the tablet
 //
 - (IBAction)sendSelectedCommand:(id)sender {
-    int item = [ [popupCommands selectedItem] tag ];
+    int item = (int)[ [popupCommands selectedItem] tag ];
 
     NSString *commandString = [ NSString stringWithFormat:@"command %s", tabletCommands[item].command ];
 
@@ -1493,7 +1493,7 @@ exit:
 - (IBAction)settingsChanged:(id)sender {
     [ self scaleChanged ];
 
-    int banknum = [ [ matrixMem selectedCell ] tag ];
+    int banknum = (int)[ [ matrixMem selectedCell ] tag ];
 
     NSString *settingsString;
 
@@ -1731,7 +1731,7 @@ exit:
 
         NSData *data = [ INPIPE readDataToEndOfFile ];
         [ data getBytes:outputBuffer ];
-        buflen = [data length];
+        buflen = (int)[data length];
         outputBuffer[buflen] = '\0';
     }
     else {
@@ -1755,7 +1755,7 @@ exit:
     //  NSLog(@"The Helper said: %s (%d)", outputBuffer, strlen(outputBuffer));
 
     if ( errAuthorizationSuccess != result )
-        NSLog(@"Failed to run the Launch Helper: %ld", result);
+        NSLog(@"Failed to run the Launch Helper: %ld", (long)result);
 
     return outputBuffer;
 }
@@ -1807,7 +1807,7 @@ exit:
 #define kKillCancel     @"Cancel"
 
 - (IBAction)killTheDaemon:(id)sender {
-    int result = 0;
+    int result = 0; (void)result;
 
     static NSString *kill = nil, *okay, *cancel, *detail;
 
@@ -1839,7 +1839,7 @@ exit:
            defaultButton: okay
            alternateButton: cancel
            otherButton: nil
-           informativeTextWithFormat: detail
+           informativeTextWithFormat:@"%@", detail
            ]
          beginSheetModalForWindow: [[thePane mainView] window]
          modalDelegate: self
@@ -1891,7 +1891,7 @@ exit:
 #define kHackCancel     @"Cancel"
 
 - (IBAction)enableDigitizer:(id)sender {
-    int result = 0;
+    int result = 0; (void)result;
 
     static NSString *hack = nil, *okay, *cancel, *detail;
 
@@ -1925,7 +1925,7 @@ exit:
            defaultButton: okay
            alternateButton: cancel
            otherButton: nil
-           informativeTextWithFormat: detail
+           informativeTextWithFormat:@"%@", detail
            ]
             beginSheetModalForWindow: [[thePane mainView] window]
             modalDelegate: self
@@ -2024,7 +2024,7 @@ exit:
                defaultButton:okay
                alternateButton:nil
                otherButton:nil
-               informativeTextWithFormat:msg
+               informativeTextWithFormat:@"%@", msg
                ] beginSheetModalForWindow:[[thePane mainView] window]
                             modalDelegate:self
                            didEndSelector:@selector(failDialogEnded:returnCode:contextInfo:)
@@ -2214,16 +2214,16 @@ exit:
 
 - (char*)getCStringFromString:(NSString*)string {
     char *outstring;
-    int len=0;
+    int len = 0;
 
     if ([ thePane systemVersionBeforeMajor:10 minor:4 ]) {
         NSData *data = [ string dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES ];
-        len = [ data length ];
+        len = (int)[ data length ];
         outstring = malloc(len + 1);
         [ data getBytes:outstring ];
     }
     else {
-        len = [string length];
+        len = (int)[string length];
         outstring = malloc(len + 2);
         if (![ string getCString:outstring maxLength:len+1 encoding:NSASCIIStringEncoding ])
             len = 0;

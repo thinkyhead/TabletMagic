@@ -8,7 +8,7 @@
 #import "TMPreset.h"
 #import "TMController.h"
 #import "TabletMagicPref.h"
-#import "Constants.h"
+#import "../common/Constants.h"
 
 @implementation TMPreset
 

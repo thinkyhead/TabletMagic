@@ -120,6 +120,7 @@ private:
 
     CFRunLoopTimerRef   streamTimer;            //!< Seconds counter to support rate counting
     CFMessagePortRef    local_message_port;     //!< To receive messages from the pref pane
+    Boolean             portShouldFree;
 
 #if ASYNCHRONOUS_MESSAGING
     CFMessagePortRef    remote_message_port;    //!< To send messages to the pref pane
