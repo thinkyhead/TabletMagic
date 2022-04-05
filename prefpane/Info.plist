@@ -19,7 +19,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>2.0b20</string>
+	<string>2.0.0</string>
 	<key>NSMainNibFile</key>
 	<string>TabletMagicPref</string>
 	<key>NSPrefPaneIconFile</key>

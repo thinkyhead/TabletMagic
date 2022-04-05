@@ -8,7 +8,7 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
-#define TABLETMAGIC_VERSION "2.0b20"
+#define TABLETMAGIC_VERSION "2.0.0"
 
 #define ASYNCHRONOUS_MESSAGING  0
 #define FORCE_TABLETPC          0
